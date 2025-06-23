@@ -1,0 +1,27 @@
+{
+  "name": "dcode",
+  "version": "0.0.0",
+  "description": "DCODE is an open-source education platform connecting contributors to real OSS projects.",
+  "main": "api/src/server.js",
+  "author": "DevClub",
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.5.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.0"
+  },
+  "scripts": {
+    "dev": "nodemon api/src/server.js",
+    "start": "node api/src/server.js",
+    "build": "yarn install && yarn --cwd client install && yarn --cwd client build",
+    "prettier": "yarn prettier . --check",
+    "prettier-fix": "yarn prettier . --write"
+  }
+}
