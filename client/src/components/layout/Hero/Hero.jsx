@@ -4,8 +4,7 @@ import Hero from '../../../assets/Hero.png';
 export default function HeroSection() {
   return (
     <section className="flex flex-col justify-between min-h-screen px-6 md:px-16 py-16 bg-black overflow-hidden relative">
-      {/* HEADER + INTRO */}
-      <div className="w-full mb-8">
+      <div className="w-full mb-8 z-10">
         <h1 className="text-3xl md:text-6xl font-bold text-white leading-tight max-w-5xl">
           The <span className="text-[#BCDD19]">Open</span> Source{' '}
           <span className="text-[#BCDD19]">Platform</span>
@@ -13,7 +12,6 @@ export default function HeroSection() {
           For Modern <span className="text-[#BCDD19]">Development</span>
         </h1>
 
-        {/* Intro paragraph moved directly below the header */}
         <p className="text-gray-300 md:text-xl mt-4 max-w-3xl">
           Collaborate, build, and{' '}
           <span className="text-[#BCDD19]">innovate</span> with our powerful{' '}
@@ -22,8 +20,7 @@ export default function HeroSection() {
         </p>
       </div>
 
-      {/* CTA BLOCK: sits near bottom, but not hugging it */}
-      <div className="mt-2 md:w-5/12 space-y-8 py-16">
+      <div className="mt-2 md:w-5/12 space-y-8 py-16 z-10">
         <p className="text-white mb-2 md:text-3xl">
           Learn deeper.
           <br />
@@ -39,8 +36,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* HERO IMAGE stays absolute, unaffected */}
-      <div className="absolute bottom-20 right-0">
+      <div className="absolute bottom-20 right-0 z-0">
         <img
           src={Hero}
           alt="Hero graphic"
