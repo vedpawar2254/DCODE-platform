@@ -12,7 +12,7 @@ export default function HeroSection() {
           <br />
           For Modern <span className="text-[#BCDD19]">Development</span>
         </h1>
-
+        {/*  */}
         <p className="text-gray-300">
           Collaborate, build, and{' '}
           <span className="text-[#BCDD19]">innovate</span> with our powerful{' '}
