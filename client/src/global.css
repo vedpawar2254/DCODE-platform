@@ -5,6 +5,9 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  /* overflow-x: hidden; */
+  background-color: black;
+
 }
 
 @keyframes gradient-text {
@@ -13,7 +16,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-.animate-gradient {
+/* .animate-gradient {
   background: linear-gradient(-45deg,
     #BCDD19 0%,
     #BCDD19 40%,
@@ -25,7 +28,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradient-text 4s ease;
-}
+} */
 
 @keyframes fadeInUp {
   from {

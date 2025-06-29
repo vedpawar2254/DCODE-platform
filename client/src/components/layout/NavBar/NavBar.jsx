@@ -4,7 +4,7 @@ import Logo from '../../ui/Logo';
 
 export default function NavBar() {
   return (
-    <nav className="flex items-center justify-between px-16 py-4 bg-black">
+    <nav className="flex items-center justify-between px-16 py-4 mt-4 bg-[121212]">
       <Logo />
 
       <div className="hidden md:flex items-center space-x-6">

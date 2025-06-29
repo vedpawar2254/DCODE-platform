@@ -1,4 +1,11 @@
-export default function Button({ children, variant = 'primary', onClick }) {
+import { twMerge } from 'tailwind-merge';
+
+export default function Button({
+  children,
+  variant = 'primary',
+  onClick,
+  className
+}) {
   const base =
     'px-4 py-0.5 rounded-[10px] border transition-colors duration-200 hover:cursor-pointer';
   const variants = {
@@ -8,7 +15,10 @@ export default function Button({ children, variant = 'primary', onClick }) {
   };
 
   return (
-    <button onClick={onClick} className={`${base} ${variants[variant]}`}>
+    <button
+      onClick={onClick}
+      className={twMerge(`${base} ${variants[variant]} ${className || ''}`)}
+    >
       {children}
     </button>
   );
