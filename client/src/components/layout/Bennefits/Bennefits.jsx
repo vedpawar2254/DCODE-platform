@@ -80,7 +80,7 @@ const Bennefits = () => {
                 transition={{ duration: 0.8 }}
                 className="absolute w-8 h-8 rounded-full"
                 style={{
-                  top: '-40px',
+                  top: '140px',
                   left: '60%',
                   transform: 'translateX(-50%)',
                   background:
@@ -93,7 +93,7 @@ const Bennefits = () => {
                 transition={{ duration: 0.8 }}
                 className="absolute w-6 h-6 rounded-full"
                 style={{
-                  bottom: '-40px',
+                  bottom: '140px',
                   right: '60%',
                   background:
                     'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
