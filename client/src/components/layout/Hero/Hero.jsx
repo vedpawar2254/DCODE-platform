@@ -49,7 +49,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-20 right-0 z-0">
+      <div className="absolute bottom-20 right-0 z-0 animate-float">
         <img
           src={Hero}
           alt="Hero graphic"
