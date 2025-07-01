@@ -281,74 +281,72 @@ const About = () => {
             </div>
           </div>
 
-          {/* CARD 4 - DOUBLE WIDTH */}
-          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col w-full md:col-span-2">
-            <div className="flex justify-between items-start mb-4">
+          {/* CARD 4 - DOUBLE WIDTH (COMPACT) */}
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 md:col-span-2 h-full">
+            <div className="flex justify-between items-start mb-3">
               <div>
-                <h3 className="text-white font-bold text-xl mb-1 flex items-center">
+                <h3 className="text-white font-bold text-lg mb-1 flex items-center">
                   <span className="text-[#BCDD19] mr-2">↗</span> Collaborative
                   Learning
                 </h3>
-                <p className="text-gray-400">
+                <p className="text-gray-400 text-sm">
                   Learn Git workflows, code reviews, and professional
                   development practices.
                 </p>
               </div>
-              <div className="bg-[#333D00] text-[#BCDD19] text-xs px-3 py-1 rounded-full">
-                Current Cycle
+              <div className="bg-[#333D00] text-[#BCDD19] text-xs px-2 py-0.5 rounded-full">
+                Current
               </div>
             </div>
 
-            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-6 flex-1">
-              {/* Phase Tabs */}
-              <div className="flex space-x-2 mb-8">
+            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 mt-3">
+              {/* Compact Phase Tabs */}
+              <div className="flex flex-wrap gap-1.5 mb-4">
                 {phases.map(phase => (
                   <button
                     key={phase.name}
                     onClick={() => setActivePhase(phase)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
+                    className={`px-3 py-1 rounded-full text-xs transition-all
             ${
               activePhase.name === phase.name
                 ? 'bg-[#333D00] border border-[#BCDD19] text-white'
-                : 'bg-[#1D261D] text-gray-300 hover:border-[#BCDD19] hover:text-white'
+                : 'bg-[#1D261D] text-gray-300 hover:border-[#BCDD19]'
             }`}
                   >
-                    {phase.name}
+                    {phase.name.split(' ')[0]}
                   </button>
                 ))}
               </div>
 
-              {/* Main Content Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Pull Requests Section */}
-                <div className="space-y-6">
-                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+              {/* Compact Content Grid */}
+              <div className="grid grid-cols-3 gap-3">
+                {/* Pull Requests */}
+                <div>
+                  <h4 className="text-white font-medium text-xs mb-2">
                     Pull Requests
                   </h4>
-
-                  <div className="space-y-4">
+                  <div className="space-y-2">
                     <div>
-                      <div className="flex justify-between text-gray-400 text-sm mb-2">
+                      <div className="flex justify-between text-gray-400 text-2xs mb-0.5">
                         <span>Merged</span>
                         <span>{activePhase.merged}</span>
                       </div>
-                      <div className="w-full bg-[#1D261D] rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-[#1D261D] rounded-full h-1.5 overflow-hidden">
                         <motion.div
-                          className="h-3 bg-[#37CD5A] rounded-full"
+                          className="h-1.5 bg-[#37CD5A] rounded-full"
                           animate={{ width: `${mergedPercent}%` }}
                           transition={{ duration: 0.5 }}
                         />
                       </div>
                     </div>
-
                     <div>
-                      <div className="flex justify-between text-gray-400 text-sm mb-2">
+                      <div className="flex justify-between text-gray-400 text-2xs mb-0.5">
                         <span>Open</span>
                         <span>{activePhase.open}</span>
                       </div>
-                      <div className="w-full bg-[#1D261D] rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-[#1D261D] rounded-full h-1.5 overflow-hidden">
                         <motion.div
-                          className="h-3 bg-yellow-400 rounded-full"
+                          className="h-1.5 bg-yellow-400 rounded-full"
                           animate={{ width: `${openPercent}%` }}
                           transition={{ duration: 0.5 }}
                         />
@@ -357,90 +355,36 @@ const About = () => {
                   </div>
                 </div>
 
-                {/* Stats Section */}
-                <div className="space-y-6">
-                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+                {/* Stats */}
+                <div>
+                  <h4 className="text-white font-medium text-xs mb-2">
                     This cycle
                   </h4>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-[#1D261D] p-4 rounded-lg">
-                      <p className="text-gray-400 text-xs mb-1">
-                        Current phase
-                      </p>
-                      <p className="text-white font-medium">
-                        {activePhase.name}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#1D261D] p-4 rounded-lg">
-                      <p className="text-gray-400 text-xs mb-1">
-                        Days remaining
-                      </p>
-                      <p className="text-white font-medium">14</p>
-                    </div>
-
-                    <div className="bg-[#1D261D] p-4 rounded-lg">
-                      <p className="text-gray-400 text-xs mb-1">
-                        Active contributors
-                      </p>
-                      <p className="text-white font-medium">24</p>
-                    </div>
-
-                    <div className="bg-[#1D261D] p-4 rounded-lg">
-                      <p className="text-gray-400 text-xs mb-1">Total points</p>
-                      <p className="text-white font-medium">3,420</p>
-                    </div>
+                  <div className="bg-[#1D261D] p-2 rounded-lg">
+                    <p className="text-gray-400 text-2xs">Phase</p>
+                    <p className="text-white text-xs truncate">
+                      {activePhase.name}
+                    </p>
                   </div>
                 </div>
 
-                {/* Leaderboard Section */}
-                <div className="space-y-6">
-                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+                {/* Leaderboard */}
+                <div>
+                  <h4 className="text-white font-medium text-xs mb-2">
                     Leaderboard
                   </h4>
-
-                  <div className="space-y-3">
-                    {activePhase.leaderboard.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between bg-[#1D261D] p-3 rounded-lg"
-                      >
-                        <div className="flex items-center">
-                          <span className="text-lg mr-2">
-                            {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
-                          </span>
-                          <div>
-                            <p className="text-white font-medium">
-                              {item.name.split(' ')[0]}
-                            </p>
-                            <p className="text-gray-400 text-xs">
-                              {item.name.split(' ')[1]}
-                            </p>
-                          </div>
-                        </div>
-                        <span className="bg-[#333D00] text-[#BCDD19] px-3 py-1 rounded-full text-sm">
-                          {item.score} pts
+                  <div className="space-y-1.5">
+                    {activePhase.leaderboard.slice(0, 3).map((item, idx) => (
+                      <div key={idx} className="flex justify-between">
+                        <span className="text-white text-xs flex items-center">
+                          {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}{' '}
+                          {item.name.split(' ')[0]}
+                        </span>
+                        <span className="text-xs bg-[#333D00] px-1.5 py-0.5 rounded">
+                          {item.score}
                         </span>
                       </div>
                     ))}
-
-                    <button className="w-full mt-4 text-[#BCDD19] text-sm font-medium hover:underline flex items-center justify-center">
-                      View full leaderboard
-                      <svg
-                        className="w-4 h-4 ml-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
                   </div>
                 </div>
               </div>
