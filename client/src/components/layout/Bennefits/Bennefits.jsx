@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FeatureCards } from './FeatureCards';
 import playbutton from '../../../assets/playbutton.svg';
+import star from '../../../assets/star.svg';
+import spirals from '../../../assets/spirals.svg';
+import accelerate from '../../../assets/accelerate.svg';
+import globe from '../../../assets/globe.svg';
 
 const Bennefits = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -9,8 +13,8 @@ const Bennefits = () => {
   return (
     <section className="relative w-full px-6 md:px-16 bg-black text-center overflow-hidden min-h-screen flex flex-col justify-center items-center pt-32">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 max-w-3xl mx-auto z-10">
-        <h3 className="text-green-500 text-sm tracking-widest mb-2">
-          WHY CHOOSE
+        <h3 className="text-green-500 text-sm tracking-widest mb-8">
+          WHY CHOOSE US
         </h3>
         <h2 className="text-4xl md:text-5xl font-bold text-white">
           Experience <span className="text-[#BCDD19]">DCODE</span>
@@ -39,12 +43,12 @@ const Bennefits = () => {
                 className="flex flex-col space-y-12 md:space-y-40"
               >
                 <FeatureCards
-                  icon="📈"
+                  icon={accelerate}
                   title="Accelerate Growth"
                   description="Build meaningful projects that advance your career trajectory"
                 />
                 <FeatureCards
-                  icon="🎯"
+                  icon={spirals}
                   title="Unlock Potential"
                   description="Maximize your impact with cutting-edge development tools"
                 />
@@ -106,12 +110,12 @@ const Bennefits = () => {
                 className="flex flex-col space-y-12 md:space-y-40"
               >
                 <FeatureCards
-                  icon="⭐"
+                  icon={star}
                   title="Stand Apart"
                   description="Distinguish yourself in the competitive development landscape"
                 />
                 <FeatureCards
-                  icon="🌐"
+                  icon={globe}
                   title="Collaborate Globally"
                   description="Work with diverse peers and mentors from across the tech ecosystem"
                 />
