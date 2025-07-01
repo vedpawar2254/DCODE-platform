@@ -63,7 +63,7 @@ const Bennefits = () => {
                   <div className="w-56 h-56 rounded-full flex items-center justify-center border border-[#37CD5A]">
                     <button
                       onClick={() => setIsVideoOpen(true)}
-                      className="absolute top-1/2 left-1/2 w-[100px] h-[100px] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center hover:scale-105 transition"
+                      className="absolute top-1/2 left-1/2 w-[100px] h-[100px] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center hover:scale-105 transition hover:cursor-pointer"
                       style={{
                         background:
                           'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
@@ -136,11 +136,11 @@ const Bennefits = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
+                transition={{ duration: 1, delay: 0.8 }}
                 className="absolute inset-0 -z-10 rounded-xl blur-3xl"
                 style={{
                   background:
-                    'radial-gradient(ellipse at bottom, rgba(76, 175, 80, 0.6) 0%, transparent 70%)'
+                    'radial-gradient(ellipse at bottom, rgba(76, 175, 80, 0.8) 0%, transparent 70%)'
                 }}
               ></motion.div>
               <video

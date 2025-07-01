@@ -1,12 +1,123 @@
-import React from 'react';
+import { React, useEffect, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const About = () => {
+  const feedbacks = [
+    {
+      initial: 'V',
+      name: 'Ved Pawar',
+      role: 'Senior Dev',
+      comment: 'Great implementation! Consider using hooks for clarity.'
+    },
+    {
+      initial: 'A',
+      name: 'Aryan Vibhuti',
+      role: 'Lead Reviewer',
+      comment: 'Try extracting this logic to a custom hook.'
+    },
+    {
+      initial: 'R',
+      name: 'Rohan Singh',
+      role: 'Mentor',
+      comment: 'Well done! Next time focus on error handling too.'
+    }
+  ];
+
+  const phases = [
+    {
+      name: 'Fork Phase',
+      merged: 12,
+      open: 4,
+      leaderboard: [
+        { name: 'Ved', score: 600 },
+        { name: 'Rohan Singh', score: 500 },
+        { name: 'Aryan Vibhuti', score: 400 }
+      ]
+    },
+    {
+      name: 'Spec Phase',
+      merged: 18,
+      open: 3,
+      leaderboard: [
+        { name: 'Ved', score: 800 },
+        { name: 'Rohan Singh', score: 700 },
+        { name: 'Aryan Vibhuti', score: 600 }
+      ]
+    },
+    {
+      name: 'Merge Phase',
+      merged: 24,
+      open: 8,
+      leaderboard: [
+        { name: 'Ved', score: 1270 },
+        { name: 'Rohan Singh', score: 1000 },
+        { name: 'Aryan Vibhuti', score: 920 }
+      ]
+    },
+    {
+      name: 'Elite Phase',
+      merged: 30,
+      open: 2,
+      leaderboard: [
+        { name: 'Ved', score: 1500 },
+        { name: 'Rohan Singh', score: 1300 },
+        { name: 'Aryan Vibhuti', score: 1100 }
+      ]
+    }
+  ];
+
+  const [activePhase, setActivePhase] = useState(phases[2]);
+  const [index, setIndex] = useState(0);
+
+  const mergedTotal = 40; // For percent calculation
+  const openTotal = 40;
+
+  const mergedPercent = (activePhase.merged / mergedTotal) * 100;
+  const openPercent = (activePhase.open / openTotal) * 100;
+
+  const weeks = 26;
+  const days = 5;
+
+  const levels = [1, 2, 3, 4]; // contribution intensity
+
+  // Generate random data
+  const data = useMemo(
+    () =>
+      Array.from(
+        { length: weeks * days },
+        () => levels[Math.floor(Math.random() * levels.length)]
+      ),
+    []
+  );
+
+  const getColor = level => {
+    switch (level) {
+      case 1:
+        return '#1d4428';
+      case 2:
+        return '#3fa14d';
+      case 3:
+        return '#56d364';
+      case 4:
+        return '#6fe87a';
+      default:
+        return '#1d4428';
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % feedbacks.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <section className="w-full px-6 md:px-16 bg-black text-center py-24">
         {/* Section intro */}
         <div className="max-w-3xl mx-auto mb-16">
-          <h3 className="text-green-500 text-sm tracking-widest mb-2">
+          <h3 className="text-green-500 text-sm tracking-widest mb-8">
             MADE ACCESSIBLE
           </h3>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
@@ -22,78 +133,316 @@ const About = () => {
         {/* Cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* CARD 1 */}
-          <div className="bg-[#0B0F0B] border border-green-900 rounded-xl p-6 flex flex-col h-full">
-            <h3 className="text-white font-semibold mb-2 flex items-center">
-              <span className="mr-2">💻</span> Real-World Experience
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
+            {/* Title */}
+            <h3 className="text-white font-bold text-lg mb-2">
+              <span className="text-[#BCDD19] mr-2">&lt;/&gt;</span> Real-World
+              Experience
             </h3>
-            <p className="text-gray-400 mb-4 flex-grow">
+
+            {/* Description */}
+            <p className="text-gray-400 mb-6">
               Work on production-level code in curated open-source repositories.
             </p>
-            <div className="bg-[#121A12] p-4 rounded-lg text-left">
-              <span className="text-green-400 text-sm block mb-1">MERGED</span>
-              <p className="text-white text-sm">
-                feat: Add user authentication
+
+            {/* Inner code block */}
+            <div className="bg-[#121A12] border rounded-xl p-4 text-left flex flex-col">
+              {/* Top row: dot + MERGED */}
+              <div className="flex items-center mb-2">
+                <span className="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+                <span className="bg-[#1D261D] text-[#BCDD19] text-xs px-2 py-1 rounded">
+                  MERGED
+                </span>
+              </div>
+
+              {/* PR title */}
+              <p className="text-white mb-1 flex items-center">
+                <span className="mr-2">🌿</span> feat: Add user authentication
               </p>
-              <div className="h-2 w-full bg-green-700 rounded-full mt-2">
-                <div className="h-2 bg-green-400 rounded-full w-3/4"></div>
+
+              {/* Stats */}
+              <p className="text-gray-400 text-sm mb-3">
+                +127 -43 • 3 files changed
+              </p>
+
+              {/* Bars */}
+              <div className="flex items-center space-x-2">
+                <div className="flex-1 h-2 bg-red-800 rounded-full">
+                  <div className="h-2 bg-green-400 rounded-full w-3/4"></div>
+                </div>
+                {/* <div className="flex-1 h-2 bg-red-800 rounded-full">
+                  <div className="h-2 bg-red-400 rounded-full w-1/4"></div>
+                </div> */}
               </div>
             </div>
           </div>
 
           {/* CARD 2 */}
-          <div className="bg-[#0B0F0B] border border-green-900 rounded-xl p-6 flex flex-col h-full">
-            <h3 className="text-white font-semibold mb-2 flex items-center">
-              <span className="mr-2">👨‍🏫</span> Industry Mentorship
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
+            {/* Title */}
+            <h3 className="text-white font-bold text-lg mb-2">
+              <span className="text-[#BCDD19] mr-2">👥</span> Industry
+              Mentorship
             </h3>
-            <p className="text-gray-400 mb-4 flex-grow">
+
+            {/* Description */}
+            <p className="text-gray-400 mb-6">
               Get guidance from experienced developers and industry
               professionals.
             </p>
-            <div className="bg-[#121A12] p-4 rounded-lg text-left">
-              <p className="text-white text-sm mb-1">Code Review Session</p>
-              <p className="text-green-400 text-xs">
-                "Great implementation! Consider using..."
-              </p>
+
+            {/* Inner animated block */}
+            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col">
+              <div className="relative overflow-hidden h-[120px] mb-2">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={index}
+                    initial={{ y: '100%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
+                    exit={{ y: '-100%', opacity: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="absolute inset-0 flex flex-col"
+                  >
+                    {/* Reviewer */}
+                    <div className="flex items-center mb-3">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center mr-3 text-sm font-bold">
+                        {feedbacks[index].initial}
+                      </div>
+                      <div>
+                        <p className="text-white text-sm font-semibold leading-tight">
+                          {feedbacks[index].name}
+                        </p>
+                        <p className="text-gray-400 text-xs">
+                          {feedbacks[index].role}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Comment */}
+                    <div className="bg-[#1D261D] text-white text-sm px-4 py-2 rounded-lg border-l-2 border-[#BCDD19]">
+                      "{feedbacks[index].comment}"
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Static footer */}
             </div>
           </div>
 
           {/* CARD 3 */}
-          <div className="bg-[#0B0F0B] border border-green-900 rounded-xl p-6 flex flex-col h-full">
-            <h3 className="text-white font-semibold mb-2 flex items-center">
-              <span className="mr-2">📈</span> Build Your Portfolio
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
+            {/* Title */}
+            <h3 className="text-white font-bold text-lg mb-2">
+              <span className="text-[#BCDD19] mr-2">🐱</span> Build Your
+              Portfolio
             </h3>
-            <p className="text-gray-400 mb-4 flex-grow">
-              Showcase your contributions and build an impressive GitHub
-              profile.
+
+            {/* Description */}
+            <p className="text-gray-400 mb-6">
+              Showcase your contributions and build an impressive DCODE profile.
             </p>
-            <div className="bg-[#121A12] p-4 rounded-lg text-left">
-              <p className="text-white text-sm mb-2">Contributions</p>
-              <div className="flex flex-wrap gap-1">
-                {Array(30)
-                  .fill(0)
-                  .map((_, i) => (
-                    <span
-                      key={i}
-                      className="w-2 h-2 bg-green-600 rounded-sm"
-                    ></span>
+
+            {/* Inner heatmap */}
+            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col">
+              <p className="text-white mb-4">Contributions</p>
+              <div className="overflow-x-auto">
+                <div className="flex space-x-1">
+                  {Array.from({ length: weeks }).map((_, weekIdx) => (
+                    <div key={weekIdx} className="flex flex-col space-y-1">
+                      {Array.from({ length: days }).map((_, dayIdx) => {
+                        const index = weekIdx * days + dayIdx;
+                        const level = data[index];
+                        return (
+                          <div
+                            key={dayIdx}
+                            className="w-2.5 h-2.5 rounded-[2px]"
+                            style={{ backgroundColor: getColor(level) }}
+                          ></div>
+                        );
+                      })}
+                    </div>
                   ))}
+                </div>
+              </div>
+              <div className="flex space-x-3 text-gray-400 text-xs mt-3">
+                <span>Less</span>
+                <div className="flex space-x-1">
+                  {levels.map(level => (
+                    <div
+                      key={level}
+                      className="w-2.5 h-2.5 rounded-[2px]"
+                      style={{ backgroundColor: getColor(level) }}
+                    ></div>
+                  ))}
+                </div>
+                <span>More</span>
               </div>
             </div>
           </div>
 
-          {/* CARD 4 */}
-          <div className="bg-[#0B0F0B] border border-green-900 rounded-xl p-6 flex flex-col h-full">
-            <h3 className="text-white font-semibold mb-2 flex items-center">
-              <span className="mr-2">🤝</span> Collaborative Learning
-            </h3>
-            <p className="text-gray-400 mb-4 flex-grow">
-              Learn Git workflows, code reviews, and professional development
-              practices.
-            </p>
-            <div className="bg-[#121A12] p-4 rounded-lg text-left">
-              <p className="text-white text-sm mb-2">Pull Requests</p>
-              <div className="h-2 w-full bg-green-700 rounded-full">
-                <div className="h-2 bg-green-400 rounded-full w-2/3"></div>
+          {/* CARD 4 - DOUBLE WIDTH */}
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col w-full md:col-span-2">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-white font-bold text-xl mb-1 flex items-center">
+                  <span className="text-[#BCDD19] mr-2">↗</span> Collaborative
+                  Learning
+                </h3>
+                <p className="text-gray-400">
+                  Learn Git workflows, code reviews, and professional
+                  development practices.
+                </p>
+              </div>
+              <div className="bg-[#333D00] text-[#BCDD19] text-xs px-3 py-1 rounded-full">
+                Current Cycle
+              </div>
+            </div>
+
+            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-6 flex-1">
+              {/* Phase Tabs */}
+              <div className="flex space-x-2 mb-8">
+                {phases.map(phase => (
+                  <button
+                    key={phase.name}
+                    onClick={() => setActivePhase(phase)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
+            ${
+              activePhase.name === phase.name
+                ? 'bg-[#333D00] border border-[#BCDD19] text-white'
+                : 'bg-[#1D261D] text-gray-300 hover:border-[#BCDD19] hover:text-white'
+            }`}
+                  >
+                    {phase.name}
+                  </button>
+                ))}
+              </div>
+
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Pull Requests Section */}
+                <div className="space-y-6">
+                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+                    Pull Requests
+                  </h4>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between text-gray-400 text-sm mb-2">
+                        <span>Merged</span>
+                        <span>{activePhase.merged}</span>
+                      </div>
+                      <div className="w-full bg-[#1D261D] rounded-full h-3 overflow-hidden">
+                        <motion.div
+                          className="h-3 bg-[#37CD5A] rounded-full"
+                          animate={{ width: `${mergedPercent}%` }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between text-gray-400 text-sm mb-2">
+                        <span>Open</span>
+                        <span>{activePhase.open}</span>
+                      </div>
+                      <div className="w-full bg-[#1D261D] rounded-full h-3 overflow-hidden">
+                        <motion.div
+                          className="h-3 bg-yellow-400 rounded-full"
+                          animate={{ width: `${openPercent}%` }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats Section */}
+                <div className="space-y-6">
+                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+                    This cycle
+                  </h4>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-[#1D261D] p-4 rounded-lg">
+                      <p className="text-gray-400 text-xs mb-1">
+                        Current phase
+                      </p>
+                      <p className="text-white font-medium">
+                        {activePhase.name}
+                      </p>
+                    </div>
+
+                    <div className="bg-[#1D261D] p-4 rounded-lg">
+                      <p className="text-gray-400 text-xs mb-1">
+                        Days remaining
+                      </p>
+                      <p className="text-white font-medium">14</p>
+                    </div>
+
+                    <div className="bg-[#1D261D] p-4 rounded-lg">
+                      <p className="text-gray-400 text-xs mb-1">
+                        Active contributors
+                      </p>
+                      <p className="text-white font-medium">24</p>
+                    </div>
+
+                    <div className="bg-[#1D261D] p-4 rounded-lg">
+                      <p className="text-gray-400 text-xs mb-1">Total points</p>
+                      <p className="text-white font-medium">3,420</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Leaderboard Section */}
+                <div className="space-y-6">
+                  <h4 className="text-white font-bold text-lg border-b border-[#1D261D] pb-2">
+                    Leaderboard
+                  </h4>
+
+                  <div className="space-y-3">
+                    {activePhase.leaderboard.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between bg-[#1D261D] p-3 rounded-lg"
+                      >
+                        <div className="flex items-center">
+                          <span className="text-lg mr-2">
+                            {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
+                          </span>
+                          <div>
+                            <p className="text-white font-medium">
+                              {item.name.split(' ')[0]}
+                            </p>
+                            <p className="text-gray-400 text-xs">
+                              {item.name.split(' ')[1]}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="bg-[#333D00] text-[#BCDD19] px-3 py-1 rounded-full text-sm">
+                          {item.score} pts
+                        </span>
+                      </div>
+                    ))}
+
+                    <button className="w-full mt-4 text-[#BCDD19] text-sm font-medium hover:underline flex items-center justify-center">
+                      View full leaderboard
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
