@@ -282,31 +282,27 @@ const About = () => {
           </div>
 
           {/* CARD 4 - DOUBLE WIDTH (COMPACT) */}
-          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 md:col-span-2 h-full">
-            <div className="flex justify-between items-start mb-3">
+          <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-4 md:col-span-2 h-full">
+            <div className="flex justify-between items-start mb-2">
               <div>
-                <h3 className="text-white font-bold text-lg mb-1 flex items-center">
-                  <span className="text-[#BCDD19] mr-2">↗</span> Collaborative
+                <h3 className="text-white font-bold text-sm mb-1 flex items-center p-2">
+                  <span className="text-[#BCDD19] mr-1">↗</span> Collaborative
                   Learning
                 </h3>
-                <p className="text-gray-400 text-sm">
-                  Learn Git workflows, code reviews, and professional
-                  development practices.
+                <p className="text-gray-400 text-xs p-2">
+                  Git workflows, code reviews, and dev practices.
                 </p>
-              </div>
-              <div className="bg-[#333D00] text-[#BCDD19] text-xs px-2 py-0.5 rounded-full">
-                Current
               </div>
             </div>
 
-            <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 mt-3">
-              {/* Compact Phase Tabs */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
+            <div className="bg-[#121A12] border border-[#1D261D] rounded p-5 mt-2">
+              {/* Phase Tabs - Ultra Compact */}
+              <div className="flex flex-wrap gap-3 mb-3">
                 {phases.map(phase => (
                   <button
                     key={phase.name}
                     onClick={() => setActivePhase(phase)}
-                    className={`px-3 py-1 rounded-full text-xs transition-all
+                    className={`px-6 py-1 rounded-lg p-3 text-2xs transition-all
             ${
               activePhase.name === phase.name
                 ? 'bg-[#333D00] border border-[#BCDD19] text-white'
@@ -318,35 +314,35 @@ const About = () => {
                 ))}
               </div>
 
-              {/* Compact Content Grid */}
-              <div className="grid grid-cols-3 gap-3">
-                {/* Pull Requests */}
-                <div>
-                  <h4 className="text-white font-medium text-xs mb-2">
+              {/* Content Grid - Tight Layout */}
+              <div className="grid grid-cols-5 gap-2">
+                {/* Pull Requests - Compact */}
+                <div className="col-span-2 bg-[#142416] p-2 rounded-lg border border-[#152918]">
+                  <h4 className="text-white font-medium text-2xs mb-1">
                     Pull Requests
                   </h4>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <div>
-                      <div className="flex justify-between text-gray-400 text-2xs mb-0.5">
+                      <div className="flex justify-between text-gray-400 pb-2 text-xs">
                         <span>Merged</span>
-                        <span>{activePhase.merged}</span>
+                        <span className="text-white">{activePhase.merged}</span>
                       </div>
-                      <div className="w-full bg-[#1D261D] rounded-full h-1.5 overflow-hidden">
+                      <div className="w-full bg-[#1D261D] rounded-full h-1 overflow-hidden mt-0.5">
                         <motion.div
-                          className="h-1.5 bg-[#37CD5A] rounded-full"
+                          className="h-1 bg-[#37CD5A] rounded-full"
                           animate={{ width: `${mergedPercent}%` }}
                           transition={{ duration: 0.5 }}
                         />
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-gray-400 text-2xs mb-0.5">
+                      <div className="flex justify-between text-gray-400 pb-2 text-xs">
                         <span>Open</span>
-                        <span>{activePhase.open}</span>
+                        <span className="text-white">{activePhase.open}</span>
                       </div>
-                      <div className="w-full bg-[#1D261D] rounded-full h-1.5 overflow-hidden">
+                      <div className="w-full bg-[#1D261D] rounded-full h-1 overflow-hidden mt-0.5">
                         <motion.div
-                          className="h-1.5 bg-yellow-400 rounded-full"
+                          className="h-1 bg-yellow-400 rounded-full"
                           animate={{ width: `${openPercent}%` }}
                           transition={{ duration: 0.5 }}
                         />
@@ -355,32 +351,22 @@ const About = () => {
                   </div>
                 </div>
 
-                {/* Stats */}
-                <div>
-                  <h4 className="text-white font-medium text-xs mb-2">
-                    This cycle
-                  </h4>
-                  <div className="bg-[#1D261D] p-2 rounded-lg">
-                    <p className="text-gray-400 text-2xs">Phase</p>
-                    <p className="text-white text-xs truncate">
-                      {activePhase.name}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Leaderboard */}
-                <div>
-                  <h4 className="text-white font-medium text-xs mb-2">
+                {/* Leaderboard - Compact */}
+                <div className="col-span-3 bg-[#142416] p-2 rounded-lg border border-[#152918]">
+                  <h4 className="text-white font-medium text-2xs mb-1">
                     Leaderboard
                   </h4>
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     {activePhase.leaderboard.slice(0, 3).map((item, idx) => (
-                      <div key={idx} className="flex justify-between">
-                        <span className="text-white text-xs flex items-center">
+                      <div
+                        key={idx}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-white text-2xs flex items-center">
                           {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}{' '}
                           {item.name.split(' ')[0]}
                         </span>
-                        <span className="text-xs bg-[#333D00] px-1.5 py-0.5 rounded">
+                        <span className="text-white text-2xs px-1.5 py-0.5 rounded">
                           {item.score}
                         </span>
                       </div>
