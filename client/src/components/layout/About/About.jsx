@@ -25,7 +25,7 @@ const About = () => {
 
   const phases = [
     {
-      name: 'Fork Phase',
+      name: 'Fork',
       merged: 12,
       open: 4,
       leaderboard: [
@@ -35,7 +35,7 @@ const About = () => {
       ]
     },
     {
-      name: 'Spec Phase',
+      name: 'Spec',
       merged: 18,
       open: 3,
       leaderboard: [
@@ -45,7 +45,7 @@ const About = () => {
       ]
     },
     {
-      name: 'Merge Phase',
+      name: 'Merge',
       merged: 24,
       open: 8,
       leaderboard: [
@@ -55,7 +55,7 @@ const About = () => {
       ]
     },
     {
-      name: 'Elite Phase',
+      name: 'Elite',
       merged: 30,
       open: 2,
       leaderboard: [
@@ -339,15 +339,15 @@ const About = () => {
             </p>
           </div>
 
-          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex-1">
-            <div className="mb-3">
+          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col items-start">
+            <div className="mb-3 text-left">
               <h4 className="text-white font-medium text-sm mb-2">
                 Top Performer
               </h4>
-              <p className="text-[#BCDD19] text-xs mb-3">Merge Phase Winner</p>
+              <p className="text-[#BCDD19] text-xs">Merge Phase Winner</p>
             </div>
 
-            <ul className="space-y-2">
+            <ul className="space-y-2 w-full text-left">
               <li className="flex items-center text-white text-sm">
                 <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
                 Internship interviews
