@@ -90,7 +90,6 @@ const Benefits = () => {
 
         {/* --- CENTER CIRCLE --- */}
         <div className="relative w-[280px] h-[280px] rounded-full overflow-hidden border border-black flex items-center justify-center">
-          {/* Circle gradient */}
           <div
             className="absolute inset-0 rounded-full"
             style={{
@@ -98,8 +97,6 @@ const Benefits = () => {
                 'linear-gradient(135deg, rgba(90,101,37,0.6) 0%, rgba(51,61,0,0.1) 100%)'
             }}
           ></div>
-
-          {/* Inner circle play button */}
           <button
             onClick={() => setIsVideoOpen(true)}
             className="w-[82px] h-[82px] rounded-full flex items-center justify-center hover:scale-105 transition hover:cursor-pointer"
