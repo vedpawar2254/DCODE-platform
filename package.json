@@ -10,10 +10,11 @@
     "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.0"
+    "mongoose": "^8.16.1",
+    "nodemailer": "^7.0.4"
   },
   "devDependencies": {
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.0"
   },
@@ -23,5 +24,6 @@
     "build": "yarn install && yarn --cwd client install && yarn --cwd client build",
     "prettier": "yarn prettier . --check",
     "prettier-fix": "yarn prettier . --write"
-  }
+  },
+  "type": "module"
 }

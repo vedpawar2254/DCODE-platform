@@ -45,74 +45,88 @@ const Benefits = () => {
         </p>
       </div>
 
-      <div className="relative w-full">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="relative w-full flex flex-col md:flex-row md:justify-center md:items-center gap-12">
+        {/* --- BACKGROUND GLOW --- */}
+        <div className="absolute inset-0 flex items-center justify-center -z-10">
           <div
-            className="absolute w-8 h-8 rounded-full"
+            className="w-[600px] h-[600px] rounded-full"
             style={{
-              top: '140px',
-              left: '60%',
-              transform: 'translateX(-50%)',
               background:
-                'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
-            }}
-          ></div>
-          <div
-            className="absolute w-6 h-6 rounded-full"
-            style={{
-              bottom: '140px',
-              right: '60%',
-              background:
-                'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
+                'radial-gradient(circle, rgba(55, 205, 90, 0.15) 0%, transparent 70%)',
+              filter: 'blur(150px)'
             }}
           ></div>
         </div>
 
-        <div className="relative flex flex-col md:flex-row md:flex-wrap md:justify-between items-center gap-12 w-full">
-          <div className="flex flex-col space-y-12 md:space-y-40">
-            <FeatureCards
-              icon={accelerate}
-              title="Accelerate Growth"
-              description="Build meaningful projects that advance your career trajectory"
-            />
-            <FeatureCards
-              icon={spirals}
-              title="Unlock Potential"
-              description="Maximize your impact with cutting-edge development tools"
-            />
-          </div>
+        {/* --- Decorative Small Circles --- */}
+        <div
+          className="absolute top-[80px] right-[40%] w-8 h-8 rounded-full"
+          style={{
+            background: 'radial-gradient(circle, #5A6525 0%, transparent 100%)',
+            border: '1px solid #000000'
+          }}
+        ></div>
+        <div
+          className="absolute bottom-[80px] left-[40%] w-6 h-6 rounded-full"
+          style={{
+            background: 'radial-gradient(circle, #5A6525 0%, transparent 100%)',
+            border: '1px solid #000000'
+          }}
+        ></div>
 
-          <div className="relative flex items-center justify-center">
-            <div className="w-64 h-64 rounded-full bg-gradient-to-b from-[#5A6525] to-[#333D00] flex items-center justify-center">
-              <div className="w-56 h-56 rounded-full flex items-center justify-center border border-[#37CD5A]">
-                <button
-                  onClick={() => setIsVideoOpen(true)}
-                  className="absolute top-1/2 left-1/2 w-[100px] h-[100px] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center hover:scale-105 transition hover:cursor-pointer"
-                  style={{
-                    background:
-                      'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
-                  }}
-                >
-                  <img src={playbutton} alt="play button" className="w-8 h-8" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col space-y-12 md:space-y-40">
-            <FeatureCards
-              icon={star}
-              title="Stand Apart"
-              description="Distinguish yourself in the competitive development landscape"
-            />
-            <FeatureCards
-              icon={globe}
-              title="Collaborate Globally"
-              description="Work with diverse peers and mentors from across the tech ecosystem"
-            />
-          </div>
+        {/* --- LEFT FEATURE CARDS --- */}
+        <div className="flex flex-col space-y-12 md:space-y-40">
+          <FeatureCards
+            icon={accelerate}
+            title="Accelerate Growth"
+            description="Build meaningful projects that advance your career trajectory"
+          />
+          <FeatureCards
+            icon={spirals}
+            title="Unlock Potential"
+            description="Maximize your impact with cutting-edge development tools"
+          />
         </div>
 
+        {/* --- CENTER CIRCLE --- */}
+        <div className="relative w-[280px] h-[280px] rounded-full overflow-hidden border border-black flex items-center justify-center">
+          {/* Circle gradient */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(90,101,37,0.6) 0%, rgba(51,61,0,0.1) 100%)'
+            }}
+          ></div>
+
+          {/* Inner circle play button */}
+          <button
+            onClick={() => setIsVideoOpen(true)}
+            className="w-[82px] h-[82px] rounded-full flex items-center justify-center hover:scale-105 transition hover:cursor-pointer"
+            style={{
+              background:
+                'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
+            }}
+          >
+            <img src={playbutton} alt="play button" className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* --- RIGHT FEATURE CARDS --- */}
+        <div className="flex flex-col space-y-12 md:space-y-40">
+          <FeatureCards
+            icon={star}
+            title="Stand Apart"
+            description="Distinguish yourself in the competitive development landscape"
+          />
+          <FeatureCards
+            icon={globe}
+            title="Collaborate Globally"
+            description="Work with diverse peers and mentors from across the tech ecosystem"
+          />
+        </div>
+
+        {/* --- VIDEO MODAL --- */}
         <AnimatePresence>
           {isVideoOpen && (
             <motion.div
@@ -120,7 +134,7 @@ const Benefits = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0 flex items-center justify-center z-50"
             >
               <div
                 className="absolute inset-0 bg-black bg-opacity-50"
@@ -142,7 +156,7 @@ const Benefits = () => {
                 className="absolute inset-0"
                 style={{
                   background:
-                    'radial-gradient(ellipse at center, rgba(76, 175, 80, 0.5) 0%, transparent 70%)',
+                    'radial-gradient(ellipse at center, rgba(76, 175, 80, 0.5) 0%, transparent 75%)',
                   filter: 'blur(40px)'
                 }}
               />
