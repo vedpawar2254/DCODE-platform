@@ -116,3 +116,13 @@ export const joinWaitlist = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const getWaitlistCount = async (req, res) => {
+  try {
+    const count = await Waitlist.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
