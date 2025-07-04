@@ -24,8 +24,8 @@
     "dev": "nodemon api/src/server.js",
     "start": "node api/src/server.js",
     "build": "yarn install && yarn --cwd client install && yarn --cwd client build",
-    "prettier": "yarn prettier . --check",
-    "prettier-fix": "yarn prettier . --write"
+    "prettier": "yarn exec prettier . --check",
+    "prettier-fix": "yarn exec prettier . --write"
   },
   "type": "module"
 }
