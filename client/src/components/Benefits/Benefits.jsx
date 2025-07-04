@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FeatureCards } from './FeatureCards';
-import playbutton from '../../../assets/playbutton.svg';
-import star from '../../../assets/star.svg';
-import spirals from '../../../assets/spirals.svg';
-import accelerate from '../../../assets/accelerate.svg';
-import globe from '../../../assets/globe.svg';
 
 const Benefits = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -29,15 +24,15 @@ const Benefits = () => {
   }, [isVideoOpen]);
 
   return (
-    <section className="relative w-full px-6 md:px-16 bg-black text-center min-h-screen flex flex-col items-center pt-32">
+    <section className="relative flex flex-col items-center w-full min-h-screen px-6 pt-32 text-center bg-black md:px-16">
       <div className="max-w-3xl mx-auto mb-16">
-        <h3 className="text-green-500 text-sm tracking-widest mb-8">
+        <h3 className="mb-8 text-sm tracking-widest text-green-500">
           WHY CHOOSE US
         </h3>
-        <h2 className="text-4xl md:text-5xl font-bold text-white">
+        <h2 className="text-4xl font-bold text-white md:text-5xl">
           Experience <span className="text-[#BCDD19]">DCODE</span>
         </h2>
-        <p className="text-gray-400 mt-4">
+        <p className="mt-4 text-gray-400">
           DCODE is an open-source initiative by Dev Club that empowers students
           to contribute to real-world projects and build industry-level skills.
           It fosters collaboration, learning, and a lasting culture of
@@ -45,7 +40,7 @@ const Benefits = () => {
         </p>
       </div>
 
-      <div className="relative w-full flex flex-col md:flex-row md:justify-center md:items-center gap-12">
+      <div className="relative flex flex-col w-full gap-12 md:flex-row md:justify-center md:items-center">
         {/* --- BACKGROUND GLOW --- */}
         <div className="absolute inset-0 flex items-center justify-center -z-10">
           <div
@@ -77,12 +72,12 @@ const Benefits = () => {
         {/* --- LEFT FEATURE CARDS --- */}
         <div className="flex flex-col space-y-12 md:space-y-40">
           <FeatureCards
-            icon={accelerate}
+            icon="/images/accelerate.svg"
             title="Accelerate Growth"
             description="Build meaningful projects that advance your career trajectory"
           />
           <FeatureCards
-            icon={spirals}
+            icon="/images/spirals.svg"
             title="Unlock Potential"
             description="Maximize your impact with cutting-edge development tools"
           />
@@ -105,19 +100,19 @@ const Benefits = () => {
                 'radial-gradient(circle, #37CD5A 0%, transparent 100%)'
             }}
           >
-            <img src={playbutton} alt="play button" className="w-6 h-6" />
+            <img src="/images/playbutton.svg" alt="play button" className="w-6 h-6" />
           </button>
         </div>
 
         {/* --- RIGHT FEATURE CARDS --- */}
         <div className="flex flex-col space-y-12 md:space-y-40">
           <FeatureCards
-            icon={star}
+            icon="/images/star.svg"
             title="Stand Apart"
             description="Distinguish yourself in the competitive development landscape"
           />
           <FeatureCards
-            icon={globe}
+            icon="/images/globe.svg"
             title="Collaborate Globally"
             description="Work with diverse peers and mentors from across the tech ecosystem"
           />
@@ -131,7 +126,7 @@ const Benefits = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 flex items-center justify-center z-50"
+              className="absolute inset-0 z-50 flex items-center justify-center"
             >
               <div
                 className="absolute inset-0 bg-black bg-opacity-50"
@@ -173,7 +168,7 @@ const Benefits = () => {
                     src="https://www.w3schools.com/html/mov_bbb.mp4"
                     controls
                     autoPlay
-                    className="rounded-2xl shadow-xl w-full"
+                    className="w-full shadow-xl rounded-2xl"
                   />
                 </motion.div>
               </motion.div>

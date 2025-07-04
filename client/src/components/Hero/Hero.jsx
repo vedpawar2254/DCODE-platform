@@ -1,11 +1,10 @@
-import Button from '../../ui/Button';
-import Hero from '../../../assets/Hero.png';
+import Button from '../ui/Button/Button';
 
-export default function HeroSection() {
+const Hero = () => {
   return (
-    <section className="flex flex-col justify-between h-screen px-6 md:px-16 py-16 bg-black overflow-hidden relative select-none">
-      <div className="w-full mb-8 z-10 animate-fadeInUp">
-        <h1 className="text-3xl md:text-6xl font-bold text-white leading-tight max-w-5xl">
+    <section className="relative flex flex-col justify-between h-screen px-6 py-16 overflow-hidden bg-black select-none md:px-16">
+      <div className="z-10 w-full mb-8 animate-fadeInUp">
+        <h1 className="max-w-5xl text-3xl font-bold leading-tight text-white md:text-6xl">
           The <span className="text-[#BCDD19] animate-gradient">Open</span>{' '}
           Source{' '}
           <span className="text-[#BCDD19] animate-gradient">Platform</span>
@@ -14,7 +13,7 @@ export default function HeroSection() {
           <span className="text-[#BCDD19] animate-gradient">Development</span>
         </h1>
 
-        <p className="text-gray-300 md:text-xl mt-4 max-w-3xl">
+        <p className="max-w-3xl mt-4 text-gray-300 md:text-xl">
           Collaborate, build, and{' '}
           <span className="inline-block text-[#BCDD19]">innovate</span> with our
           powerful{' '}
@@ -24,15 +23,15 @@ export default function HeroSection() {
         </p>
       </div>
 
-      <div className="mt-2 md:w-5/12 space-y-8 py-16 z-10 animate-fadeInUp">
-        <p className="text-white mb-2 md:text-3xl">
+      <div className="z-10 py-16 mt-2 space-y-8 md:w-5/12 animate-fadeInUp">
+        <p className="mb-2 text-white md:text-3xl">
           Learn deeper.
           <br />
           Collaborate smarter.
           <br />
           <span className="text-[#BCDD19]">That's the DCODE way.</span>
         </p>
-        <div className="flex items-center space-x-4 pt-6">
+        <div className="flex items-center pt-6 space-x-4">
           <Button className="!py-2 !px-4">Get Started</Button>
           <button className="text-white relative after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-[#BCDD19] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100 ">
             Try for Free
@@ -40,9 +39,9 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-20 right-0 z-0 animate-float">
+      <div className="absolute right-0 z-0 bottom-20 animate-float">
         <img
-          src={Hero}
+          src="/images/Hero.png"
           alt="Hero graphic"
           className="w-[800px] md:w-[1000px] max-w-none"
         />
@@ -50,3 +49,5 @@ export default function HeroSection() {
     </section>
   );
 }
+
+export default Hero

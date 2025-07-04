@@ -125,7 +125,7 @@ export default function WaitList() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative flex flex-col justify-between select-none">
+    <div className="relative flex flex-col justify-between min-h-screen overflow-hidden text-white bg-black select-none">
       {/* Background and dots */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-blue-500/5" />
       <div className="absolute inset-0">
@@ -251,29 +251,29 @@ export default function WaitList() {
         }}
       />
 
-      <main className="relative z-10 container mx-auto px-8 pt-32 pb-20 max-w-screen-2xl flex flex-col justify-center min-h-[60vh]">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight text-center">
+      <main className="relative z-10 container mx-auto px-8 pt-32 pb-20 max-w-screen-2xl flex flex-col justify-center min-h-[60vh] my-auto">
+        <div className="mb-8 text-center">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-center md:text-5xl">
             Join The <span className="text-[#BCDD19]">DCODE</span> Waitlist NOW
-            <span className="block text-gray-400 font-medium text-base md:text-lg mt-4">
+            <span className="block mt-4 text-base font-medium text-gray-400 md:text-lg">
               Your gateway to real-world open source — from first PRs to actual
               impact.
             </span>
           </h2>
         </div>
 
-        <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed text-center mt-28 mb-2">
+        <p className="max-w-4xl mx-auto mb-2 text-xl leading-relaxed text-center text-gray-300 md:text-2xl">
           <span className="font-extrabold text-[#BCDD19] text-3xl md:text-4xl mr-2">
             {joinedCount.toLocaleString()}
           </span>
-          <span className="text-xl md:text-2xl font-medium text-gray-200">
+          <span className="text-xl font-medium text-gray-200 md:text-2xl">
             innovators have already joined{' '}
             <span className="text-[#BCDD19] font-bold">DCODE</span>. Be part of
             the next generation of developers!
           </span>
         </p>
 
-        <div className="max-w-xl mx-auto flex justify-center max-w-xl mt-4 mb-6">
+        <div className="flex justify-center max-w-xl mx-auto mt-4 mb-6">
           <button
             type="button"
             onClick={handleOpenModal}
@@ -304,12 +304,12 @@ export default function WaitList() {
 
         {showSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="text-center p-12 bg-green-500/10 border border-green-500/20 rounded-2xl backdrop-blur-sm max-w-lg w-full mx-4 shadow-2xl transition-opacity duration-700">
+            <div className="w-full max-w-lg p-12 mx-4 text-center transition-opacity duration-700 border shadow-2xl bg-green-500/10 border-green-500/20 rounded-2xl backdrop-blur-sm">
               <CheckCircle className="w-16 h-16 text-[#BCDD19] mx-auto mb-6 animate-pulse" />
               <h3 className="text-2xl font-bold text-[#BCDD19] mb-4">
                 You're In!
               </h3>
-              <p className="text-gray-300 text-xl">
+              <p className="text-xl text-gray-300">
                 Thanks for joining! Check your mail. We'll notify you as soon as
                 we launch.
               </p>
@@ -321,22 +321,22 @@ export default function WaitList() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div
               ref={modalRef}
-              className="relative bg-black border border-gray-700 rounded-2xl p-12 w-full max-w-2xl mx-4 shadow-2xl"
+              className="relative w-full max-w-2xl p-12 mx-4 bg-black border shadow-2xl border-white/20 rounded-2xl"
             >
               <button
-                className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl cursor-pointer transition-colors duration-200"
+                className="absolute text-xl text-gray-400 transition-colors duration-200 cursor-pointer top-4 right-4 hover:text-white"
                 onClick={() => setShowModal(false)}
                 aria-label="Close"
               >
                 <X className="w-6 h-6" />
               </button>
-              <h2 className="text-2xl font-bold text-center mb-8 text-white">
+              <h2 className="mb-8 text-2xl font-bold text-center text-white">
                 Join the Waitlist
               </h2>
               <div className="space-y-8">
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col gap-4 md:flex-row">
                   <div className="relative flex-1">
-                    <User className="absolute left-4 top-3 text-gray-400 w-5 h-5 pointer-events-none flex-shrink-0" />
+                    <User className="absolute flex-shrink-0 w-5 h-5 text-gray-400 pointer-events-none left-4 top-3" />
                     <input
                       type="text"
                       placeholder="Name"
@@ -345,15 +345,15 @@ export default function WaitList() {
                       onChange={e =>
                         setModalForm(f => ({ ...f, Name: e.target.value }))
                       }
-                      className="w-full bg-gray-900 border border-gray-600 text-white placeholder-gray-400 h-12 text-base rounded-lg px-12 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none transition-colors duration-200"
+                      className="w-full h-12 px-12 text-base text-white placeholder-gray-400 transition-colors duration-200 border rounded-lg border-white/10 bg-white/5 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none"
                     />
                     {errors.Name && (
-                      <p className="text-red-400 mt-1 text-sm">{errors.Name}</p>
+                      <p className="mt-1 text-sm text-red-400">{errors.Name}</p>
                     )}
                   </div>
                 </div>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-3 text-gray-400 w-5 h-5 pointer-events-none flex-shrink-0" />
+                  <Mail className="absolute flex-shrink-0 w-5 h-5 text-gray-400 pointer-events-none left-4 top-3" />
                   <input
                     type="email"
                     placeholder="Email Address"
@@ -362,15 +362,15 @@ export default function WaitList() {
                     onChange={e =>
                       setModalForm(f => ({ ...f, email: e.target.value }))
                     }
-                    className="w-full bg-gray-900 border border-gray-600 text-white placeholder-gray-400 h-12 text-base rounded-lg px-12 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none transition-colors duration-200"
+                    className="w-full h-12 px-12 text-base text-white placeholder-gray-400 transition-colors duration-200 border rounded-lg border-white/10 bg-white/5 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none"
                   />
                   {errors.email && (
-                    <p className="text-red-400 mt-1 text-sm">{errors.email}</p>
+                    <p className="mt-1 text-sm text-red-400">{errors.email}</p>
                   )}
                 </div>
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col gap-4 md:flex-row">
                   <div className="relative flex-1">
-                    <div className="absolute left-4 top-3 text-gray-400 pointer-events-none flex items-center justify-center w-5 h-5 flex-shrink-0">
+                    <div className="absolute flex items-center justify-center flex-shrink-0 w-5 h-5 text-gray-400 pointer-events-none left-4 top-3">
                       <FaGithub size={20} />
                     </div>
                     <input
@@ -381,16 +381,16 @@ export default function WaitList() {
                       onChange={e =>
                         setModalForm(f => ({ ...f, github: e.target.value }))
                       }
-                      className="w-full bg-gray-900 border border-gray-600 text-white placeholder-gray-400 h-12 text-base rounded-lg px-12 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none transition-colors duration-200"
+                      className="w-full h-12 px-12 text-base text-white placeholder-gray-400 transition-colors duration-200 border rounded-lg border-white/10 bg-white/5 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none"
                     />
                     {errors.github && (
-                      <p className="text-red-400 mt-1 text-sm">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.github}
                       </p>
                     )}
                   </div>
                   <div className="relative flex-1">
-                    <GraduationCap className="absolute left-4 top-3 text-gray-400 w-5 h-5 pointer-events-none flex-shrink-0" />
+                    <GraduationCap className="absolute flex-shrink-0 w-5 h-5 text-gray-400 pointer-events-none left-4 top-3" />
                     <input
                       type="text"
                       placeholder="College Name"
@@ -399,10 +399,10 @@ export default function WaitList() {
                       onChange={e =>
                         setModalForm(f => ({ ...f, college: e.target.value }))
                       }
-                      className="w-full bg-gray-900 border border-gray-600 text-white placeholder-gray-400 h-12 text-base rounded-lg px-12 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none transition-colors duration-200"
+                      className="w-full h-12 px-12 text-base text-white placeholder-gray-400 transition-colors duration-200 border rounded-lg border-white/10 bg-white/5 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 focus:outline-none"
                     />
                     {errors.college && (
-                      <p className="text-red-400 mt-1 text-sm">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.college}
                       </p>
                     )}
@@ -425,35 +425,35 @@ export default function WaitList() {
           </div>
         )}
 
-        <div className="text-center mt-4 px-6 text-gray-400 text-base">
+        <div className="px-6 mt-4 text-base text-center text-gray-400">
           <div className="flex flex-wrap justify-center gap-8 mb-4 text-[#BCDD19] text-3xl font-extrabold">
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative after:content-['*'] before:text-[#BCDD19] after:ml-1 after:text-[25px] after:align-top">
+                <label className="relative after:content-['*'] before:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
                   150+
                 </label>
               </span>
-              <span className="text-gray-400 text-xl mt-1 font-semibold">
+              <span className="mt-1 text-xl font-semibold text-gray-400">
                 Contributors
               </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                <label className="relative after:content-['*'] after:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
                   20+
                 </label>
               </span>
-              <span className="text-gray-400 text-xl mt-1 font-semibold">
+              <span className="mt-1 text-xl font-semibold text-gray-400">
                 Colleges
               </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                <label className="relative after:content-['*'] after:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
                   30+
                 </label>
               </span>
-              <span className="text-gray-400 text-xl mt-1 font-semibold">
+              <span className="mt-1 text-xl font-semibold text-gray-400">
                 Projects
               </span>
             </div>
@@ -461,9 +461,9 @@ export default function WaitList() {
         </div>
       </main>
 
-      <footer className="text-center pb-6 text-gray-500 text-sm mt-auto">
+      <footer className="pb-6 mt-auto text-sm text-center text-gray-500">
         <p>* These are expected numbers, they may vary.</p>© 2025{' '}
-        <span className="text-white font-medium">DCODE</span>. Open source
+        <span className="font-medium text-white">DCODE</span>. Open source
         platform for modern development.
       </footer>
     </div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import Button from '../../ui/Button';
-import Logo from '../../ui/Logo';
+import Button from '../../ui/Button/Button';
+import Logo from '../../ui/Logo/Logo';
 
 export default function NavBar() {
   return (
