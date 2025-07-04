@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      'https://www.dcode.codes',
+      'https://dcode.codes',
       'https://api.dcode.codes',
       'http://localhost:5173'
     ],
