@@ -2,7 +2,7 @@ import Waitlist from '../models/Waitlist.js';
 import transporter from '../utils/mailer.js';
 
 export const joinWaitlist = async (req, res) => {
-  const { name, email, phone, college } = req.body;
+  const { name, email, github, college } = req.body;
 
   if (!email || !email.includes('@')) {
     return res.status(400).json({ message: 'Invalid email' });
@@ -16,7 +16,7 @@ export const joinWaitlist = async (req, res) => {
         .json({ message: 'You’re already on the waitlist!' });
     }
 
-    const newEntry = new Waitlist({ name, email, phone, college });
+    const newEntry = new Waitlist({ name, email, github, college });
     await newEntry.save();
 
     const mailOptions = {

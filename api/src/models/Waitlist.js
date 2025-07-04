@@ -11,7 +11,7 @@ const waitlistSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    phone: {
+    github: {
       type: String
     },
     college: {

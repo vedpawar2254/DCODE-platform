@@ -431,8 +431,8 @@ export default function WaitList() {
           <div className="flex flex-wrap justify-center gap-8 mb-4 text-[#BCDD19] text-3xl font-extrabold">
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative after:content-['*'] before:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
-                  150+
+                <label className="relative after:content-['*'] before:text-[#BCDD19] after:ml-1 after:text-[25px] after:align-top">
+                  600+
                 </label>
               </span>
               <span className="mt-1 text-xl font-semibold text-gray-400">
@@ -441,8 +441,8 @@ export default function WaitList() {
             </div>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative after:content-['*'] after:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
-                  20+
+                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                  10+
                 </label>
               </span>
               <span className="mt-1 text-xl font-semibold text-gray-400">
@@ -451,8 +451,8 @@ export default function WaitList() {
             </div>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative after:content-['*'] after:text-[#BCDD19] after:ml-1 after:text-[20px] after:align-top">
-                  30+
+                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                  20+
                 </label>
               </span>
               <span className="mt-1 text-xl font-semibold text-gray-400">
