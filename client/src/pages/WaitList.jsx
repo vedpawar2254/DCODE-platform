@@ -3,6 +3,8 @@ import axios from 'axios';
 import { CheckCircle, X, User, Mail, GraduationCap } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function WaitList() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +22,7 @@ export default function WaitList() {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const res = await axios.get('http://localhost:3009/api/waitlist/count');
+        const res = await axios.get(`${API_URL}/api/waitlist/count`);
         setJoinedCount(res.data.count);
       } catch (err) {
         console.error('Failed to fetch count:', err);
@@ -104,7 +106,7 @@ export default function WaitList() {
     setIsSubmitting(true);
 
     try {
-      await axios.post('http://localhost:3009/api/waitlist/join', {
+      await axios.post(`${API_URL}/api/waitlist/join`, {
         name: modalForm.Name,
         email: modalForm.email,
         github: modalForm.github,
