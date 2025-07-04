@@ -120,9 +120,9 @@ export const joinWaitlist = async (req, res) => {
 export const getWaitlistCount = async (req, res) => {
   try {
     const count = await Waitlist.countDocuments();
-    res.json({ count });
-  } catch (err) {
-    console.error(err);
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error in getWaitlistCount:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

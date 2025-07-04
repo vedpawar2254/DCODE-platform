@@ -20,7 +20,7 @@ export default function WaitList() {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/waitlist/count');
+        const res = await axios.get('http://localhost:3009/api/waitlist/count');
         setJoinedCount(res.data.count);
       } catch (err) {
         console.error('Failed to fetch count:', err);
@@ -29,7 +29,7 @@ export default function WaitList() {
 
     fetchCount();
 
-    const interval = setInterval(fetchCount, 30000); // refresh every 30 sec
+    const interval = setInterval(fetchCount, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -70,6 +70,10 @@ export default function WaitList() {
     };
   }, [showModal]);
 
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
   const handleModalSubmit = async e => {
     if (e && e.preventDefault) e.preventDefault();
 
@@ -100,7 +104,7 @@ export default function WaitList() {
     setIsSubmitting(true);
 
     try {
-      await axios.post('http://localhost:4000/api/waitlist/join', {
+      await axios.post('http://localhost:3009/api/waitlist/join', {
         name: modalForm.Name,
         email: modalForm.email,
         github: modalForm.github,
@@ -121,7 +125,7 @@ export default function WaitList() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative flex flex-col justify-between">
+    <div className="min-h-screen bg-black text-white overflow-hidden relative flex flex-col justify-between select-none">
       {/* Background and dots */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-blue-500/5" />
       <div className="absolute inset-0">
@@ -182,8 +186,6 @@ export default function WaitList() {
             opacity: 'opacity-50',
             delay: '1.5s'
           },
-
-          // New dots
           {
             top: '20%',
             left: '50%',
@@ -262,7 +264,7 @@ export default function WaitList() {
 
         <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed text-center mt-28 mb-2">
           <span className="font-extrabold text-[#BCDD19] text-3xl md:text-4xl mr-2">
-            {displayedCount.toLocaleString()}
+            {joinedCount.toLocaleString()}
           </span>
           <span className="text-xl md:text-2xl font-medium text-gray-200">
             innovators have already joined{' '}
@@ -274,7 +276,7 @@ export default function WaitList() {
         <div className="max-w-xl mx-auto flex justify-center max-w-xl mt-4 mb-6">
           <button
             type="button"
-            onClick={handleModalSubmit}
+            onClick={handleOpenModal}
             disabled={isSubmitting}
             className={`
                     relative 
@@ -308,7 +310,8 @@ export default function WaitList() {
                 You're In!
               </h3>
               <p className="text-gray-300 text-xl">
-                Thanks for joining! We'll notify you as soon as we launch.
+                Thanks for joining! Check your mail. We'll notify you as soon as
+                we launch.
               </p>
             </div>
           </div>
@@ -331,7 +334,6 @@ export default function WaitList() {
                 Join the Waitlist
               </h2>
               <div className="space-y-8">
-                {/* Name input */}
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="relative flex-1">
                     <User className="absolute left-4 top-3 text-gray-400 w-5 h-5 pointer-events-none flex-shrink-0" />
@@ -350,8 +352,6 @@ export default function WaitList() {
                     )}
                   </div>
                 </div>
-
-                {/* Email input */}
                 <div className="relative">
                   <Mail className="absolute left-4 top-3 text-gray-400 w-5 h-5 pointer-events-none flex-shrink-0" />
                   <input
@@ -368,8 +368,6 @@ export default function WaitList() {
                     <p className="text-red-400 mt-1 text-sm">{errors.email}</p>
                   )}
                 </div>
-
-                {/* GitHub & College inputs */}
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="relative flex-1">
                     <div className="absolute left-4 top-3 text-gray-400 pointer-events-none flex items-center justify-center w-5 h-5 flex-shrink-0">
@@ -410,8 +408,6 @@ export default function WaitList() {
                     )}
                   </div>
                 </div>
-
-                {/* Submit button */}
                 <button
                   type="button"
                   onClick={handleModalSubmit}
@@ -433,7 +429,7 @@ export default function WaitList() {
           <div className="flex flex-wrap justify-center gap-8 mb-4 text-[#BCDD19] text-3xl font-extrabold">
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                <label className="relative after:content-['*'] before:text-[#BCDD19] after:ml-1 after:text-[25px] after:align-top">
                   150+
                 </label>
               </span>
@@ -443,7 +439,7 @@ export default function WaitList() {
             </div>
             <div className="flex flex-col items-center">
               <span className="text-4xl font-black">
-                <label className="relative before:content-['*'] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
+                <label className="relative before:content-[''] before:text-[#BCDD19] before:ml-1 before:text-md before:align-top">
                   20+
                 </label>
               </span>

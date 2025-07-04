@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.post('/waitlist', joinWaitlist);
+router.post('/waitlist/join', joinWaitlist);
 router.get('/waitlist/count', getWaitlistCount);
 
 export default router;
