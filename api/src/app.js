@@ -10,7 +10,16 @@ connectDB();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'https://www.dcode.codes',
+      'https://api.dcode.codes',
+      'http://localhost:5173'
+    ],
+    credentials: true
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('backend up');
