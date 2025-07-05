@@ -13,26 +13,16 @@ export default function WaitList() {
   const [inputForm, setInput] = useState({ email: '' });
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // useEffect(() => {
-  //   setJoinedCount(17);
-  // }, []);
 
   const handleFormSubmit = async e => {
     e.preventDefault();
-  
-    // Validation logic remains the same...
-  
     try {
-      // Make the API call and use the response
       const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
         email: inputForm.email
       });
-  
-      // Update the count from the response if available
       if (data?.count) {
         setJoinedCount(data.count);
       } else {
-        // Fallback: Fetch the count separately if not in response
         const countResponse = await axios.get(`${API_URL}/api/waitlist/count`);
         setJoinedCount(countResponse.data.count);
       }
@@ -41,7 +31,6 @@ export default function WaitList() {
       setInput({ email: '' });
       setTimeout(() => setShowSuccess(false), 2000);
     } catch (err) {
-      // Error handling remains the same
       console.error('Failed to join waitlist:', err);
       if (err.response) {
         if (err.response.status === 409) {
@@ -85,10 +74,8 @@ export default function WaitList() {
 
   return (
     <div className="relative flex flex-col justify-start h-screen overflow-hidden text-white select-none">
-      {/* Radial black background */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black via-black/90 to-black/20" />
       
-      {/* Stronger center glow */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black via-black/90 to-black/20" />
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div
           className="absolute top-1/2 left-1/2 w-[100vw] h-[100vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-18 blur-[120px]"
@@ -98,7 +85,6 @@ export default function WaitList() {
         />
       </div>
 
-      {/* Static glowing dots */}
       <div className="absolute inset-0">
         {staticDots.map((dot, index) => (
           <div
@@ -115,8 +101,6 @@ export default function WaitList() {
           />
         ))}
       </div>
-
-      {/* Grid background */}
       <div
         className="absolute inset-0 opacity-80"
         style={{
@@ -153,38 +137,67 @@ export default function WaitList() {
         </div>
 
         <div className="w-full max-w-xl mb-16">
-          <form
-            onSubmit={handleFormSubmit}
-            className="flex overflow-hidden rounded-full border border-[#7A900F] backdrop-blur-sm"
+        <form
+          onSubmit={handleFormSubmit}
+          className="hidden md:flex flex-row overflow-hidden rounded-full border border-[#7A900F] backdrop-blur-sm"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Your Email"
+            value={inputForm.email}
+            onChange={e => setInput({ email: e.target.value })}
+            disabled={isSubmitting}
+            className="flex-1 h-14 px-6 text-lg text-white placeholder-gray-400 bg-transparent outline-none"
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`h-14 px-8 font-semibold text-white transition-all ${
+              isSubmitting
+                ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                : 'bg-[#7A900F] hover:bg-[#7A900F]/70'
+            }`}
           >
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter Your Email"
-              value={inputForm.email}
-              onChange={e => setInput({ email: e.target.value })}
-              disabled={isSubmitting}
-              className="flex-1 h-14 px-6 text-lg text-white placeholder-gray-400 bg-transparent outline-none"
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`h-14 px-8 font-semibold text-white transition-all ${
-                isSubmitting
-                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                  : 'bg-[#7A900F] hover:bg-[#7A900F]/70'
-              }`}
-            >
-              {isSubmitting ? 'Joining...' : 'Join Waitlist'}
-            </button>
-          </form>
+            {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+          </button>
+        </form>
 
-          {errors.email && (
-            <p className="mt-3 text-sm text-red-400 text-center">
-              {errors.email}
-            </p>
-          )}
-        </div>
+        {/* Mobile */}
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex flex-col gap-4 md:hidden rounded-2xl p-4 backdrop-blur-md"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email Address"
+            value={inputForm.email}
+            onChange={e => setInput({ email: e.target.value })}
+            disabled={isSubmitting}
+            className="w-full h-14 px-6 text-lg text-white placeholder-gray-400 bg-black/30 border border-[#7A900F] rounded-xl outline-none focus:border-[#7A900F] focus:ring-2 focus:ring-[#7A900F]/30 transition-all"
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${
+              isSubmitting
+                ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                : 'bg-[#7A900F] hover:bg-[#7A900F]/80'
+            }`}
+          >
+            {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+          </button>
+        </form>
+
+      {errors.email && (
+        <p className="mt-3 text-sm text-red-400 text-center">
+          {errors.email}
+        </p>
+      )}
+</div>
+
+
 
         <div className="flex items-center justify-center mb-16 -mt-6 text-base md:text-lg w-full">
           <div className="flex items-center space-x-2 mr-3">
