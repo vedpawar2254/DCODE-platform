@@ -2,7 +2,7 @@ import Waitlist from '../models/Waitlist.js';
 import transporter from '../utils/mailer.js';
 
 export const joinWaitlist = async (req, res) => {
-  const { name, email, github, college } = req.body;
+  const {email} = req.body;
 
   if (!email || !email.includes('@')) {
     return res.status(400).json({ message: 'Invalid email' });
@@ -16,7 +16,7 @@ export const joinWaitlist = async (req, res) => {
         .json({ message: 'You’re already on the waitlist!' });
     }
 
-    const newEntry = new Waitlist({ name, email, github, college });
+    const newEntry = new Waitlist({email});
     await newEntry.save();
 
     const mailOptions = {
@@ -77,7 +77,7 @@ export const joinWaitlist = async (req, res) => {
                   <body>
                     <div class="container">
                       <h1>Welcome to the DCODE Community! 👋</h1>
-                      <p>Hey ${name},</p>
+                      <p>Hey there,</p>
                       <p>
                         Thank you for joining the DCODE waitlist! We're excited to have you on board.
                         You're now part of a community of developers, designers, and learners building the future together.

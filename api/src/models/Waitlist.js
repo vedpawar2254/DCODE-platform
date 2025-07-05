@@ -7,16 +7,6 @@ const waitlistSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
-    name: {
-      type: String,
-      required: true
-    },
-    github: {
-      type: String
-    },
-    college: {
-      type: String
-    }
   },
   { timestamps: true }
 );
