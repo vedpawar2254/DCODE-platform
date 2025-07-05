@@ -3,13 +3,15 @@ import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
 import { MdOutlineRocket } from 'react-icons/md';
 import Waitlist from "../../../public/images/Waitlist.png"
+import toast from 'react-hot-toast';
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function WaitList() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [joinedCount, setJoinedCount] = useState(0);
+  const [joinedCount, setJoinedCount] = useState(100);
   const [inputForm, setInput] = useState({ email: '' });
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -34,12 +36,12 @@ export default function WaitList() {
       console.error('Failed to join waitlist:', err);
       if (err.response) {
         if (err.response.status === 409) {
-          alert('This email is already on the waitlist!');
+          toast.error('This email is already on the waitlist!');
         } else {
-          alert('There was an error. Please try again.');
+          toast.error('Something went wrong. Please try again.');
         }
       } else {
-        alert('Network error. Please check your connection.');
+        toast.error('Error joining waitlist. Please try again.');
       }
     } finally {
       setIsSubmitting(false);
