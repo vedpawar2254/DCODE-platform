@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
 import { MdOutlineRocket } from 'react-icons/md';
-import Waitlist from "../../../public/images/Waitlist.png"
+import Waitlist from '../../../public/images/Waitlist.png';
 import toast from 'react-hot-toast';
-
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +13,6 @@ export default function WaitList() {
   const [joinedCount, setJoinedCount] = useState(100);
   const [inputForm, setInput] = useState({ email: '' });
   const [showSuccess, setShowSuccess] = useState(false);
-
 
   const handleFormSubmit = async e => {
     e.preventDefault();
@@ -28,7 +26,7 @@ export default function WaitList() {
         const countResponse = await axios.get(`${API_URL}/api/waitlist/count`);
         setJoinedCount(countResponse.data.count);
       }
-      
+
       setShowSuccess(true);
       setInput({ email: '' });
       setTimeout(() => setShowSuccess(false), 2000);
@@ -57,10 +55,9 @@ export default function WaitList() {
         console.error('Failed to fetch waitlist count:', err);
       }
     };
-  
+
     fetchWaitlistCount();
   }, []);
-  
 
   // Static dot positions
   const staticDots = [
@@ -71,12 +68,11 @@ export default function WaitList() {
     { top: '40%', left: '40%', size: 'w-1.5 h-1.5' },
     { top: '60%', left: '60%', size: 'w-1.5 h-1.5' },
     { top: '50%', left: '30%', size: 'w-1.5 h-1.5' },
-    { top: '90%', left: '80%', size: 'w-1.7 h-1.7' },
+    { top: '90%', left: '80%', size: 'w-1.7 h-1.7' }
   ];
 
   return (
     <div className="relative flex flex-col justify-start h-screen overflow-hidden text-white select-none">
-      
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black via-black/90 to-black/20" />
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div
@@ -98,7 +94,7 @@ export default function WaitList() {
               filter: 'drop-shadow(0 0 8px #37CD5A)',
               animationDuration: '2s',
               animationTimingFunction: 'ease-in-out',
-              animationIterationCount: 'infinite',
+              animationIterationCount: 'infinite'
             }}
           />
         ))}
@@ -120,7 +116,12 @@ export default function WaitList() {
 
         <div className="text-center mb-12 w-full">
           <h2 className="text-4xl font-bold tracking-tight md:text-5xl mb-4">
-            Join The <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#7A900F] font-medium"> DCODE </span> Waitlist NOW
+            Join The{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#7A900F] font-medium">
+              {' '}
+              DCODE{' '}
+            </span>{' '}
+            Waitlist NOW
           </h2>
           <p className="text-lg font-medium text-gray-400 md:text-xl">
             Your gateway to real-world open source
@@ -139,67 +140,65 @@ export default function WaitList() {
         </div>
 
         <div className="w-full max-w-xl mb-16">
-        <form
-          onSubmit={handleFormSubmit}
-          className="hidden md:flex flex-row overflow-hidden rounded-full border border-[#7A900F] backdrop-blur-sm"
-        >
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Your Email"
-            value={inputForm.email}
-            onChange={e => setInput({ email: e.target.value })}
-            disabled={isSubmitting}
-            className="flex-1 h-14 px-6 text-lg text-white placeholder-gray-400 bg-transparent outline-none"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`h-14 px-8 font-semibold text-white transition-all ${
-              isSubmitting
-                ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                : 'bg-[#7A900F] hover:bg-[#7A900F]/70'
-            }`}
+          <form
+            onSubmit={handleFormSubmit}
+            className="hidden md:flex flex-row overflow-hidden rounded-full border border-[#7A900F] backdrop-blur-sm"
           >
-            {isSubmitting ? 'Joining...' : 'Join Waitlist'}
-          </button>
-        </form>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter Your Email"
+              value={inputForm.email}
+              onChange={e => setInput({ email: e.target.value })}
+              disabled={isSubmitting}
+              className="flex-1 h-14 px-6 text-lg text-white placeholder-gray-400 bg-transparent outline-none"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`h-14 px-8 font-semibold text-white transition-all ${
+                isSubmitting
+                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                  : 'bg-[#7A900F] hover:bg-[#7A900F]/70'
+              }`}
+            >
+              {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+            </button>
+          </form>
 
-        {/* Mobile */}
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex flex-col gap-4 md:hidden rounded-2xl p-4 backdrop-blur-md"
-        >
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email Address"
-            value={inputForm.email}
-            onChange={e => setInput({ email: e.target.value })}
-            disabled={isSubmitting}
-            className="w-full h-14 px-6 text-lg text-white placeholder-gray-400 bg-black/30 border border-[#7A900F] rounded-xl outline-none focus:border-[#7A900F] focus:ring-2 focus:ring-[#7A900F]/30 transition-all"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${
-              isSubmitting
-                ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                : 'bg-[#7A900F] hover:bg-[#7A900F]/80'
-            }`}
+          {/* Mobile */}
+          <form
+            onSubmit={handleFormSubmit}
+            className="flex flex-col gap-4 md:hidden rounded-2xl p-4 backdrop-blur-md"
           >
-            {isSubmitting ? 'Joining...' : 'Join Waitlist'}
-          </button>
-        </form>
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email Address"
+              value={inputForm.email}
+              onChange={e => setInput({ email: e.target.value })}
+              disabled={isSubmitting}
+              className="w-full h-14 px-6 text-lg text-white placeholder-gray-400 bg-black/30 border border-[#7A900F] rounded-xl outline-none focus:border-[#7A900F] focus:ring-2 focus:ring-[#7A900F]/30 transition-all"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${
+                isSubmitting
+                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                  : 'bg-[#7A900F] hover:bg-[#7A900F]/80'
+              }`}
+            >
+              {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+            </button>
+          </form>
 
-      {errors.email && (
-        <p className="mt-3 text-sm text-red-400 text-center">
-          {errors.email}
-        </p>
-      )}
-</div>
-
-
+          {errors.email && (
+            <p className="mt-3 text-sm text-red-400 text-center">
+              {errors.email}
+            </p>
+          )}
+        </div>
 
         <div className="flex items-center justify-center mb-16 -mt-6 text-base md:text-lg w-full">
           <div className="flex items-center space-x-2 mr-3">
@@ -225,7 +224,7 @@ export default function WaitList() {
               <Code className="w-7 h-7 text-[#37CD5A]" />
             </div>
             <div>
-              <p className="text-white text-2xl">500+</p>
+              <p className="text-white text-2xl">600+</p>
               <p className="text-gray-300">Contributors</p>
             </div>
           </div>
@@ -235,7 +234,7 @@ export default function WaitList() {
               <Users className="w-7 h-7 text-[#37CD5A]" />
             </div>
             <div>
-              <p className="text-white text-2xl">10+</p>
+              <p className="text-white text-2xl">20+</p>
               <p className="text-gray-300">Colleges</p>
             </div>
           </div>
@@ -255,7 +254,9 @@ export default function WaitList() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="w-full max-w-md p-8 mx-4 text-center border shadow-2xl bg-green-500/10 border-green-500/20 rounded-2xl backdrop-blur-sm">
               <CheckCircle className="w-14 h-14 text-[#7A900F] mx-auto mb-4 animate-pulse" />
-              <h3 className="text-2xl font-bold text-[#7A900F] mb-3">You're In!</h3>
+              <h3 className="text-2xl font-bold text-[#7A900F] mb-3">
+                You're In!
+              </h3>
               <p className="text-lg text-gray-300">
                 Thanks for joining! We'll notify you as soon as we launch.
               </p>
