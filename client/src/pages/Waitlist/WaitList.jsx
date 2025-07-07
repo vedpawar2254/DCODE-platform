@@ -131,7 +131,7 @@ export default function WaitList() {
         <div className="mb-14 w-full text-center">
           <p className="text-2xl md:text-3xl">
             <span className="font-extrabold text-[#7A900F] text-4xl md:text-5xl mr-3">
-              {joinedCount.toLocaleString()}
+              {/* {joinedCount.toLocaleString()} */}
             </span>
             <span className=" font-medium text-gray-200">
               developers have already joined

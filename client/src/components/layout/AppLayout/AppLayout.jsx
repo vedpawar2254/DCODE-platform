@@ -1,7 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
-
+import Hero from '../../Hero/Hero';
+import Benefits from '../../Benefits/Benefits';
+import About from '../../About/About';
+import Timeline from '../../Timeline/Timeline';
 const AppLayout = () => {
   return (
     <>
@@ -9,6 +12,7 @@ const AppLayout = () => {
       <Hero />
       <Benefits />
       <About />
+      <Timeline />
       <Outlet />
       <Footer />
     </>

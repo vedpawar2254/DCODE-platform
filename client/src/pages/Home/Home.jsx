@@ -1,13 +1,11 @@
-import Hero from "../../components/Hero/Hero";
-import About from "../../components/About/About"
-import Benefits from '../../components/Benefits/Benefits';
+import AppLayout from '../../components/layout/AppLayout/AppLayout';
 
 const Home = () => {
   return (
     <>
-
+      <AppLayout />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
