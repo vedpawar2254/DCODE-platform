@@ -6,6 +6,7 @@ import Benefits from '../../Benefits/Benefits';
 import About from '../../About/About';
 import Timeline from '../../Timeline/Timeline';
 import Contact from '../../Contact/Contact';
+import Reviews from '../../Reviews/Reviews';
 const AppLayout = () => {
   return (
     <>
@@ -14,6 +15,7 @@ const AppLayout = () => {
       <Benefits />
       <About />
       <Timeline />
+      <Reviews />
       <Contact />
       <Outlet />
       <Footer />
