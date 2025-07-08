@@ -1,7 +1,16 @@
+import TestimonialCard from './TestimonialCard';
+
 export default function Reviews() {
+  const reviews = Array(20).fill({
+    name: 'Rajesh Kumar',
+    role: 'Senior Developer at Netflix',
+    text: 'DCODE provided me with hands-on experience across multiple tech stacks. The mentorship was invaluable, and the projects I worked on directly led to my job offer.'
+  });
+
   return (
-    <section className="h-screen mt-35 py-24">
-      <div className="text-center pt-4 pb-6 px-4">
+    <section className="relative h-screen mt-35 py-24 overflow-hidden bg-black">
+      {/* Top Text */}
+      <div className="text-center pt-4 pb-6 px-4 relative z-20">
         <div className="text-green-400 text-xl font-normal mb-2 opacity-70">
           OUR CONTRIBUTORS
         </div>
@@ -16,6 +25,31 @@ export default function Reviews() {
           A structured journey through open-source contribution, from
           exploration to production-level impact
         </p>
+      </div>
+
+      {/* Fading edges - lighter gradients */}
+      <div className="pointer-events-none absolute top-0 left-0 h-full w-40 bg-gradient-to-r from-black via-black/70 via-black/40 via-black/20 to-transparent z-30" />
+      <div className="pointer-events-none absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-black via-black/70 via-black/40 via-black/20 to-transparent z-30" />
+
+      {/* Review Cards Container */}
+      <div className="mt-25 space-y-8 relative z-10">
+        {/* Top row - centered */}
+        <div className="flex justify-center">
+          <div className="flex gap-6 overflow-visible">
+            {reviews.slice(0, 10).map((review, index) => (
+              <TestimonialCard key={index} {...review} />
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom row - offset to the right */}
+        <div className="flex justify-center">
+          <div className="flex gap-6 overflow-visible translate-x-20">
+            {reviews.slice(10, 20).map((review, index) => (
+              <TestimonialCard key={index + 10} {...review} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
