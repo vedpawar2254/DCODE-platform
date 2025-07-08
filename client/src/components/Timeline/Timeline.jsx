@@ -54,7 +54,7 @@ const DCodeTimeline = () => {
 
       {/* Header */}
       <div className="text-center pt-4 pb-6 px-4">
-        <div className="text-green-400 text-xs font-normal mb-2 opacity-70">
+        <div className="text-green-400 text-xl font-normal mb-2 opacity-70">
           TIMELINE
         </div>
         <h1 className="text-2xl md:text-3xl font-bold mb-3">
