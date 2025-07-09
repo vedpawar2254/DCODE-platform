@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import AppLayout from '../components/layout/AppLayout/AppLayout';
+import Signup from '../pages/Signup/Signup';
 import WaitList from '../pages/Waitlist/WaitList';
 import Home from '../pages/Home/Home';
 
@@ -15,5 +15,9 @@ export const routes = createBrowserRouter([
   {
     path: '/home',
     element: <Home />
+  },
+  {
+    path: '/signup',
+    element: <Signup />
   }
 ]);

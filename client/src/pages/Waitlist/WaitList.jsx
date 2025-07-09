@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
 import { MdOutlineRocket } from 'react-icons/md';
-import Waitlist from '../../../public/images/Waitlist.png';
+import Waitlist from '/images/Waitlist.png';
 import toast from 'react-hot-toast';
 
 const API_URL = import.meta.env.VITE_API_URL;
