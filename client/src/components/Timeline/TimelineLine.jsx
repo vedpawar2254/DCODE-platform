@@ -1,73 +1,43 @@
-export default function TimelineLine() {
+export default function TimelineLine({ height = 1200 }) {
   return (
     <svg
-      width="27"
-      height="960"
-      viewBox="0 0 27 1198"
+      width="8"
+      height={height}
+      viewBox={`0 0 8 ${height}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M13 10L14 1188"
-        stroke="url(#paint0_linear_425_262)"
-        stroke-width="6"
-        stroke-linecap="round"
+      {/* Main line */}
+      <line
+        x1="4"
+        y1="0"
+        x2="4"
+        y2={height}
+        stroke="url(#lineGradient)"
+        strokeWidth="4"
+        strokeLinecap="round"
       />
-      <g filter="url(#filter0_f_425_262)">
-        <line
-          y1="-3"
-          x2="1178"
-          y2="-3"
-          transform="matrix(0.000848898 1 -1 0.000762434 10 10.002)"
-          stroke="url(#paint1_linear_425_262)"
-          stroke-width="6"
-        />
-      </g>
+      {/* Soft blur glow behind */}
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="10" result="coloredBlur" />
+        <feMerge>
+          <feMergeNode in="coloredBlur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
       <defs>
-        <filter
-          id="filter0_f_425_262"
-          x="0"
-          y="-0.00268555"
-          width="27"
-          height="1198"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="BackgroundImageFix"
-            result="shape"
-          />
-          <feGaussianBlur
-            stdDeviation="5"
-            result="effect1_foregroundBlur_425_262"
-          />
-        </filter>
         <linearGradient
-          id="paint0_linear_425_262"
-          x1="10"
-          y1="10.0022"
-          x2="10.8981"
-          y2="1188"
+          id="lineGradient"
+          x1="4"
+          y1="0"
+          x2="4"
+          y2={height}
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1C1F0A" />
-          <stop offset="0.5" stop-color="#37CD5A" stop-opacity="0.701961" />
-          <stop offset="1" stop-color="#1C1F0A" />
-        </linearGradient>
-        <linearGradient
-          id="paint1_linear_425_262"
-          x1="0"
-          y1="0.5"
-          x2="1178"
-          y2="0.5"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="#1C1F0A" />
-          <stop offset="0.5" stop-color="#37CD5A" stop-opacity="0.701961" />
-          <stop offset="1" stop-color="#1C1F0A" />
+          <stop offset="0%" stopColor="#1C1F0A" />
+          <stop offset="50%" stopColor="#37CD5A" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#1C1F0A" />
         </linearGradient>
       </defs>
     </svg>
