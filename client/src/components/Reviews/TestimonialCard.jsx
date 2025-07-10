@@ -13,6 +13,7 @@ const TestimonialCard = ({ name, role, text }) => (
     shadow-lg
     hover:shadow-xl
     transition-shadow duration-300
+    mt-8
   ">
     {/* Avatar & Name */}
     <div className="flex items-center gap-4 mb-4">

@@ -32,7 +32,7 @@ export default function Reviews() {
       <div className="pointer-events-none absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-black via-black/70 via-black/40 via-black/20 to-transparent z-30" />
 
       {/* Top Row */}
-      <div className="w-full overflow-hidden mb-8">
+      <div className="w-full overflow-hidden mt-16">
         <motion.div
           className="flex gap-6"
           style={{ translateX: '-200px' }}  
