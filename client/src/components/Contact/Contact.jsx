@@ -4,15 +4,13 @@ import { FaWhatsapp } from 'react-icons/fa';
 export default function Contact() {
   return (
     <section className="flex justify-center items-center py-24 bg-black relative overflow-hidden">
-      {/* Glow */}
       <div className="absolute w-[600px] h-[420px] bg-[#01FF80] opacity-10 blur-[100px] rounded-full z-0" />
 
-      {/* Rectangle content */}
       <div className="w-[1227px] h-[367px] bg-[#151515] border border-[rgba(25,221,113,0.3)] rounded-[20px] relative z-10 overflow-hidden flex">
         
-        {/* Left 40% section */}
+
         <div className="w-[40%] h-full flex items-center justify-center relative">
-          {/* Center icon */}
+
           <div className="w-[70px] h-[70px] bg-[rgba(1,153,77,0.2)] border border-[rgba(25,221,113,0.3)] rounded-[15px] flex items-center justify-center z-10">
             <Code className="text-lime-400 w-6 h-6" />
           </div>
@@ -42,7 +40,7 @@ export default function Contact() {
           </span>
         </div>
 
-        {/* Right 60% section */}
+        
         <div className="w-[60%] h-full flex items-center justify-center text-white px-12">
           <div>
             <h1 className="text-5xl font-bold text-white mb-6 leading-tight">

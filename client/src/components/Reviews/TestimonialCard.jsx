@@ -15,7 +15,7 @@ const TestimonialCard = ({ name, role, text }) => (
     transition-shadow duration-300
     mt-8
   ">
-    {/* Avatar & Name */}
+    
     <div className="flex items-center gap-4 mb-4">
       <div className="flex justify-center items-center w-12 h-12 rounded-full bg-[#01FF801F]">
         <div className="w-8 h-8 rounded-full bg-[#01FF804D]" />
@@ -26,7 +26,7 @@ const TestimonialCard = ({ name, role, text }) => (
       </div>
     </div>
 
-    {/* Testimonial text */}
+    
     <p className="text-sm text-[#D5D5D5] mb-4 leading-relaxed">
       {text.split(' ').map((word, i) =>
         ['hands-on', 'mentorship', 'projects'].includes(word.toLowerCase().replace('.', '')) ? (
@@ -37,7 +37,7 @@ const TestimonialCard = ({ name, role, text }) => (
       )}
     </p>
 
-    {/* Rating */}
+    
     <div className="flex gap-1 text-[#16FF72]">
       {Array(5).fill(0).map((_, i) => (
         <Star key={i} size={14} fill="#16FF72" stroke="none" />

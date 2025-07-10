@@ -10,7 +10,7 @@ export default function Reviews() {
 
   return (
     <section className="relative h-screen py-24 overflow-hidden bg-black">
-      {/* Top Text */}
+      
       <div className="text-center pb-12 px-4 relative z-10">
         <div className="text-green-400 text-xl font-normal mb-2 opacity-70">
           OUR CONTRIBUTORS
@@ -27,11 +27,11 @@ export default function Reviews() {
         </p>
       </div>
 
-      {/* Fading edges */}
+      
       <div className="pointer-events-none absolute top-0 left-0 h-full w-40 bg-gradient-to-r from-black via-black/70 via-black/40 via-black/20 to-transparent z-30" />
       <div className="pointer-events-none absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-black via-black/70 via-black/40 via-black/20 to-transparent z-30" />
 
-      {/* Top Row */}
+      
       <div className="w-full overflow-hidden mt-16">
         <motion.div
           className="flex gap-6"
@@ -45,7 +45,7 @@ export default function Reviews() {
         </motion.div>
       </div>
 
-      {/* Bottom Row */}
+      
       <div className="w-full overflow-hidden">
         <motion.div
           className="flex gap-6"
