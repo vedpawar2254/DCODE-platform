@@ -3,7 +3,7 @@ import {
   joinWaitlist,
   getWaitlistCount,
   WaitlistExtraInfo
-} from '../controllers/waitlistController.js';
+} from '../controllers/waitlist.controller.js';
 
 
 const router = express.Router();
