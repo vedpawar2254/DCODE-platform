@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
-import Waitlist from '/images/Waitlist.png';
+import { MdOutlineRocket } from 'react-icons/md';
 import toast from 'react-hot-toast';
+import WaitlistFooter from '/images/Waitlist.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -33,9 +34,7 @@ export default function WaitList() {
 
   useEffect(() => {
     if (showSuccess) {
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
+      const timer = setTimeout(() => setShowSuccess(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [showSuccess]);
@@ -43,15 +42,13 @@ export default function WaitList() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     try {
       if (step === 0) {
         const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
           email: formData.email
         });
-  
-        console.log('Join response:', data);
-  
+
         if (data.token) {
           setUserToken(data.token);
           toast.success('Email saved! Let’s get your name.');
@@ -59,30 +56,27 @@ export default function WaitList() {
         } else {
           toast.error('No token received!');
         }
-  
+
       } else if (step === 1) {
         await axios.patch(`${API_URL}/api/waitlist/update`, {
           token: userToken,
           name: formData.name
         });
-  
         toast.success('Name saved! Almost there...');
-        setStep(2); 
-  
+        setStep(2);
+
       } else if (step === 2) {
         await axios.patch(`${API_URL}/api/waitlist/update`, {
           token: userToken,
           college: formData.college
         });
-  
-        toast.success('College saved!');
+        toast.success('College saved! 🎉');
         setShowSuccess(true);
-  
         setFormData({ email: '', name: '', college: '' });
-        setStep(0);  
+        setStep(0);
         setUserToken('');
-  
       }
+
     } catch (err) {
       console.error(err);
       toast.error('Oops! Something went wrong.');
@@ -90,7 +84,6 @@ export default function WaitList() {
       setIsSubmitting(false);
     }
   };
-  
 
   const staticDots = [
     { top: '20%', left: '20%', size: 'w-1 h-1' },
@@ -104,8 +97,8 @@ export default function WaitList() {
   ];
 
   return (
-    <div className="relative flex flex-col justify-start h-screen overflow-hidden text-white select-none">
-     
+    <div className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white font-inter select-none" style={{ fontFamily: 'Inter, sans-serif' }}>
+      
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black via-black/90 to-black/20" />
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div
@@ -117,10 +110,10 @@ export default function WaitList() {
       </div>
 
       
-      {staticDots.map((dot, index) => (
+      {staticDots.map((dot, i) => (
         <div
-          key={index}
-          className={`absolute bg-[#37CD5A] rounded-full ${dot.size} animate-pulse`}
+          key={i}
+          className={`absolute bg-[#37CD5A] rounded-full ${dot.size}`}
           style={{
             top: dot.top,
             left: dot.left,
@@ -134,100 +127,176 @@ export default function WaitList() {
       <div
         className="absolute inset-0 opacity-80"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,255,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.05) 1px, transparent 1px)`,
+          backgroundImage:
+            `linear-gradient(rgba(0,255,136,0.05) 1px, transparent 1px),
+             linear-gradient(90deg, rgba(0,255,136,0.05) 1px, transparent 1px)`,
           backgroundSize: '60px 60px'
         }}
       />
 
+      
       <main className="relative z-10 w-full max-w-4xl mx-auto px-8 pt-20 pb-12 flex flex-col items-center">
-        <div className="flex justify-center mb-10 w-full">
-          <div className="inline-flex items-center px-6 py-2 text-sm font-medium text-[#BCDD19B2]/70 bg-[#7A900F]/30 rounded-full shadow-lg shadow-[#7A900F]/10">
-            Join Today
-          </div>
+        
+        <div className="inline-flex items-center px-6 py-2 text-sm font-medium text-[#BCDD19B2]/70 bg-[#7A900F]/30 rounded-full shadow-lg shadow-[#7A900F]/10 mb-6">
+          Join Today
         </div>
 
-        <div className="text-center mb-12 w-full">
-          <h2 className="text-4xl font-bold tracking-tight md:text-5xl mb-4">
-            Join The{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#7A900F] font-medium">
-              DCODE
-            </span>{' '}
-            Waitlist NOW
-          </h2>
-          <p className="text-lg font-medium text-gray-400 md:text-xl">
-            Your gateway to real-world open source
-          </p>
-        </div>
+        
+        <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-center mb-4">
+          Join The{' '}
+          <span className="text-transparent font-bold bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#7A900F]">
+            DCODE
+          </span>{' '}
+          Waitlist Now
+        </h2>
+        <p className="text-lg font-medium text-gray-400 md:text-xl text-center mb-12">
+          Your Gateway to Real-World Open Source
+        </p>
 
-        <div className="mb-14 w-full text-center">
-          <p className="text-2xl md:text-3xl">
-            <span className="font-extrabold text-[#7A900F] text-4xl md:text-5xl mr-3">
-              {joinedCount.toLocaleString()}
-            </span>
-            <span className="font-medium text-gray-200">
-              developers have already joined
-            </span>
-          </p>
-        </div>
+        
+        <p className="text-2xl md:text-3xl mb-14 text-center">
+          <span className="font-medium text-[#7A900F] text-4xl md:text-5xl mr-3">
+            {joinedCount.toLocaleString()}
+          </span>
+          developers have already joined
+        </p>
 
-       
         <form
           onSubmit={handleSubmit}
-          className="relative w-full max-w-xl flex items-center border border-[#7A900F] rounded-full backdrop-blur-sm overflow-hidden"
+          className="relative w-full max-w-xl border py-8 border-[#BCDD19] rounded-full overflow-hidden backdrop-blur-xs"
           style={{ height: '56px' }}
         >
-        
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className={`absolute left-0 w-full h-full pl-6 pr-44 text-lg text-white placeholder-gray-400 bg-transparent outline-none transition-all duration-500 ${
-              step === 0
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-full pointer-events-none'
-            }`}
-          />
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className={`absolute left-0 w-full h-full pl-6 pr-44 text-lg text-white placeholder-gray-400 bg-transparent outline-none transition-all duration-500 ${
-              step === 1
-                ? 'opacity-100 translate-x-0'
-                : step < 1
-                ? 'opacity-0 translate-x-full pointer-events-none'
-                : 'opacity-0 -translate-x-full pointer-events-none'
-            }`}
-          />
-          <input
-            type="text"
-            placeholder="Enter your college name"
-            value={formData.college}
-            onChange={(e) =>
-              setFormData({ ...formData, college: e.target.value })
-            }
-            className={`absolute left-0 w-full h-full pl-6 pr-44 text-lg text-white placeholder-gray-400 bg-transparent outline-none transition-all duration-500 ${
-              step === 2
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 translate-x-full pointer-events-none'
-            }`}
-          />
+          <div className="relative w-full h-full">
+            
+            <div
+              className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                step === 0
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-full pointer-events-none'
+              }`}
+            >
+              <input
+                type="email"
+                placeholder="Enter Your Email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="flex-grow px-6 bg-gray/40 pl-12 text-lg text-white placeholder-gray-400 outline-none"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`h-full px-8 py-8 font-semibold flex items-center justify-center text-white transition-colors ${
+                  isSubmitting
+                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                    : 'bg-[#7A900F] hover:bg-[#60720c]'
+                }`}
+              >
+                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
+              </button>
+            </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`absolute right-0 h-full px-8 font-semibold text-white rounded-full transition-all ${
-              isSubmitting
-                ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                : 'bg-[#7A900F] hover:bg-[#7A900F]/80'
-            }`}
-          >
-            {isSubmitting ? 'Please wait...' : 'Submit'}
-          </button>
+            {/* Name step */}
+            <div
+              className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                step === 1
+                  ? 'opacity-100 translate-x-0'
+                  : step < 1
+                    ? 'opacity-0 translate-x-full pointer-events-none'
+                    : 'opacity-0 -translate-x-full pointer-events-none'
+              }`}
+            >
+              <input
+                type="text"
+                placeholder="Enter Your Name"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="flex-grow px-6 bg-gray/40 pl-12 text-lg text-white placeholder-gray-400 outline-none"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`h-full px-8 py-8 font-semibold flex items-center justify-center text-white transition-colors ${
+                  isSubmitting
+                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                    : 'bg-[#7A900F] hover:bg-[#60720c]'
+                }`}
+              >
+                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
+              </button>
+            </div>
+
+            {/* College step */}
+            <div
+              className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                step === 2
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 translate-x-full pointer-events-none'
+              }`}
+            >
+              <input
+                type="text"
+                placeholder="Enter Your College"
+                value={formData.college}
+                onChange={(e) =>
+                  setFormData({ ...formData, college: e.target.value })
+                }
+                className="flex-grow px-6 bg-gray/40 pl-12 text-lg text-white placeholder-gray-400 outline-none"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`h-full px-8 py-8 font-semibold text-white flex items-center justify-center transition-colors ${
+                  isSubmitting
+                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                    : 'bg-[#7A900F] hover:bg-[#60720c]'
+                }`}
+              >
+                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
+              </button>
+            </div>
+          </div>
         </form>
 
+
+        {/* Stars */}
+        <div className="flex items-center justify-center mt-4 text-base md:text-xs w-full">
+          <div className="flex items-center space-x-2 mr-3">
+            {[1, 2, 3, 4, 5].map(i => (
+              <Star
+                key={i}
+                className={`w-4 h-4 ${i <= 4 ? 'fill-[#7A900F] text-[#7A900F]' : 'fill-gray-600 text-gray-600'}`}
+              />
+            ))}
+          </div>
+          <span className="text-gray-300">
+            4.4 Rating based on 600+ students
+          </span>
+        </div>
+
+        {/* Stats */}
+        <div className="flex justify-between w-full max-w-3xl p-6 mt-12">
+          {[
+            { Icon: Code, label: 'Contributors', value: '500+' },
+            { Icon: Users, label: 'Colleges', value: '10+' },
+            { Icon: MdOutlineRocket, label: 'Projects', value: '50+' },
+          ].map(({ Icon, label, value }, i) => (
+            <div key={i} className="flex items-center space-x-4">
+              <div className="w-14 h-14 flex items-center justify-center bg-[#37CD5A]/20 rounded-lg">
+                <Icon className="w-7 h-7 text-[#37CD5A]" />
+              </div>
+              <div>
+                <p className="text-white text-2xl">{value}</p>
+                <p className="text-gray-300">{label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* SUCCESS MODAL */}
         {showSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="w-full max-w-md p-8 mx-4 text-center border shadow-2xl bg-green-500/10 border-green-500/20 rounded-2xl backdrop-blur-sm">
@@ -243,9 +312,10 @@ export default function WaitList() {
         )}
       </main>
 
-      <footer className="pb-6 mt-auto text-sm text-center text-gray-500 w-full">
+      {/* FOOTER */}
+      <footer className="relative pb-6 mt-auto text-sm text-center text-gray-500 w-full">
         <div className="absolute inset-x-0 bottom-0.5 opacity-50 flex justify-center z-0 pointer-events-none select-none">
-          <img src={Waitlist} alt="Waitlist footer" />
+          <img src={WaitlistFooter} alt="Waitlist footer" />
         </div>
         <p>* These are expected numbers, they may vary.</p>
         <p>© 2025 DCODE. Open source platform for modern development.</p>
