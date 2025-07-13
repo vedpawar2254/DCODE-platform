@@ -26,7 +26,7 @@ export default function SignupForm() {
             type="text"
             value={formData.username}
             onChange={e => handleInputChange('username', e.target.value)}
-            className="w-full bg-transparent border-b-2 border-gray-600 text-white pb-2 focus:border-[#918EF4] focus:outline-none text-lg"
+            className="w-full bg-transparent border-b-2 border-gray-600 text-[#D5D5D5] pb-2 focus:border-[#918EF4]  focus:outline-none text-lg"
             placeholder="Your name"
           />
         </div>
@@ -40,7 +40,7 @@ export default function SignupForm() {
             type="email"
             value={formData.email}
             onChange={e => handleInputChange('email', e.target.value)}
-            className="w-full bg-transparent border-b-2 border-gray-600 text-white pb-2 focus:border-[#918EF4] focus:outline-none text-lg"
+            className="w-full bg-transparent border-b-2 border-gray-600 text-[#D5D5D5] pb-2 focus:border-[#918EF4] focus:outline-none text-lg"
             placeholder="Your email"
           />
         </div>
@@ -54,7 +54,7 @@ export default function SignupForm() {
             type={showPassword ? 'text' : 'password'}
             value={formData.password}
             onChange={e => handleInputChange('password', e.target.value)}
-            className="w-full bg-transparent border-b-2 border-gray-600 text-white pb-2 focus:border-[#918EF4] focus:outline-none text-lg pr-10"
+            className="w-full bg-transparent border-b-2 border-gray-600 text-[#D5D5D5] pb-2 focus:border-[#918EF4] focus:outline-none text-lg pr-10"
             placeholder="Your password"
           />
           <button
@@ -112,7 +112,7 @@ export default function SignupForm() {
         </div>
 
         {/* Sign Up Button (larger but not full width) */}
-        <button className="bg-[#7A900F] text-white font-semibold py-3 px-10 rounded-full text-base hover:bg-[#a8c516] transition-colors">
+        <button className="bg-[#7A900F] text-white py-3 px-10 rounded-full text-base hover:bg-[#a8c516] transition-colors">
           SIGN UP
         </button>
       </div>

@@ -1,79 +1,54 @@
-import Illustration from '/images/Illustration1.png';
+import Illustration from '../../../public/images/illustration1.png';
 
 export default function LeftSignup() {
   return (
-    <>
-      <div className="text-3xl text-white font-extrabold mt-25">
+    <div
+      className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-12"
+      style={{
+        fontFamily: '"Zen Kaku Gothic Antique", sans-serif',
+        backgroundColor: '#121212'
+      }}
+    >
+      <h1 className="text-5xl font-extrabold text-white mb-10">
         D<span className="text-[#BCDD19]">CODE</span>
-      </div>
-
-      {/* Glow wrapper with fade effect */}
-      <div className="relative flex justify-center items-center z-0">
-        {/* Image with fade overlay */}
-        <div className="relative z-10 w-[424px] h-[357px] mt-25">
-          <img
-            src={Illustration}
-            alt="Illustration"
-            className="w-full h-full object-cover"
-          />
-          {/* Fade overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'linear-gradient(to right, black 0%, transparent 15%, transparent 85%, black 100%), linear-gradient(to bottom, black 0%, transparent 15%, transparent 85%, black 100%)'
-            }}
-          />
-        </div>
-
-        {/* Code symbols positioned around the image */}
+      </h1>
+      <div className="relative z-10 w-[350px] h-[480px] overflow-hidden">
+        <img
+          src={Illustration}
+          alt="Illustration"
+          className="w-full h-full object-cover"
+          style={{
+            maskImage:
+              'radial-gradient(circle at center, black 50%, transparent 100%)',
+            WebkitMaskImage:
+              'radial-gradient(circle at center, black 50%, transparent 100%)'
+          }}
+        />
         <div
-          className="absolute text-white opacity-30 font-bold text-[31.25px] leading-[38px] tracking-[-0.5px] pointer-events-none z-10"
-          style={{ fontFamily: 'Zen Kaku Gothic Antique, monospace' }}
-        >
-          {/* {} - top left */}
-          <div className="absolute" style={{ left: '-200px', top: '-150px' }}>
-            {'{}'}
-          </div>
-
-          {/* ; - top right */}
-          <div className="absolute" style={{ right: '-220px', top: '-140px' }}>
-            ;
-          </div>
-
-          {/* <> - bottom left */}
-          <div
-            className="absolute"
-            style={{ left: '-270px', bottom: '-250px' }}
-          >
-            &lt;&gt;
-          </div>
-
-          {/* $ - bottom right */}
-          <div
-            className="absolute"
-            style={{ right: '-200px', bottom: '-250px' }}
-          >
-            $
-          </div>
-
-          {/* 0x3234 - bottom center */}
-          <div
-            className="absolute"
-            style={{
-              left: '-140px',
-              bottom: '-220px'
-            }}
-          >
-            0x3234
-          </div>
-        </div>
+          className="absolute -inset-5 pointer-events-none z-20 w-350"
+          style={{
+            background: `
+              radial-gradient(
+                circle at center,
+                rgba(0, 0, 0, 0) 50%,
+                rgba(18, 18, 18, 1) 100%
+              )
+            `,
+          }}
+        />
       </div>
 
-      <div className="text-3xl text-white font-bold text-center mt-25">
+      {/* Heading */}
+      <h2 className="text-2xl md:text-3xl text-white font-semibold leading-tight mt-6 mb-3">
         Online Community For <br />
         <span className="text-[#BCDD19]">OPEN SOURCE</span> Developers
-      </div>
-    </>
+      </h2>
+
+      {/* Description */}
+      <p className="max-w-md text-gray-400 text-sm md:text-base leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt.
+      </p>
+    </div>
   );
 }
