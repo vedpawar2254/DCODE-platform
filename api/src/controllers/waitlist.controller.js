@@ -1,8 +1,9 @@
 import Waitlist from '../models/Waitlist.js';
 import transporter from '../utils/mailer.js';
+import jwt from 'jsonwebtoken';
 
 export const joinWaitlist = async (req, res) => {
-  const {email} = req.body;
+  const { email } = req.body;
 
   if (!email || !email.includes('@')) {
     return res.status(400).json({ message: 'Invalid email' });
@@ -15,9 +16,14 @@ export const joinWaitlist = async (req, res) => {
         .status(409)
         .json({ message: 'You’re already on the waitlist!' });
     }
-
-    const newEntry = new Waitlist({email});
+    const newEntry = new Waitlist({ email });
     await newEntry.save();
+    
+    const token = jwt.sign(
+      { id: newEntry._id, email: newEntry.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '30m' }  
+    );
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -77,7 +83,7 @@ export const joinWaitlist = async (req, res) => {
                   <body>
                     <div class="container">
                       <h1>Welcome to the DCODE Community! 👋</h1>
-                      <p>Hey there,</p>
+                      <p>Hey there</p>
                       <p>
                         Thank you for joining the DCODE waitlist! We're excited to have you on board.
                         You're now part of a community of developers, designers, and learners building the future together.
@@ -103,12 +109,13 @@ export const joinWaitlist = async (req, res) => {
 
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
-        console.error(err);
+        console.error('Error sending mail:', err);
         return res.status(500).json({ message: 'Failed to send email' });
       }
       console.log(`Email sent: ${info.response}`);
-      res.json({
-        message: 'Successfully joined the waitlist. Check your inbox!'
+      res.status(200).json({
+        message: 'Successfully joined the waitlist. Check your inbox!',
+        token
       });
     });
   } catch (err) {
@@ -123,6 +130,48 @@ export const getWaitlistCount = async (req, res) => {
     res.status(200).json({ count });
   } catch (error) {
     console.error('Error in getWaitlistCount:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+export const WaitlistExtraInfo = async (req, res) => {
+  const { token, name, college } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ message: 'Token required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const waitlistEntry = await Waitlist.findById(decoded.id);
+    if (!waitlistEntry) {
+      return res.status(404).json({ message: 'Waitlist entry not found' });
+    }
+    if (name) {
+      waitlistEntry.name = name;
+    }
+
+    if (college) {
+      waitlistEntry.college = college;
+    }
+
+    await waitlistEntry.save();
+
+    res.status(200).json({ message: 'Waitlist entry updated successfully' });
+
+  } catch (err) {
+    console.error('Error in updateWaitlist:', err);
+
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expired' });
+    }
+
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+
     res.status(500).json({ message: 'Server error' });
   }
 };
