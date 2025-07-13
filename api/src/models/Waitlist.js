@@ -10,7 +10,7 @@ const waitlistSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+ 
 const Waitlist = mongoose.model('Waitlist', waitlistSchema);
 
 export default Waitlist;
