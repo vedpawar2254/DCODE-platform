@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
 import { MdOutlineRocket } from 'react-icons/md';
-import Waitlist from '../../../public/images/Waitlist.png';
 import toast from 'react-hot-toast';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -267,7 +266,7 @@ export default function WaitList() {
 
       <footer className="pb-6 mt-auto text-sm text-center text-gray-500 w-full">
         <div className="absolute inset-x-0 bottom-0.5 opacity-50 flex justify-center z-0 pointer-events-none select-none">
-          <img src={Waitlist} alt="Waitlistfooter" />
+          <img src="/images/Waitlist.png" alt="Waitlistfooter" />
         </div>
         <p>* These are expected numbers, they may vary.</p>
         <p>© 2025 DCODE. Open source platform for modern development.</p>
