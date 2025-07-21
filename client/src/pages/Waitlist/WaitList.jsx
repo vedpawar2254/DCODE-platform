@@ -12,7 +12,6 @@ export default function WaitList() {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
-    name: '',
     college: ''
   });
   const [userToken, setUserToken] = useState('');
@@ -59,19 +58,11 @@ export default function WaitList() {
       } else if (step === 1) {
         await axios.patch(`${API_URL}/api/waitlist/update`, {
           token: userToken,
-          name: formData.name
-        });
-        toast.success('Name saved! Almost there...');
-        setStep(2);
-
-      } else if (step === 2) {
-        await axios.patch(`${API_URL}/api/waitlist/update`, {
-          token: userToken,
           college: formData.college
         });
-        toast.success('College saved! 🎉');
+        toast.success('College saved!');
         setShowSuccess(true);
-        setFormData({ email: '', name: '', college: '' });
+        setFormData({ email: '', college: '' });
         setStep(0);
         setUserToken('');
       }
@@ -129,14 +120,14 @@ export default function WaitList() {
           backgroundImage:
             `linear-gradient(rgba(0,255,136,0.05) 1px, transparent 1px),
              linear-gradient(90deg, rgba(0,255,136,0.05) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
+          backgroundSize: '50px 50px'
         }}
       />
 
       
-      <main className="relative z-10 w-full max-w-4xl mx-auto px-8 pt-20 pb-12 flex flex-col items-center">
+      <main className="relative z-10 w-full max-w-4xl mx-auto px-8 pt-10 pb-12 flex flex-col items-center">
         
-        <div className="inline-flex items-center px-6 py-2 text-sm font-medium text-[#BCDD19B2]/70 bg-[#7A900F]/30 rounded-full shadow-lg shadow-[#7A900F]/10 mb-6">
+        <div className="inline-flex items-center px-6 py-2 mt-6 text-sm font-medium text-[#BCDD19B2]/70 bg-[#7A900F]/30 rounded-full shadow-lg shadow-[#7A900F]/10 mb-6">
           Join Today
         </div>
 
@@ -148,12 +139,12 @@ export default function WaitList() {
           </span>{' '}
           Waitlist Now
         </h2>
-        <p className="text-lg font-medium text-gray-400 md:text-xl text-center mb-12">
+        <p className="text-lg font-medium text-[#D5D5D5] md:text-lg text-center mb-12">
           Your Gateway to Real-World Open Source
         </p>
 
         
-        <p className="text-2xl md:text-3xl mb-14 text-center">
+        <p className="text-2xl md:text-md mb-16 text-center text-[#D5D5D5]">
           <span className="font-medium text-[#7A900F] text-4xl md:text-5xl mr-3">
             {joinedCount.toLocaleString()}
           </span>
@@ -186,7 +177,7 @@ export default function WaitList() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full px-8 py-8 font-semibold flex items-center justify-center text-white transition-colors ${
+                className={`h-full px-8 py-8 font-semibold cursor-pointer flex items-center justify-center text-white transition-colors ${
                   isSubmitting
                     ? 'bg-[#7A900F]/50 cursor-not-allowed'
                     : 'bg-[#7A900F] hover:bg-[#60720c]'
@@ -197,41 +188,11 @@ export default function WaitList() {
             </div>
 
             {/* Name step */}
-            <div
-              className={`absolute inset-0 flex items-center transition-all duration-500 ${
-                step === 1
-                  ? 'opacity-100 translate-x-0'
-                  : step < 1
-                    ? 'opacity-0 translate-x-full pointer-events-none'
-                    : 'opacity-0 -translate-x-full pointer-events-none'
-              }`}
-            >
-              <input
-                type="text"
-                placeholder="Enter Your Name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                className="flex-grow px-6 bg-gray/40 pl-12 text-lg text-white placeholder-gray-400 outline-none"
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`h-full px-8 py-8 font-semibold flex items-center justify-center text-white transition-colors ${
-                  isSubmitting
-                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                    : 'bg-[#7A900F] hover:bg-[#60720c]'
-                }`}
-              >
-                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
-              </button>
-            </div>
 
             {/* College step */}
             <div
               className={`absolute inset-0 flex items-center transition-all duration-500 ${
-                step === 2
+                step === 1
                   ? 'opacity-100 translate-x-0'
                   : 'opacity-0 translate-x-full pointer-events-none'
               }`}
@@ -248,7 +209,7 @@ export default function WaitList() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full px-8 py-8 font-semibold text-white flex items-center justify-center transition-colors ${
+                className={`h-full px-8 py-8 font-semibold cursor-pointer text-white flex items-center justify-center transition-colors ${
                   isSubmitting
                     ? 'bg-[#7A900F]/50 cursor-not-allowed'
                     : 'bg-[#7A900F] hover:bg-[#60720c]'
@@ -263,32 +224,46 @@ export default function WaitList() {
 
         {/* Stars */}
         <div className="flex items-center justify-center mt-4 text-base md:text-xs w-full">
-          <div className="flex items-center space-x-2 mr-3">
-            {[1, 2, 3, 4, 5].map(i => (
-              <Star
-                key={i}
-                className={`w-4 h-4 ${i <= 4 ? 'fill-[#7A900F] text-[#7A900F]' : 'fill-gray-600 text-gray-600'}`}
-              />
-            ))}
+  <div className="flex items-center space-x-1 mr-3">
+    {[1, 2, 3, 4, 5].map(i => {
+      const fillPercent = i <= Math.floor(4.4)
+        ? 100
+        : i === Math.ceil(4.6)
+        ? (4.6 % 1) * 100
+        : 0;
+
+      return (
+        <div key={i} className="relative w-4 h-4">
+          <Star className="absolute w-4 h-4 text-gray-600 fill-gray-600" />
+          <div
+            className="absolute top-0 left-0 overflow-hidden h-4"
+            style={{ width: `${fillPercent}%` }}
+          >
+            <Star className="w-4 h-4 text-[#7A900F] fill-[#7A900F]" />
           </div>
-          <span className="text-gray-300">
-            4.4 Rating based on 600+ students
-          </span>
         </div>
+      );
+    })}
+  </div>
+  <span className="text-gray-300">
+    4.4 Rating based on 600+ students
+  </span>
+</div>
+
 
         {/* Stats */}
-        <div className="flex justify-between w-full max-w-3xl p-6 mt-12">
+        <div className="flex justify-between w-full max-w-xl p-4 mt-12">
           {[
             { Icon: Code, label: 'Contributors', value: '500+' },
             { Icon: Users, label: 'Colleges', value: '10+' },
             { Icon: MdOutlineRocket, label: 'Projects', value: '50+' },
           ].map(({ Icon, label, value }, i) => (
-            <div key={i} className="flex items-center space-x-4">
+            <div key={i} className="flex items-center space-x-2">
               <div className="w-14 h-14 flex items-center justify-center bg-[#37CD5A]/20 rounded-lg">
                 <Icon className="w-7 h-7 text-[#37CD5A]" />
               </div>
               <div>
-                <p className="text-white text-2xl">{value}</p>
+                <p className="text-white font-bold text-xl">{value}</p>
                 <p className="text-gray-300">{label}</p>
               </div>
             </div>

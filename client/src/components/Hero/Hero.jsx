@@ -33,9 +33,9 @@ const Hero = () => {
         </p>
         <div className="flex items-center pt-6 space-x-4">
           <Button className="!py-2 !px-4">Get Started</Button>
-          <button className="text-white relative after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-[#BCDD19] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100 ">
+          {/* <button className="text-white relative after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-[#BCDD19] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100 ">
             Try for Free
-          </button>
+          </button> */}
         </div>
       </div>
 
