@@ -75,77 +75,89 @@ export default function WaitList() {
     }
   };
 
-  const staticDots = [
-    { top: '20%', left: '20%', size: 'w-1 h-1' },
-    { top: '10%', left: '90%', size: 'w-1 h-1' },
-    { top: '90%', left: '90%', size: 'w-1 h-1' },
-    { top: '80%', left: '80%', size: 'w-1 h-1' },
-    { top: '40%', left: '40%', size: 'w-1.5 h-1.5' },
-    { top: '60%', left: '60%', size: 'w-1.5 h-1.5' },
-    { top: '50%', left: '30%', size: 'w-1.5 h-1.5' },
-    { top: '90%', left: '80%', size: 'w-1.7 h-1.7' }
+  const ellipsePositions = [
+    { top: '33%', left: '68%', scale: 0.8 },
+    { top: '90%', left: '16%', scale: 0.8 },
+    { top: '70%', left: '35%', scale: 0.5 },
+    { top: '60%', left: '60%', scale: 0.7 },
+    { top: '40%', left: '20%', scale: 1 },
+    { top: '70%', left: '80%', scale: 0.5 }
   ];
 
   return (
-    <div className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white select-none font-inter" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white select-none font-inter bg-[#121212]/20" style={{ fontFamily: 'Inter, sans-serif' }}>
 
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black via-black/90 to-black/20" />
+      {/* <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-black/90 to-black/20" /> */}
+
+      {/* SVG Pattern Background */}
+      <div
+        className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage: 'url(/images/Pattern.svg)',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center'
+        }}
+      />
+
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div
-          className="absolute top-1/2 left-1/2 w-[100vw] h-[100vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[120px]"
+          className="absolute top-1/2 left-1/2 w-[100vw] h-[100vh] sm:w-[100vw] sm:h-[100vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15 blur-[120px]"
           style={{
-            background: 'radial-gradient(circle,#BCDD19 0%, transparent 60%)'
+            background: 'radial-gradient(circle, hsla(70, 80%, 48%, 55%) 0%, hsla(0, 0%, 7%, 0%) 100%)'
           }}
         />
       </div>
 
 
-      {staticDots.map((dot, i) => (
-        <div
+      {ellipsePositions.map((ellipse, i) => (
+        <img
           key={i}
-          className={`absolute bg-[#37CD5A] rounded-full ${dot.size}`}
+          src="/images/Ellipse 18.svg"
+          alt=""
+          className="absolute"
           style={{
-            top: dot.top,
-            left: dot.left,
-            filter: 'drop-shadow(0 0 8px #37CD5A)',
-            animation: 'pulse 2s ease-in-out infinite'
+            top: ellipse.top,
+            left: ellipse.left,
+            transform: `scale(${ellipse.scale})`,
+            filter: 'blur(6px) drop-shadow(0 0 8px #37CD5A)',
           }}
         />
       ))}
 
 
-      <div
+      {/* <div
         className="absolute inset-0 opacity-80"
         style={{
           backgroundImage:
-            `linear-gradient(rgba(0,255,136,0.05) 1px, transparent 1px),
-             linear-gradient(90deg, rgba(0,255,136,0.05) 1px, transparent 1px)`,
+            `linear-gradient(rgba(18,18,18, 0%) 1px, transparent 1px),
+             linear-gradient(90deg, rgba(18,18,18, 80%) 1px, transparent 1px)`,
           backgroundSize: '50px 50px'
         }}
-      />
+      /> */}
 
 
       <main className="relative z-10 flex flex-col items-center w-full max-w-4xl px-8 pt-10 pb-12 mx-auto">
 
-        <div className="inline-flex items-center px-6 py-2 mt-6 text-sm font-medium text-[#BCDD19B2]/70 bg-[#7A900F]/30 rounded-full shadow-lg shadow-[#7A900F]/10 mb-6">
+        <div className="inline-flex items-center px-6 py-2 mt-6 text-sm font-bold text-[#BCDD19]/70 bg-[#BCDD19]/10 rounded-full mb-6">
           Join Today
         </div>
 
 
-        <h2 className="mb-4 text-4xl font-medium tracking-tight text-center md:text-5xl">
-          Join The{' '}
-          <span className="text-transparent font-bold bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#7A900F]">
+        <h2 className="mb-4 text-4xl font-bold tracking-tight text-center md:text-5xl">
+          Join the{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D]">
             DCODE
           </span>{' '}
-          Waitlist Now
+          waitlist now
         </h2>
-        <p className="text-lg font-medium text-[#D5D5D5] md:text-lg text-center mb-12">
-          Your Gateway to Real-World Open Source
+        <p className="text-lg font-medium text-[#D5D5D5]/70 md:text-lg text-center mb-12">
+          Your gateway to real-world open source
         </p>
 
 
-        <p className="text-2xl md:text-md mb-16 text-center text-[#D5D5D5]">
-          <span className="font-medium text-[#7A900F] text-4xl md:text-5xl mr-3">
+        <p className="sm:text-2xl text-xl md:text-md mb-16 text-center text-[#D5D5D5]">
+          <span className="mr-3 text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D] text-4xl font-bold md:text-5xl">
             {joinedCount.toLocaleString()}
           </span>
           developers have already joined
@@ -153,15 +165,15 @@ export default function WaitList() {
 
         <form
           onSubmit={handleSubmit}
-          className="relative w-full max-w-xl border py-8 border-[#BCDD19] rounded-full overflow-hidden backdrop-blur-xs"
+          className="relative w-full max-w-xl border-3 py-8 border-[#7A900F] rounded-full overflow-hidden bg-[#121212]/50"
           style={{ height: '56px' }}
         >
           <div className="relative w-full h-full">
 
             <div
               className={`absolute inset-0 flex items-center transition-all duration-500 ${step === 0
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-full pointer-events-none'
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-full pointer-events-none'
                 }`}
             >
               <input
@@ -171,14 +183,14 @@ export default function WaitList() {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="flex-grow px-6 pl-12 text-lg text-white placeholder-gray-400 outline-none bg-gray/40"
+                className="flex-grow sm:px-6 sm:pl-12 px-4 pl-6 sm:text-lg text-sm text-[#d5d5d5] placeholder-[#d5d5d5]/70 outline-none"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full px-8 py-8 font-semibold cursor-pointer flex items-center justify-center text-white transition-colors ${isSubmitting
-                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                    : 'bg-[#7A900F] hover:bg-[#60720c]'
+                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
+                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                  : 'bg-[#7A900F] hover:bg-[#60720c]'
                   }`}
               >
                 {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
@@ -190,8 +202,8 @@ export default function WaitList() {
             {/* College step */}
             <div
               className={`absolute inset-0 flex items-center transition-all duration-500 ${step === 1
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 translate-x-full pointer-events-none'
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 translate-x-full pointer-events-none'
                 }`}
             >
               <input
@@ -206,9 +218,9 @@ export default function WaitList() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full px-8 py-8 font-semibold cursor-pointer text-white flex items-center justify-center transition-colors ${isSubmitting
-                    ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                    : 'bg-[#7A900F] hover:bg-[#60720c]'
+                className={`h-full sm:p-8 p-4 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
+                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
+                  : 'bg-[#7A900F] hover:bg-[#60720c]'
                   }`}
               >
                 {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
@@ -240,25 +252,26 @@ export default function WaitList() {
               );
             })}
           </div>
-          <span className="text-gray-300">
+          <span className="text-[#D5D5D5] sm:text-lg text-sm">
             4.4 Rating based on 600+ students
           </span>
         </div>
 
 
-        <div className="flex justify-between w-full max-w-xl p-4 mt-12">
+        <div className="flex sm:flex-row flex-col justify-between sm:gap-20 gap-10 /w-full /max-w-xl /p-4 sm:mt-24 mt-16">
           {[
             { Icon: Code, label: 'Contributors', value: '500+' },
             { Icon: Users, label: 'Colleges', value: '10+' },
             { Icon: MdOutlineRocket, label: 'Projects', value: '50+' },
+            // eslint-disable-next-line no-unused-vars
           ].map(({ Icon, label, value }, i) => (
             <div key={i} className="flex items-center space-x-2">
               <div className="w-14 h-14 flex items-center justify-center bg-[#37CD5A]/20 rounded-lg">
                 <Icon className="w-7 h-7 text-[#37CD5A]" />
               </div>
               <div>
-                <p className="text-xl font-bold text-white">{value}</p>
-                <p className="text-gray-300">{label}</p>
+                <p className="sm:text-xl font-bold text-[#d5d5d5] text-lg">{value}</p>
+                <p className="sm:text-lg text-sm text-[#d5d5d5] font-semibold">{label}</p>
               </div>
             </div>
           ))}
@@ -272,7 +285,7 @@ export default function WaitList() {
                 You're In!
               </h3>
               <p className="text-lg text-gray-300">
-                Welcome to DCODE! We’ll notify you as soon as we launch.
+                Welcome to DCODE! We&apos;ll notify you as soon as we launch.
               </p>
             </div>
           </div>
@@ -280,9 +293,9 @@ export default function WaitList() {
       </main>
 
       {/* FOOTER */}
-      <footer className="relative w-full pb-6 mt-auto text-sm text-center text-gray-500">
-        <div className="absolute inset-x-0 bottom-0.5 opacity-50 flex justify-center z-0 pointer-events-none select-none">
-          <img src="/images/Waitlist.png" alt="Waitlistfooter" />
+      <footer className="relative w-full pb-6 mt-auto sm:text-sm text-xs text-center text-[#d5d5d5]/70">
+        <div className="absolute inset-x-0 bottom-0.5 opacity-30 flex justify-center z-0 pointer-events-none select-none">
+          <img src="/images/Waitlist.png" alt="Waitlist Footer" />
         </div>
         <p>* These are expected numbers, they may vary.</p>
         <p>© 2025 DCODE. Open source platform for modern development.</p>
