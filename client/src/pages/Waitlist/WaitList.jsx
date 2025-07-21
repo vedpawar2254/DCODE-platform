@@ -197,7 +197,6 @@ export default function WaitList() {
               </button>
             </div>
 
-            {/* Name step */}
 
             {/* College step */}
             <div
@@ -213,12 +212,12 @@ export default function WaitList() {
                 onChange={(e) =>
                   setFormData({ ...formData, college: e.target.value })
                 }
-                className="flex-grow px-6 pl-12 text-lg text-white placeholder-gray-400 outline-none bg-gray/40"
+                className="flex-grow sm:px-6 sm:pl-12 px-4 pl-6 sm:text-lg text-sm text-[#d5d5d5] placeholder-[#d5d5d5]/70 outline-none"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full sm:p-8 p-4 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
+                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
                   ? 'bg-[#7A900F]/50 cursor-not-allowed'
                   : 'bg-[#7A900F] hover:bg-[#60720c]'
                   }`}
