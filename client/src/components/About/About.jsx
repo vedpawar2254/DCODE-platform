@@ -200,9 +200,9 @@ const About = () => {
           <p className="text-gray-400 mb-6">
             Showcase your contributions and build an impressive DCODE profile.
           </p>
-          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col">
+          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col scrollbar-hide">
             <p className="text-white mb-4">Contributions</p>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto scrollbar-hide">
               <div className="flex space-x-1">
                 {Array.from({ length: weeks }).map((_, weekIdx) => (
                   <div key={weekIdx} className="flex flex-col space-y-1">
