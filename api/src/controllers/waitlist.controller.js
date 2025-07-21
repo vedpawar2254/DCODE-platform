@@ -136,7 +136,7 @@ export const getWaitlistCount = async (req, res) => {
 
 
 export const WaitlistExtraInfo = async (req, res) => {
-  const { token, name, college } = req.body;
+  const { token, college } = req.body;
 
   if (!token) {
     return res.status(400).json({ message: 'Token required' });
@@ -148,9 +148,6 @@ export const WaitlistExtraInfo = async (req, res) => {
     const waitlistEntry = await Waitlist.findById(decoded.id);
     if (!waitlistEntry) {
       return res.status(404).json({ message: 'Waitlist entry not found' });
-    }
-    if (name) {
-      waitlistEntry.name = name;
     }
 
     if (college) {

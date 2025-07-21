@@ -8,10 +8,6 @@ const waitlistSchema = new mongoose.Schema(
       unique: true,
       trim: true
     },
-    name: {
-      type: String,
-      default: ''
-    },
     college: {
       type: String,
       default: ''
