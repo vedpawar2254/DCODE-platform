@@ -137,7 +137,7 @@ export default function WaitList() {
       /> */}
 
 
-      <main className="relative z-10 flex flex-col items-center w-full max-w-4xl px-8 pt-10 pb-12 mx-auto">
+      <main className="relative z-10 flex flex-col items-center w-full max-w-4xl px-8 py-10 mx-auto">
 
         <div className="inline-flex items-center px-6 py-2 mt-6 text-sm font-bold text-[#BCDD19]/70 bg-[#BCDD19]/10 rounded-full mb-6">
           Join Today
@@ -151,12 +151,12 @@ export default function WaitList() {
           </span>{' '}
           waitlist now
         </h2>
-        <p className="text-lg font-medium text-[#D5D5D5]/70 md:text-lg text-center mb-12">
+        <p className="text-lg font-medium text-[#D5D5D5]/70 md:text-lg text-center mb-8">
           Your gateway to real-world open source
         </p>
 
 
-        <p className="sm:text-2xl text-xl md:text-md mb-16 text-center text-[#D5D5D5]">
+        <p className="sm:text-2xl text-xl md:text-md mb-14 text-center text-[#D5D5D5]">
           <span className="mr-3 text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D] text-4xl font-bold md:text-5xl">
             {joinedCount.toLocaleString()}
           </span>
@@ -294,7 +294,7 @@ export default function WaitList() {
 
       {/* FOOTER */}
       <footer className="relative w-full pb-6 mt-auto sm:text-sm text-xs text-center text-[#d5d5d5]/70">
-        <div className="absolute inset-x-0 bottom-0.5 opacity-30 flex justify-center z-0 pointer-events-none select-none">
+        <div className="absolute inset-x-0 -bottom-6.5 opacity-30 flex justify-center z-0 pointer-events-none select-none">
           <img src="/images/Waitlist.png" alt="Waitlist Footer" />
         </div>
         <p>* These are expected numbers, they may vary.</p>
