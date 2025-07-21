@@ -70,7 +70,7 @@ export default function WaitList() {
           token: userToken,
           college: formData.college
         });
-        toast.success('College saved! 🎉');
+        toast.success('College saved!');
         setShowSuccess(true);
         setFormData({ email: '', name: '', college: '' });
         setStep(0);
@@ -149,7 +149,7 @@ export default function WaitList() {
           </span>{' '}
           Waitlist Now
         </h2>
-        <p className="text-lg font-medium text-[#D5D5D5] md:text-xl text-center mb-12">
+        <p className="text-lg font-medium text-[#D5D5D5] md:text-lg text-center mb-12">
           Your Gateway to Real-World Open Source
         </p>
 
@@ -292,7 +292,7 @@ export default function WaitList() {
 
 
         {/* Stats */}
-        <div className="flex justify-between w-full max-w-xl p-4 mt-24">
+        <div className="flex justify-between w-full max-w-xl p-4 mt-12">
           {[
             { Icon: Code, label: 'Contributors', value: '500+' },
             { Icon: Users, label: 'Colleges', value: '10+' },

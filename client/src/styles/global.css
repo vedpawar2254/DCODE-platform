@@ -80,3 +80,7 @@ body {
     opacity: 0;
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
