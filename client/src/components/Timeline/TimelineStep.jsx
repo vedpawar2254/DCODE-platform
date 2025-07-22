@@ -1,7 +1,6 @@
 import ConnectLines from './ConnectLines';
 
 export default function TimelineStep({ phase, index, total }) {
-  // Adjusted spacing - more vertical spread than before
   const topPosition = (index * 100) / (total - 1) + 10;
 
   return (
@@ -23,7 +22,7 @@ export default function TimelineStep({ phase, index, total }) {
             : 'right-1/2 translate-x-full pl-6'
         }`}
       >
-        <ConnectLines width={200} />
+        <ConnectLines />
       </div>
 
       {/* Phase card */}
