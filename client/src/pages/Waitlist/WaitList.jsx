@@ -17,7 +17,6 @@ export default function WaitList() {
   const [userToken, setUserToken] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Fetch waitlist count on mount
   useEffect(() => {
     const fetchWaitlistCount = async () => {
       try {
@@ -38,42 +37,49 @@ export default function WaitList() {
   }, [showSuccess]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      if (step === 0) {
-        const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
-          email: formData.email
-        });
+  try {
+    if (step === 0) {
+      const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
+        email: formData.email
+      });
 
-        if (data.token) {
-          setUserToken(data.token);
-          toast.success('Email saved! Let’s get your name.');
-          setStep(1);
-        } else {
-          toast.error('No token received!');
-        }
-
-      } else if (step === 1) {
-        await axios.patch(`${API_URL}/api/waitlist/update`, {
-          token: userToken,
-          college: formData.college
-        });
-        toast.success('College saved!');
-        setShowSuccess(true);
-        setFormData({ email: '', college: '' });
-        setStep(0);
-        setUserToken('');
+      if (data.token) {
+        setUserToken(data.token);
+        setStep(1);
+        toast[data.type || 'success'](data.message || 'Step 1 complete');
+      } else {
+        toast.error(data.message || 'No token received!');
       }
 
-    } catch (err) {
-      console.error(err);
-      toast.error('Oops! Something went wrong.');
-    } finally {
-      setIsSubmitting(false);
+    } else if (step === 1) {
+      if (!formData.college) {
+        toast.error('Please enter your college name!');
+        return;
+      }
+      const { data } = await axios.patch(`${API_URL}/api/waitlist/update`, {
+        token: userToken,
+        college: formData.college
+      });
+
+      toast[data.type || 'success'](data.message || 'Step 2 complete');
+      setShowSuccess(true);
+      setFormData({ email: '', college: '' });
+      setStep(0);
+      setUserToken('');
     }
-  };
+
+  } catch (err) {
+    console.error(err);
+    const message = err?.response?.data?.message || "Please try again later";
+    toast.error(message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   const ellipsePositions = [
     { top: '33%', left: '68%', scale: 0.8 },
@@ -87,9 +93,6 @@ export default function WaitList() {
   return (
     <div className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white select-none font-inter bg-[#121212]/20" style={{ fontFamily: 'Inter, sans-serif' }}>
 
-      {/* <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-black/90 to-black/20" /> */}
-
-      {/* SVG Pattern Background */}
       <div
         className="absolute inset-0 z-0 opacity-20"
         style={{
