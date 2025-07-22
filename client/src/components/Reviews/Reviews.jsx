@@ -11,7 +11,7 @@ export default function Reviews() {
   return (
     <section className="relative h-screen py-24 overflow-hidden bg-black">
       
-      <div className="text-center pb-12 px-4 relative z-10">
+      <div className="text-center  px-4 relative z-10">
         <div className="text-green-400 text-xl font-normal mb-2 opacity-70">
           OUR CONTRIBUTORS
         </div>

@@ -8,11 +8,12 @@ export default function TimelineStep({ phase, index, total }) {
       className="absolute flex items-center w-full"
       style={{
         top: `${topPosition}%`,
-        transform: 'translateY(-50%)'
+        transform: 'translateY(-50%)',
       }}
     >
-      {/* Timeline dot */}
+      
       <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-green-400 rounded-full border-2 border-black z-30" />
+
 
       {/* Connecting line */}
       <div
@@ -22,8 +23,12 @@ export default function TimelineStep({ phase, index, total }) {
             : 'right-1/2 translate-x-full pl-6'
         }`}
       >
-        <ConnectLines />
+        <ConnectLines
+          inverted={phase.position === 'left'}
+          className="w-[100px]" // ← add longer height
+        />
       </div>
+
 
       {/* Phase card */}
       <div

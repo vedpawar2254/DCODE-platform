@@ -54,16 +54,6 @@ const About = () => {
         { name: 'Aryan Vibhuti', score: 920 }
       ]
     },
-    {
-      name: 'Elite',
-      merged: 30,
-      open: 2,
-      leaderboard: [
-        { name: 'Ved', score: 1500 },
-        { name: 'Rohan Singh', score: 1300 },
-        { name: 'Aryan Vibhuti', score: 1100 }
-      ]
-    }
   ];
 
   const [activePhase, setActivePhase] = useState(phases[2]);

@@ -69,28 +69,31 @@ const Benefits = () => {
         </div>
 
 
-        <div className="relative flex items-center justify-center w-[380px] h-[380px] rounded-full">
+        <div className="relative flex items-center justify-center w-[340px] h-[340px] rounded-full">
         
         <div
           className="absolute inset-0 rounded-full border-2 border-black z-10"
           style={{
-            background: 'linear-gradient(60deg, #5A6525 0%, #333D00 100%)',
+            background: 'linear-gradient(60deg, #5A6525 0%, #272f01ff 100%)',
             boxShadow: '6px 12px 12px rgba(0, 0, 0, 0.5)'
           }}
         ></div>
 
-        <div className='absolute z-10 rounded-full border-1 border-[#37CD5A] w-[320px] h-[320px]'></div>
+        <div className='absolute z-10 rounded-full border-1 border-[#37CD5A] w-[280px] h-[280px]'></div>
 
           <button
-            onClick={() => setIsVideoOpen(true)}
-            className="z-20 w-[120px] h-[120px] rounded-full flex items-center justify-center bg-[#37CD5A] hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
-          >
-            <img
-              src="/images/playbutton.svg"
-              alt="play button"
-              className="w-8 h-8"
-            />
-          </button>
+          onClick={() => setIsVideoOpen(true)}
+          className="z-20 w-[120px] h-[120px] rounded-full flex items-center justify-center hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+          style={{
+            background: 'radial-gradient(circle at center, #37CD5A 0%, #1e864dff 70%, #074627ff 100%)',
+          }}
+        >
+          <img
+            src="/images/playbutton.svg"
+            alt="play button"
+            className="w-8 h-8"
+          />
+        </button>
         </div>
 
 
