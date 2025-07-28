@@ -55,21 +55,31 @@ const Benefits = () => {
       <div className="relative flex flex-col w-full md:flex-row md:justify-center md:items-center">
         <div className="absolute inset-0 z-10 pointer-events-none"></div>
         {/* --- LEFT FEATURE CARDS --- */}
-        <div className="">
-          <FeatureCards
-            icon="/images/accelerate.svg"
-            title="Accelerate Growth"
-            description="Build meaningful projects that advance your career trajectory"
-          />
-          <FeatureCards
-            icon="/images/spirals.svg"
-            title="Unlock Potential"
-            description="Maximize your impact with cutting-edge development tools"
-          />
-        </div>
+        <AnimatePresence>
+        {!isVideoOpen && (
+          <motion.div
+            className="flex flex-col gap-4"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 1 }}
+          >
+            <FeatureCards
+              icon="/images/accelerate.svg"
+              title="Accelerate Growth"
+              description="Build meaningful projects that advance your career trajectory"
+            />
+            <FeatureCards
+              icon="/images/spirals.svg"
+              title="Unlock Potential"
+              description="Maximize your impact with cutting-edge development tools"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
 
-        <div className="relative flex items-center justify-center w-[340px] h-[340px] rounded-full">
+        <div className="relative flex items-center justify-center w-[340px] h-[340px] rounded-full mt-24">
         
         <div
           className="absolute inset-0 rounded-full border-2 border-black z-10"
@@ -98,18 +108,29 @@ const Benefits = () => {
 
 
         {/* --- RIGHT FEATURE CARDS --- */}
-        <div className="">
-          <FeatureCards
-            icon="/images/star.svg"
-            title="Stand Apart"
-            description="Distinguish yourself in the competitive development landscape"
-          />
-          <FeatureCards
-            icon="/images/globe.svg"
-            title="Collaborate Globally"
-            description="Work with diverse peers and mentors from across the tech ecosystem"
-          />
-        </div>
+        <AnimatePresence>
+        {!isVideoOpen && (
+          <motion.div
+            className="flex flex-col gap-4"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ duration: 1 }}
+          >
+            <FeatureCards
+              icon="/images/star.svg"
+              title="Stand Apart"
+              description="Distinguish yourself in the competitive development landscape"
+            />
+            <FeatureCards
+              icon="/images/globe.svg"
+              title="Collaborate Globally"
+              description="Work with diverse peers and mentors from across the tech ecosystem"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
 
         {/* --- VIDEO MODAL --- */}
         <AnimatePresence>
