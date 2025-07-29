@@ -21,7 +21,8 @@ export default function WaitList() {
     const fetchWaitlistCount = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/waitlist/count`);
-        setJoinedCount(response.data.count);
+        const roundedCount = Math.ceil(response.data.count / 10) * 10;
+        setJoinedCount(roundedCount);
       } catch (err) {
         console.error('Failed to fetch waitlist count:', err);
       }
