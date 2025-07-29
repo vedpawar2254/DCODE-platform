@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function WaitList() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [joinedCount, setJoinedCount] = useState(10);
+  const [joinedCount, setJoinedCount] = useState(0);
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
@@ -21,7 +21,8 @@ export default function WaitList() {
     const fetchWaitlistCount = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/waitlist/count`);
-        setJoinedCount(response.data.count);
+        const roundedCount = Math.floor(response.data.count / 10) * 10;
+        setJoinedCount(roundedCount);
       } catch (err) {
         console.error('Failed to fetch waitlist count:', err);
       }
@@ -112,7 +113,6 @@ export default function WaitList() {
         />
       </div>
 
-
       {ellipsePositions.map((ellipse, i) => (
         <img
           key={i}
@@ -123,45 +123,30 @@ export default function WaitList() {
             top: ellipse.top,
             left: ellipse.left,
             transform: `scale(${ellipse.scale})`,
-            filter: 'blur(6px) drop-shadow(0 0 8px #37CD5A)',
+            filter: 'blur(6px) drop-shadow(0 0 8px #37CD5A)'
           }}
         />
       ))}
 
-
-      {/* <div
-        className="absolute inset-0 opacity-80"
-        style={{
-          backgroundImage:
-            `linear-gradient(rgba(18,18,18, 0%) 1px, transparent 1px),
-             linear-gradient(90deg, rgba(18,18,18, 80%) 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
-        }}
-      /> */}
-
-
-      <main className="relative z-10 flex flex-col items-center w-full max-w-4xl px-8 py-10 mx-auto">
-
+      <main className="relative z-10 flex flex-col items-center w-full max-w-4xl px-4 sm:px-8 py-10 mx-auto">
         <div className="inline-flex items-center px-6 py-2 mt-6 text-sm font-bold text-[#BCDD19]/70 bg-[#BCDD19]/10 rounded-full mb-6">
           Join Today
         </div>
 
-
-        <h2 className="mb-4 text-4xl font-bold tracking-tight text-center md:text-5xl">
+        <h2 className="mb-4 text-3xl sm:text-4xl font-bold tracking-tight text-center md:text-5xl">
           Join the{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D]">
             DCODE
           </span>{' '}
           waitlist now
         </h2>
-        <p className="text-lg font-medium text-[#D5D5D5]/70 md:text-lg text-center mb-8">
+        <p className="text-md sm:text-lg font-medium text-[#D5D5D5]/70 text-center mb-8">
           Your gateway to real-world open source
         </p>
 
-
-        <p className="sm:text-2xl text-xl md:text-md mb-14 text-center text-[#D5D5D5]">
-          <span className="mr-3 text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D] text-4xl font-bold md:text-5xl">
-            {joinedCount.toLocaleString()}
+        <p className="text-xl sm:text-2xl md:text-md mb-14 text-center text-[#D5D5D5]">
+          <span className="mr-3 text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D] text-3xl sm:text-4xl md:text-5xl font-bold">
+            {joinedCount.toLocaleString()}+
           </span>
           developers have already joined
         </p>
@@ -200,8 +185,6 @@ export default function WaitList() {
               </button>
             </div>
 
-
-            {/* College step */}
             <div
               className={`absolute inset-0 flex items-center transition-all duration-500 ${step === 1
                 ? 'opacity-100 translate-x-0'
@@ -231,7 +214,6 @@ export default function WaitList() {
           </div>
         </form>
 
-
         <div className="flex items-center justify-center w-full mt-4 text-base md:text-xs">
           <div className="flex items-center mr-3 space-x-1">
             {[1, 2, 3, 4, 5].map(i => {
@@ -259,13 +241,11 @@ export default function WaitList() {
           </span>
         </div>
 
-
-        <div className="flex sm:flex-row flex-col justify-between sm:gap-20 gap-10 /w-full /max-w-xl /p-4 sm:mt-24 mt-16">
+        <div className="flex sm:flex-row flex-col justify-between sm:gap-20 gap-10 w-full max-w-xl p-4 sm:mt-24 mt-16">
           {[
             { Icon: Code, label: 'Contributors', value: '500+' },
             { Icon: Users, label: 'Colleges', value: '10+' },
             { Icon: MdOutlineRocket, label: 'Projects', value: '50+' },
-            // eslint-disable-next-line no-unused-vars
           ].map(({ Icon, label, value }, i) => (
             <div key={i} className="flex items-center space-x-2">
               <div className="w-14 h-14 flex items-center justify-center bg-[#37CD5A]/20 rounded-lg">
@@ -294,7 +274,6 @@ export default function WaitList() {
         )}
       </main>
 
-      {/* FOOTER */}
       <footer className="relative w-full pb-6 mt-auto sm:text-sm text-xs text-center text-[#d5d5d5]/70">
         <div className="absolute inset-x-0 -bottom-6.5 opacity-30 flex justify-center z-0 pointer-events-none select-none">
           <img src="/images/Waitlist.png" alt="Waitlist Footer" />

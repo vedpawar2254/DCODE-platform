@@ -54,16 +54,6 @@ const About = () => {
         { name: 'Aryan Vibhuti', score: 920 }
       ]
     },
-    {
-      name: 'Elite',
-      merged: 30,
-      open: 2,
-      leaderboard: [
-        { name: 'Ved', score: 1500 },
-        { name: 'Rohan Singh', score: 1300 },
-        { name: 'Aryan Vibhuti', score: 1100 }
-      ]
-    }
   ];
 
   const [activePhase, setActivePhase] = useState(phases[2]);
@@ -108,7 +98,7 @@ const About = () => {
   }, []);
 
   return (
-    <section className="w-full px-6 md:px-16 bg-black text-center py-24">
+    <section className="w-full px-6 md:px-16 bg-black text-center mb-24 p-16">
       <div className="max-w-3xl mx-auto mb-16">
         <h3 className="text-green-500 text-sm tracking-widest mb-8">
           MADE ACCESSIBLE

@@ -3,7 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Contact() {
   return (
-    <section className="flex justify-center items-center py-24 bg-black relative overflow-hidden">
+    <section className="flex justify-center items-center pb-12 bg-black relative overflow-hidden">
       <div className="absolute w-[600px] h-[420px] bg-[#01FF80] opacity-10 blur-[100px] rounded-full z-0" />
 
       <div className="w-[1227px] h-[367px] bg-[#151515] border border-[rgba(25,221,113,0.3)] rounded-[20px] relative z-10 overflow-hidden flex">
