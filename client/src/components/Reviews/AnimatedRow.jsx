@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive';
 
 export default function Marquee({ children }) {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  
   return (
     <div className="relative overflow-hidden w-full">
       <motion.div
@@ -8,7 +11,7 @@ export default function Marquee({ children }) {
         animate={{ x: ['0%', '-50%'] }}
         transition={{
           ease: 'linear',
-          duration: 30,
+          duration: isMobile ? 20 : 30,
           repeat: Infinity
         }}
       >

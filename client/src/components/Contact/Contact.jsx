@@ -3,17 +3,20 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 export default function Contact() {
   return (
-    <section className="flex justify-center items-center pb-12 bg-black relative overflow-hidden">
-      <div className="absolute w-[600px] h-[420px] bg-[#01FF80] opacity-10 blur-[100px] rounded-full z-0" />
+    <section className="w-full pt-4 pb-8 md:py-24 bg-black relative overflow-hidden px-4 sm:px-6">
+      {/* Background glow - smaller on mobile */}
+      <div className="absolute w-[300px] h-[210px] md:w-[600px] md:h-[420px] bg-[#01FF80] opacity-10 blur-[50px] md:blur-[100px] rounded-full z-0 -bottom-20 md:bottom-auto md:top-1/2 left-1/2 transform -translate-x-1/2 md:-translate-y-1/2" />
 
-      <div className="w-[1227px] h-[367px] bg-[#151515] border border-[rgba(25,221,113,0.3)] rounded-[20px] relative z-10 overflow-hidden flex">
+      {/* Main container - responsive sizing */}
+      <div className="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto h-auto md:h-[300px] lg:h-[367px] bg-[#151515] border border-[rgba(25,221,113,0.3)] rounded-xl lg:rounded-[20px] relative z-10 overflow-hidden flex flex-col md:flex-row">
         
-
-        <div className="w-[40%] h-full flex items-center justify-center relative">
-
-          <div className="w-[70px] h-[70px] bg-[rgba(1,153,77,0.2)] border border-[rgba(25,221,113,0.3)] rounded-[15px] flex items-center justify-center z-10">
+        {/* Tech tags section - hidden on mobile */}
+        <div className="hidden md:flex md:w-[40%] h-full items-center justify-center relative">
+          <div className="absolute w-[70px] h-[70px] bg-[rgba(1,153,77,0.2)] border border-[rgba(25,221,113,0.3)] rounded-[15px] flex items-center justify-center z-10">
             <Code className="text-lime-400 w-6 h-6" />
           </div>
+          
+          {/* Tech tags - only visible on desktop */}
           <span className="absolute top-[20%] left-[10%] px-2 py-0.5 text-[#01994D] text-[15px] bg-[rgba(25,221,113,0.05)] border border-[rgba(118,133,41,0.3)] rounded-full">
             React
           </span>
@@ -40,15 +43,15 @@ export default function Contact() {
           </span>
         </div>
 
-        
-        <div className="w-[60%] h-full flex items-center justify-center text-white px-12">
-          <div>
-            <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
+        {/* Contact content section - full width on mobile */}
+        <div className="w-full md:w-[60%] h-full flex items-center justify-center text-white p-4 md:p-12">
+          <div className="w-full max-w-md lg:max-w-lg">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 md:mb-6 leading-tight">
               Ready to boost your{' '}
               <span className="text-[#01FF80]">development?</span>
             </h1>
 
-            <p className="text-gray-300 text-lg mb-8 leading-relaxed max-w-[500px]">
+            <p className="text-gray-300 text-sm sm:text-base md:text-lg mb-4 md:mb-8 leading-relaxed">
               Interested in becoming a{' '}
               <span className="text-green-400 font-medium">
                 Campus Ambassador
@@ -58,22 +61,21 @@ export default function Contact() {
               free to reach out!
             </p>
 
-            <div className="flex gap-3">
-              <button className="bg-[#BCDD19] text-black font-medium px-5 py-3 rounded text-sm transition-colors duration-200 flex items-center gap-2">
+            <div className="flex flex-wrap gap-2 md:gap-3">
+              <button className="bg-[#BCDD19] hover:bg-[#a8c516] text-black font-medium px-4 py-2 md:px-5 md:py-3 rounded text-xs md:text-sm transition-colors duration-200 flex items-center gap-2">
                 Contact us
               </button>
 
-              <button className="text-white p-3 rounded border border-[#D5D5D533] flex items-center justify-center">
-                <Mail className="w-5 h-5" />
+              <button className="text-white p-2 md:p-3 rounded border border-[#D5D5D533] flex items-center justify-center hover:bg-[#ffffff08] transition-colors">
+                <Mail className="w-4 h-4 md:w-5 md:h-5" />
               </button>
 
-              <button className="text-white p-3 rounded border border-[#D5D5D533] flex items-center justify-center">
-                <FaWhatsapp className="w-5 h-5" />
+              <button className="text-white p-2 md:p-3 rounded border border-[#D5D5D533] flex items-center justify-center hover:bg-[#ffffff08] transition-colors">
+                <FaWhatsapp className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );
