@@ -11,7 +11,7 @@ export default function NavBar() {
       <div className="flex items-center justify-between">
         <Logo />
 
-        {/* Desktop Navigation - unchanged from your original */}
+        
         <div className="hidden md:flex items-center space-x-6">
           {['Home', 'About', 'Timeline', 'Sponsor Us', 'Contact'].map(link => (
             <Link
@@ -35,7 +35,7 @@ export default function NavBar() {
         </button>
       </div>
 
-      {/* Mobile Menu - appears below navbar when open */}
+     
       {isMenuOpen && (
         <div className="md:hidden mt-4 py-4 px-4 border-t border-gray-800">
           <div className="flex flex-col space-y-5">
