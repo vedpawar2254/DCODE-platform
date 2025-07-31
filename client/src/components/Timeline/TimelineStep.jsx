@@ -43,8 +43,8 @@ export default function TimelineStep({ phase, index, total }) {
       <div
         className={`hidden md:block absolute top-1/2 transform -translate-y-1/2 z-20 ${
           phase.position === 'left'
-            ? 'left-1/2 -translate-x-full pr-6'
-            : 'right-1/2 translate-x-full pl-6'
+            ? 'left-1/2 -translate-x-full'
+            : 'right-1/2 translate-x-full'
         }`}
       >
         <ConnectLines
