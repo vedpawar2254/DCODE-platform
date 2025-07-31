@@ -3,7 +3,6 @@ import Button from '../ui/Button/Button';
 const Hero = () => {
   return (
     <section className="relative flex flex-col justify-between h-screen px-6 py-16 overflow-hidden bg-black select-none md:px-16">
-      {/* Content - remains unchanged on desktop */}
       <div className="z-10 w-full mb-8 animate-fadeInUp">
         <h1 className="max-w-5xl text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
           The <span className="text-[#BCDD19] animate-gradient">Open</span>{' '}
@@ -24,7 +23,6 @@ const Hero = () => {
         </p>
       </div>
 
-      {/* Bottom section - stacked on mobile */}
       <div className="z-10 py-8 mt-2 space-y-6 md:py-16 md:space-y-8 md:w-5/12 animate-fadeInUp">
         <p className="mb-2 text-xl text-white sm:text-2xl md:text-3xl">
           Learn deeper.
@@ -38,7 +36,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Hero image - hidden on mobile */}
+
       <div className="absolute right-0 z-0 bottom-20 animate-float hidden sm:block">
         <img
           src="/images/Hero.png"
