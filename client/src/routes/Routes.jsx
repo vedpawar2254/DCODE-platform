@@ -16,20 +16,20 @@ export const routes = createBrowserRouter([
     path: '/',
     element: <WaitList />
   },
-  {
-    path: '/home',
-    element: <Home />
-  },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path:"/dashboard",
-    element:<Dashboard/>
-  },
-  {
-    path:"/contact",
-    element:<ContactPage/>
-  }
+  // {
+  //   path: '/home',
+  //   element: <Home />
+  // },
+  // {
+  //   path: '/signup',
+  //   element: <Signup />
+  // },
+  // {
+  //   path:"/dashboard",
+  //   element:<Dashboard/>
+  // },
+  // {
+  //   path:"/contact",
+  //   element:<ContactPage/>
+  // }
 ]);
