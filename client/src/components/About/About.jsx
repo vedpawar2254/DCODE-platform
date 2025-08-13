@@ -234,7 +234,7 @@ const About = () => {
                 <span className="text-[#BCDD19] mr-1">↗</span> Collaborative
                 Learning
               </h3>
-              <p className="text-gray-400 text-xs p-2">
+              <p className="text-gray-400">
                 Git workflows, code reviews, and dev practices.
               </p>
             </div>
