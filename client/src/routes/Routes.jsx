@@ -14,22 +14,22 @@ export const routes = createBrowserRouter([
   //   children: [
   {
     path: '/',
+    element: <Home />
+  },
+  {
+    path: '/waitlist',
     element: <WaitList />
   },
-  // {
-  //   path: '/home',
-  //   element: <Home />
-  // },
-  // {
-  //   path: '/signup',
-  //   element: <Signup />
-  // },
-  // {
-  //   path:"/dashboard",
-  //   element:<Dashboard/>
-  // },
-  // {
-  //   path:"/contact",
-  //   element:<ContactPage/>
-  // }
+  {
+    path: '/signup',
+    element: <Signup />
+  },
+  {
+    path:"/dashboard",
+    element:<Dashboard/>
+  },
+  {
+    path:"/contact",
+    element:<ContactPage/>
+  }
 ]);

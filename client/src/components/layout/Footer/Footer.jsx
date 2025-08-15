@@ -1,9 +1,15 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { FiGithub } from 'react-icons/fi';
 import { SlSocialLinkedin } from 'react-icons/sl';
-import { CiTwitter } from 'react-icons/ci';
 
 const Footer = () => {
+  const scrollToSection = (id) => {
+    const section = document.querySelector(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-black text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-32 pt-8 pb-6">
       {/* Top Line */}
@@ -13,6 +19,7 @@ const Footer = () => {
 
       {/* Footer Main Content */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 pt-8 text-sm">
+        
         {/* Column 1: Logo and Description */}
         <div className="sm:col-span-2 lg:col-span-1">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
@@ -31,9 +38,12 @@ const Footer = () => {
             open-source contributions and community-driven learning experiences.
           </p>
           <div className="flex gap-3 sm:gap-4 pt-1 sm:pt-2.5 text-white">
-            <FiGithub className="w-3 h-3 sm:w-4 sm:h-4" />
-            <CiTwitter className="w-3 h-3 sm:w-4 sm:h-4" />
-            <SlSocialLinkedin className="w-3 h-3 sm:w-4 sm:h-4" />
+            <a href="https://github.com/DCODE-HQ" target="_blank" rel="noopener noreferrer">
+              <FiGithub className="w-3 h-3 sm:w-4 sm:h-4" />
+            </a>
+            <a href="https://www.linkedin.com/company/dcode-headquarters/" target="_blank" rel="noopener noreferrer">
+              <SlSocialLinkedin className="w-3 h-3 sm:w-4 sm:h-4" />
+            </a>
           </div>
         </div>
 
@@ -42,19 +52,48 @@ const Footer = () => {
           <h3 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Quick Links</h3>
           <ul className="space-y-1 sm:space-y-2 text-[#D5D5D5B3] text-xs sm:text-sm">
             <li>
-              <a href="#" className="hover:text-white transition-colors">Home</a>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="hover:text-white transition-colors"
+              >
+                Home
+              </a>
             </li>
             <li>
-              <a href="#" className="hover:text-white transition-colors">About</a>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('#About');
+                }}
+                className="hover:text-white transition-colors"
+              >
+                About
+              </a>
             </li>
             <li>
-              <a href="#" className="hover:text-white transition-colors">Timeline</a>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('#timeline');
+                }}
+                className="hover:text-white transition-colors"
+              >
+                Timeline
+              </a>
             </li>
             <li>
-              <a href="#" className="hover:text-white transition-colors">Sponsor Us</a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+              <a
+                href="/contact"
+                className="hover:text-white transition-colors"
+              >
+                Contact
+              </a>
             </li>
           </ul>
         </div>
@@ -70,8 +109,7 @@ const Footer = () => {
             <li className="flex items-start gap-2">
               <Phone className="text-[#65770D] flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4 mt-0.5" />
               <span className="text-[#D5D5D5B3]">
-                +91 92500 21256{' '}
-                <span className="text-[#D5D5D5B3]">(Rohan Singh)</span>
+                +91 92500 21256 <span>(Rohan Singh)</span>
               </span>
             </li>
             <li className="flex items-start gap-2">
