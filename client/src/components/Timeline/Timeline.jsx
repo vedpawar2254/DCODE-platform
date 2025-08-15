@@ -8,7 +8,7 @@ const DCodeTimeline = () => {
       id: 1,
       title: 'Fork Phase',
       duration: '2.5 Months',
-      description: 'Close the repository and start to explore',
+      description: 'Choose a repository and start to explore with basic issues',
       icon: <FileText className="w-6 h-6" />,
       position: 'left'
     },
@@ -16,7 +16,7 @@ const DCodeTimeline = () => {
       id: 2,
       title: 'Spec Phase',
       duration: '0.5 Month',
-      description: 'Understand the problem and plan your fix',
+      description: 'Understand the problem and plan your fix then propose it',
       icon: <Lightbulb className="w-6 h-6" />,
       position: 'right'
     },
@@ -33,14 +33,14 @@ const DCodeTimeline = () => {
       title: 'Showcase & Recognition',
       duration: 'Completion ceremony',
       description:
-        'Top performers receive industry mentorship, internship opportunities, and community recognition',
+        'Top performers receive internship opportunities, and community recognition',
       icon: <Trophy className="w-6 h-6" />,
       position: 'right'
     }
   ];
 
   return (
-    <div className="relative w-full min-h-[200vh] bg-black overflow-hidden py-5">
+    <div className="relative w-full min-h-[200vh] bg-black overflow-hidden">
       <div
         className="absolute w-[1200px] h-[1200px] rounded-full opacity-20 pointer-events-none"
         style={{

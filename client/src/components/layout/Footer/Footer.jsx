@@ -31,9 +31,9 @@ const Footer = () => {
             open-source contributions and community-driven learning experiences.
           </p>
           <div className="flex gap-3 sm:gap-4 pt-1 sm:pt-2.5 text-white">
-            <FiGithub className="w-3 h-3 sm:w-4 sm:h-4" />
-            <CiTwitter className="w-3 h-3 sm:w-4 sm:h-4" />
-            <SlSocialLinkedin className="w-3 h-3 sm:w-4 sm:h-4" />
+            <a href="https://github.com/DCODE-HQ" target="_blank"><FiGithub className="w-3 h-3 sm:w-4 sm:h-4" /></a>
+            {/* <CiTwitter className="w-3 h-3 sm:w-4 sm:h-4" /> */}
+            <a href='https://www.linkedin.com/company/dcode-headquarters/' target='_blank'><SlSocialLinkedin className="w-3 h-3 sm:w-4 sm:h-4" /></a>
           </div>
         </div>
 
@@ -50,11 +50,11 @@ const Footer = () => {
             <li>
               <a href="#" className="hover:text-white transition-colors">Timeline</a>
             </li>
-            <li>
+            {/* <li>
               <a href="#" className="hover:text-white transition-colors">Sponsor Us</a>
-            </li>
+            </li> */}
             <li>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+              <a href="mailto:dcode.codes@gmail.com" className="hover:text-white transition-colors">Contact</a>
             </li>
           </ul>
         </div>
