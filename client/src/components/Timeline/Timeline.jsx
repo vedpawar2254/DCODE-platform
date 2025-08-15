@@ -40,7 +40,7 @@ const DCodeTimeline = () => {
   ];
 
   return (
-    <div className="relative w-full min-h-[200vh] bg-black overflow-hidden">
+    <div className="relative w-full min-h-[200vh] bg-black overflow-hidden" id="timeline">
       <div
         className="absolute w-[1200px] h-[1200px] rounded-full opacity-20 pointer-events-none"
         style={{

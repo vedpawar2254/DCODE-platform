@@ -4,6 +4,7 @@ import { FeatureCards } from './FeatureCards';
 
 const Benefits = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const Benefits = () => {
         !videoRef.current.contains(event.target)
       ) {
         setIsVideoOpen(false);
+        setShowVideo(false);
       }
     };
 
@@ -24,7 +26,7 @@ const Benefits = () => {
   }, [isVideoOpen]);
 
   return (
-    <section className="relative flex flex-col items-center w-full min-h-screen px-6 pt-24 text-center bg-black md:px-16">
+    <section id="About" className="relative flex flex-col items-center w-full min-h-screen px-6 pt-24 text-center bg-black md:px-16">
       {/* Background glow */}
       <div
         className="absolute inset-0 z-0 rounded-full"
@@ -81,7 +83,10 @@ const Benefits = () => {
         </AnimatePresence>
 
         {/* Center Video/Shape Container */}
-        <div className="hidden md:flex relative flex-shrink-0 mt-24 items-center justify-center" style={{ height: '520px' }}>
+        <div
+          className="hidden md:flex relative flex-shrink-0 mt-24 items-center justify-center"
+          style={{ height: '520px' }}
+        >
           <motion.div
             ref={videoRef}
             initial={{ width: 680, height: 680, borderRadius: '50%' }}
@@ -91,6 +96,13 @@ const Benefits = () => {
                 : { width: 340, height: 340, borderRadius: '50%' }
             }
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+            onAnimationComplete={() => {
+              if (isVideoOpen) {
+                setTimeout(() => setShowVideo(true), 150);
+              } else {
+                setShowVideo(false);
+              }
+            }}
             className="absolute flex items-center justify-center"
             style={{
               background: 'linear-gradient(60deg, #5A6525 0%, #272f01 100%)',
@@ -119,7 +131,7 @@ const Benefits = () => {
               </>
             )}
 
-            {isVideoOpen && (
+            {showVideo && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
