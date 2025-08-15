@@ -43,7 +43,7 @@ export default function NavBar() {
   };
 
   const navLinks = [
-    { name: 'Home', path: '/' },
+    
     { name: 'About', path: '/#About' },
     { name: 'Timeline', path: '/#timeline' },
     { name: 'Contact', path: '/contact' }
@@ -66,7 +66,7 @@ export default function NavBar() {
               {link.name}
             </a>
           ))}
-          <Button variant="outline">Login</Button>
+          <Button variant="outline"><a href='/waitlist'>Login</a></Button>
         </div>
 
         {/* Mobile Menu Button */}
