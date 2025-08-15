@@ -88,7 +88,7 @@ const DCodeTimeline = () => {
           className="absolute left-1/2 transform -translate-x-1/2 translate-y-30 z-0 h-full flex items-center justify-center pointer-events-none"
           style={{ top: '20px' }}
         >
-          <TimelineLine height={1300} />
+          <TimelineLine height={1100} />
         </div>
 
         

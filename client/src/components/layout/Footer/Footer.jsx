@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { FiGithub } from 'react-icons/fi';
 import { SlSocialLinkedin } from 'react-icons/sl';
+import Logo from '../../ui/Logo/Logo';
 
 const Footer = () => {
   const scrollToSection = (id) => {
@@ -23,15 +24,10 @@ const Footer = () => {
         {/* Column 1: Logo and Description */}
         <div className="sm:col-span-2 lg:col-span-1">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <div className="bg-[#B4FF06] w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-md text-black font-bold">
-              <FiGithub className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="bg-[#B4FF06] w-30 h-10 sm:w-30 sm:h-10 flex items-center justify-center rounded-md text-black font-bold">
+              <Logo/>
             </div>
-            <h2 className="text-white font-bold text-xl sm:text-2xl">
-              D
-              <span className="bg-gradient-to-r from-[#BCDD19] to-[#65770D] bg-clip-text text-transparent">
-                CODE
-              </span>
-            </h2>
+            
           </div>
           <p className="text-[#D5D5D5B3] leading-relaxed mb-4 sm:mb-6 text-xs sm:text-sm">
             Empowering the next generation of developers through structured
