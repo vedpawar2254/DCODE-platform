@@ -37,8 +37,8 @@ const Benefits = () => {
       ></div>
 
       {/* Heading & Intro */}
-      <div className="max-w-7xl mx-auto mb-16">
-        <h3 className="mb-8 text-sm tracking-widest text-[#37CD5A]">
+      <div className="max-w-7xl mx-auto">
+        <h3 className="mb-4 text-sm tracking-widest text-[#37CD5A]">
           WHY DCODE
         </h3>
 
@@ -49,20 +49,20 @@ const Benefits = () => {
           </span>{' '}
           Lead.
         </h2>
-        <p className="mt-6 text-[#D5D5D5] max-w-4xl mx-auto">
+        <p className="mt-6 text-[#D5D5D5] max-w-4xl mx-auto -mb-10">
           Make your first contributions, and ship actual changes.
           You’ll work alongside peers, mentors, and maintainers — and if you
           keep at it, you could <strong>become a maintainer yourself</strong>.
         </p>
       </div>
 
-      {/* Features + Center Container */}
-      <div className="relative flex flex-col w-full md:flex-row md:justify-center md:items-center">
-        {/* Left Features */}
+      
+      <div className="relative flex flex-col w-full md:flex-row md:justify-center md:items-center pt-0">
+        
         <AnimatePresence>
           {!isVideoOpen && (
             <motion.div
-              className="flex flex-col flex-1 items-center md:items-start"
+              className="flex flex-col flex-1 items-center md:items-center pr-20"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -200 }}
@@ -82,7 +82,7 @@ const Benefits = () => {
           )}
         </AnimatePresence>
 
-        {/* Center Video/Shape Container */}
+        
         <div
           className="hidden md:flex relative flex-shrink-0 mt-24 items-center justify-center"
           style={{ height: '520px' }}
@@ -139,7 +139,7 @@ const Benefits = () => {
                 className="w-full h-full flex items-center justify-center p-2"
                 style={{
                   background:
-                    'linear-gradient(60deg, #5A6525 0%, #272f01 100%)'
+                    "black"
                 }}
               >
                 <video
@@ -156,11 +156,11 @@ const Benefits = () => {
           </motion.div>
         </div>
 
-        {/* Right Features */}
+        
         <AnimatePresence>
           {!isVideoOpen && (
             <motion.div
-              className="flex flex-col gap-4 flex-1 items-center md:items-end"
+              className="flex flex-col gap-4 flex-1 items-center md:items-center pl-20"
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 200 }}

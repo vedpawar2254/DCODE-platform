@@ -33,7 +33,7 @@ export default function Contact() {
         {/* Contact content section */}
         <div className="w-full md:w-[60%] h-full flex items-center justify-center text-white p-4 md:p-12">
           <div className="w-full max-w-md lg:max-w-lg">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 md:mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-4xl font-semibold text-white mb-3 md:mb-6 leading-tight">
               Ready to boost your{' '}
               <span className="text-[#01FF80]">development?</span>
             </h1>
