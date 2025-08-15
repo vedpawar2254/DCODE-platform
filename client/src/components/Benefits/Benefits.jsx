@@ -144,9 +144,9 @@ const Benefits = () => {
               >
                 <video
                   className="w-[calc(100%-20px)] h-[calc(100%-20px)] object-cover rounded-lg"
-                  src="/videos/PixVerse_V4.5_Image_Text_360P_animate_this_a_l.mp4"
+                  src="/videos/dcode.mp4"
                   autoPlay
-                  muted
+                  
                   loop
                   playsInline
                   controls={false}
