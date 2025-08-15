@@ -69,12 +69,12 @@ const Benefits = () => {
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               <FeatureCards
-                icon="/images/accelerate.svg"
+                icon="/images/Group2.svg"
                 title="Boost Resume"
                 description="Create a resume that stands out from the crowd."
               />
               <FeatureCards
-                icon="/images/spirals.svg"
+                icon="/images/Group.svg"
                 title="Grow and Learn"
                 description="Learn tools and workflows used by top open-source teams."
               />
@@ -167,12 +167,12 @@ const Benefits = () => {
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               <FeatureCards
-                icon="/images/star.svg"
+                icon="/images/Group5.svg"
                 title="Stand Apart"
                 description="Your Contributions speaks for you, We make sure of that."
               />
               <FeatureCards
-                icon="/images/globe.svg"
+                icon="/images/Group6.svg"
                 title="Collaborate Globally"
                 description="Work with contributors mentors, and orgs from across the globe."
               />
