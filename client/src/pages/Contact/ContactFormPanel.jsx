@@ -78,6 +78,9 @@ const ContactFormPanel = () => {
     }
     setIsSubmitting(true);
     try {
+      const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
+        email: formData.email
+      });
       setToast({
         show: true,
         message: 'Message sent successfully!',
@@ -218,16 +221,14 @@ const ContactFormPanel = () => {
                 <p className="text-red-500 text-xs mt-1">{errors.subject}</p>
               )}
               {isSubjectOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 border border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto bg-black">
                   {subjectOptions.map((option, index) => (
                     <button
                       key={index}
                       type="button"
                       onClick={() => handleSubjectSelect(option)}
-                      className={`w-full px-3 py-2 text-left hover:bg-gray-700 transition-colors text-sm ${
-                        formData.subject === option
-                          ? 'bg-gray-700 text-white'
-                          : 'text-white'
+                      className={`w-full px-3 py-2 text-left bg-black hover:bg-gray-900 transition-colors text-sm text-white ${
+                        formData.subject === option ? 'bg-black' : ''
                       }`}
                     >
                       {option}

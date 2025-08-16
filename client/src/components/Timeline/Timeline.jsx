@@ -40,7 +40,10 @@ const DCodeTimeline = () => {
   ];
 
   return (
-    <div className="relative w-full min-h-[200vh] bg-black overflow-hidden py-5">
+    <div
+      className="relative w-full min-h-[200vh] bg-black overflow-hidden py-5"
+      id="timeline"
+    >
       <div
         className="absolute w-[1200px] h-[1200px] rounded-full opacity-20 pointer-events-none"
         style={{
@@ -91,7 +94,6 @@ const DCodeTimeline = () => {
           <TimelineLine height={1300} />
         </div>
 
-        
         <div className="relative w-full max-w-6xl mx-auto min-h-[130vh]">
           {phases.map((phase, index) => (
             <TimelineStep
