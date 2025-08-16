@@ -95,7 +95,8 @@ export default function NavBar() {
             ))}
             <div className="pt-2">
               <Button variant="outline" className="w-full">
-                Login
+                <a href='/waitlist'>Login</a>
+               
               </Button>
             </div>
           </div>
