@@ -1,5 +1,9 @@
 import { Outlet } from 'react-router-dom';
-
+import { AuthProvider } from '../../context/AuthContext';
 export const OnboardingPage = () => {
-    return <Outlet />
-}
+  return (
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
+  );
+};
