@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../../ui/Button/Button';
 import Logo from '../../ui/Logo/Logo';
+import WaitList from '../../../pages/Waitlist/WaitList';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const scrollToSection = (id) => {
+  const scrollToSection = id => {
     const section = document.querySelector(id);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
@@ -43,14 +44,13 @@ export default function NavBar() {
   };
 
   const navLinks = [
-    
     { name: 'About', path: '/#About' },
     { name: 'Timeline', path: '/#timeline' },
     { name: 'Contact', path: '/contact' }
   ];
 
   return (
-    <nav className="w-full py-4 px-4 sm:px-8 lg:px-16">
+    <nav className="w-full py-4 pt-[2rem] px-4 sm:px-8 lg:px-16">
       <div className="flex items-center justify-between">
         <Logo />
 
@@ -60,13 +60,17 @@ export default function NavBar() {
             <a
               key={link.name}
               href={link.path}
-              onClick={(e) => handleNavClick(e, link)}
+              onClick={e => handleNavClick(e, link)}
               className="relative text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-lime-400 after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.name}
             </a>
           ))}
-          <Button variant="outline"><a href='/waitlist'>Login</a></Button>
+          <Button variant="outline">
+            <a href="/waitlist" className="px-[0.5rem] py-[3rem]">
+              Waitlist
+            </a>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -87,7 +91,7 @@ export default function NavBar() {
               <a
                 key={link.name}
                 href={link.path}
-                onClick={(e) => handleNavClick(e, link)}
+                onClick={e => handleNavClick(e, link)}
                 className="text-white text-lg py-1 px-2 hover:text-lime-400 transition-colors"
               >
                 {link.name}
@@ -95,7 +99,7 @@ export default function NavBar() {
             ))}
             <div className="pt-2">
               <Button variant="outline" className="w-full">
-                <a href='/waitlist'>Login</a>
+                <a href='/waitlist'>WaitList</a>
                
               </Button>
             </div>
