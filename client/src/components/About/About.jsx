@@ -136,7 +136,7 @@ const About = () => {
               </span>
             </div>
             <p className="text-white mb-1 flex items-center">
-              <span className="mr-2">🌿</span> feat: Add user authentication
+              <span className="mr-2"></span> feat: Add user authentication
             </p>
             <p className="text-gray-400 text-sm mb-3">
               +127 -43 • 3 files changed
@@ -152,7 +152,7 @@ const About = () => {
         {/* Industry Mentorship */}
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
           <h3 className="text-white font-bold text-md mb-2">
-            <span className="text-[#BCDD19] mr-2">👥</span> Industry Mentorship
+            <span className="text-[#BCDD19] mr-2"></span> Industry Mentorship
           </h3>
           <p className="text-gray-400 mb-6 text-sm">
             Learn from seniors, get code reviews, and
@@ -194,7 +194,7 @@ const About = () => {
         {/* Build Portfolio */}
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
           <h3 className="text-white font-bold text-md mb-2">
-            <span className="text-[#BCDD19] mr-2">🐱</span> Build Your Portfolio
+            <span className="text-[#BCDD19] mr-2"></span> Build Your Portfolio
           </h3>
           <p className="text-gray-400 mb-6 text-sm">
             Turn every commit, pull request, and feature into a story worth
@@ -333,7 +333,7 @@ const About = () => {
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col items-start h-full">
           <div className="mb-4">
             <h3 className="text-white font-bold text-lg mb-1">
-              <span className="text-[#BCDD19] mr-2">🎓</span> Career
+              <span className="text-[#BCDD19] mr-2"></span> Career
               Opportunities
             </h3>
             <p className="text-gray-400 text-sm">
