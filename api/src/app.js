@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './db/db.js';
 import waitlistRoutes from './routes/waitlistRoutes.js';
-import authRoutes from './routes/auth.routes.js';
+// import authRoutes from './routes/auth.routes.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -27,6 +27,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', waitlistRoutes);
-app.use('/auth', authRoutes);
+// app.use('/auth', authRoutes);
 
 export default app;
