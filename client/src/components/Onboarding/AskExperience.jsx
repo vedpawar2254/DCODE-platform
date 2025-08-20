@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const questions = [
   {
@@ -48,7 +49,7 @@ export const AskExperience = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [hoveredOption, setHoveredOption] = useState(null);
-
+  const navigate = useNavigate();
   const handleSelect = value => {
     setAnswers(prev => ({ ...prev, [questions[step].id]: value }));
   };
@@ -67,7 +68,7 @@ export const AskExperience = () => {
 
   const handleSubmit = () => {
     console.log('Final Answers:', answers);
-    alert('Form submitted! Check console for answers.');
+    navigate('/onboarding/createFork');
   };
 
   const currentQuestion = questions[step];
