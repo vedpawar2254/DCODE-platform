@@ -10,13 +10,13 @@ export const AuthProvider = ({ children }) => {
 
   axios.defaults.withCredentials = true;
   const BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
   const register = async formData => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`${BASE_URL}/auth/register`, {
+      const response = await axios.post(`${BASE_URL}/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, {
+      const response = await axios.post(`${BASE_URL}/login`, {
         email: credentials.email,
         password: credentials.password
       });
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${BASE_URL}/auth/profile`);
+      const response = await axios.get(`${BASE_URL}/profile`);
       setUser(response.data.data);
       return response.data;
     } catch (err) {
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const githubLogin = () => {
-    window.location.href = `${BASE_URL}/auth/github`;
+    window.location.href = `${BASE_URL}/github`;
   };
 
   useEffect(() => {

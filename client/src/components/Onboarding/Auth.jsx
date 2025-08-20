@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-
+import { useNavigate } from 'react-router-dom';
 export const Auth = () => {
   const { user, loading, error, login, logout, githubLogin } = useAuth();
-  console.log(user);
-  return <button type="button">login with github</button>;
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      return navigate('/auth');
+    }
+  }, []);
 };
