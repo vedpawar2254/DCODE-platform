@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../../ui/Button/Button';
 import Logo from '../../ui/Logo/Logo';
+import WaitList from '../../../pages/Waitlist/WaitList';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -98,7 +99,8 @@ export default function NavBar() {
             ))}
             <div className="pt-2">
               <Button variant="outline" className="w-full">
-                Waitlist
+                <a href='/waitlist'>WaitList</a>
+               
               </Button>
             </div>
           </div>
