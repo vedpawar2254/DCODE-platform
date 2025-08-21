@@ -4,7 +4,8 @@ import WaitList from '../pages/Waitlist/WaitList';
 import Home from '../pages/Home/Home';
 import Dashboard from "../pages/Dashboard/Dashboard"
 import ContactPage from '../pages/Contact/ContactPage';
-
+import TermsOfUse from '../pages/Terms/TermsOfUse';
+import PrivacyPolicy from '../pages/Terms/PrivacyPolicy'
 
 
 export const routes = createBrowserRouter([
@@ -31,5 +32,13 @@ export const routes = createBrowserRouter([
   {
     path:"/contact",
     element:<ContactPage/>
+  },
+  {
+    path: '/terms',
+    element: <TermsOfUse />
+  },
+  {
+    path: '/privacy',
+    element: <PrivacyPolicy />
   }
 ]);
