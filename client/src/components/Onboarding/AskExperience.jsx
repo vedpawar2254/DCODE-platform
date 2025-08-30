@@ -62,7 +62,7 @@ export default function AskExperience() {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 py-6 text-center text-xs text-[#D5D5D5">
+      <footer className="relative z-10 py-6 text-center text-xs text-[#D5D5D5]">
         ©2025, DCODE ALL RIGHTS RESERVED
       </footer>
     </div>
