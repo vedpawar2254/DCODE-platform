@@ -1,11 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Signup from '../pages/Signup/Signup';
 import WaitList from '../pages/Waitlist/WaitList';
 import Home from '../pages/Home/Home';
-import Dashboard from "../pages/Dashboard/Dashboard"
+import Dashboard from '../pages/Dashboard/Dashboard';
 import ContactPage from '../pages/Contact/ContactPage';
-
-
+import { AuthPage } from '../pages/Auth/AuthPage';
 
 export const routes = createBrowserRouter([
   // {
@@ -21,15 +19,15 @@ export const routes = createBrowserRouter([
     element: <WaitList />
   },
   {
-    path: '/signup',
-    element: <Signup />
+    path: '/auth',
+    element: <AuthPage />
   },
   {
-    path:"/dashboard",
-    element:<Dashboard/>
+    path: '/dashboard',
+    element: <Dashboard />
   },
   {
-    path:"/contact",
-    element:<ContactPage/>
+    path: '/contact',
+    element: <ContactPage />
   }
 ]);
