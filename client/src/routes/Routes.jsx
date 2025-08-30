@@ -4,6 +4,8 @@ import Home from '../pages/Home/Home';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ContactPage from '../pages/Contact/ContactPage';
 import { AuthPage } from '../pages/Auth/AuthPage';
+import Onboarding from '../pages/Onboarding/Onboarding';
+import AskExperience from '../components/Onboarding/AskExperience';
 
 export const routes = createBrowserRouter([
   // {
@@ -29,5 +31,10 @@ export const routes = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />
+  },
+  {
+    path: '/onboarding',
+    element: <Onboarding />,
+    children: [{ path: 'askExp', element: <AskExperience /> }]
   }
 ]);
