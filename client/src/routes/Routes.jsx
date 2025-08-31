@@ -3,6 +3,9 @@ import WaitList from '../pages/Waitlist/WaitList';
 import Home from '../pages/Home/Home';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ContactPage from '../pages/Contact/ContactPage';
+import TermsOfUse from '../pages/Terms/TermsOfUse';
+import PrivacyPolicy from '../pages/Terms/PrivacyPolicy';
+
 import { OnboardingPage } from '../pages/Onboarding/OnboardingPage';
 import { element } from 'prop-types';
 import { AskExperience } from '../components/Onboarding/AskExperience';
@@ -31,9 +34,23 @@ export const routes = createBrowserRouter([
     element: <Dashboard />
   },
   {
+    path: '/dashboard',
+    element: <Dashboard />
+  },
+  {
     path: '/contact',
     element: <ContactPage />
   },
+  {
+    path: '/terms',
+    element: <TermsOfUse />
+  },
+  // {
+  //   path: '/privacy',
+  //   element: <PrivacyPolicy />
+  //   path: '/contact',
+  //   element: <ContactPage />
+  // },
   {
     path: '/onboarding',
     element: <OnboardingPage />,
