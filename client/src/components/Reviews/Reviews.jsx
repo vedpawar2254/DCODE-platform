@@ -2,11 +2,33 @@ import { motion } from 'framer-motion';
 import TestimonialCard from './TestimonialCard';
 
 export default function Reviews() {
-  const reviews = Array(5).fill({
-    name: 'Rajesh Kumar',
-    role: 'Senior Developer at Netflix',
-    text: 'DCODE provided me with hands-on experience across multiple tech stacks. The mentorship was invaluable, and the projects I worked on directly led to my job offer.'
-  });
+  const reviews = [
+    {
+      name: 'Aarav Mehta',
+      role: 'Full Stack Engineer',
+      text: 'DCODE pushed me to work on production-grade open-source projects. The feedback cycle was fast, and I learned best practices I still use daily at work.'
+    },
+    {
+      name: 'Sneha Kapoor',
+      role: 'UI/UX Designer',
+      text: 'The program wasn’t just about coding—it gave me the confidence to collaborate with global teams and present my work in real-world scenarios.'
+    },
+    {
+      name: 'Vikram Singh',
+      role: 'Backend Developer',
+      text: 'I came in with only academic experience, and DCODE bridged the gap to industry standards. My first PR here was merged into a widely used open-source library!'
+    },
+    {
+      name: 'Neha Ramesh',
+      role: 'Software Engineer at Google',
+      text: 'The mentorship was the highlight for me. The way complex topics were broken down made contributing to big repositories feel natural.'
+    },
+    {
+      name: 'Karan Desai',
+      role: 'DevOps Engineer',
+      text: 'Working with distributed teams, CI/CD pipelines, and deployment strategies during DCODE directly prepared me for my current role.'
+    }
+  ];
 
   const infiniteReviews = [...reviews, ...reviews];
 

@@ -1,6 +1,5 @@
-import {  Check, ArrowLeft } from 'lucide-react';
+import { Check, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 
 const ContactInfoPanel = () => {
   const features = [
@@ -22,7 +21,6 @@ const ContactInfoPanel = () => {
             <span className="text-sm font-medium">Go Back</span>
           </Link>
         </div>
-      
       <div className="relative z-10 max-w-lg mx-auto md:max-w-md">
 
         

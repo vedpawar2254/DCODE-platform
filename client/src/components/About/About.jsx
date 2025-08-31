@@ -6,20 +6,23 @@ const About = () => {
     {
       initial: 'V',
       name: 'Ved Pawar',
-      role: 'Senior Dev',
-      comment: 'Great implementation! Consider using hooks for clarity.'
-    },
-    {
-      initial: 'A',
-      name: 'Aryan Vibhuti',
-      role: 'Lead Reviewer',
-      comment: 'Try extracting this logic to a custom hook.'
+      role: 'DCODE Mentor',
+      comment:
+        'Loved the structure of your PRs — makes reviewing so easy!'
     },
     {
       initial: 'R',
-      name: 'Rohan Singh',
-      role: 'Mentor',
-      comment: 'Well done! Next time focus on error handling too.'
+      name: 'Rishik',
+      role: 'DCODE Maintainer',
+      comment:
+        'Great job — can you add more test coverage?'
+    },
+    {
+      initial: 'A',
+      name: 'Aditya Kumar',
+      role: 'Tech Mentor, DCODE',
+      comment:
+        'Your refactor reduced the codebase size by 15%. That’s pro-level thinking.'
     }
   ];
 
@@ -75,7 +78,7 @@ const About = () => {
     []
   );
 
-  const getColor = level => {
+  const getColor = (level) => {
     switch (level) {
       case 1:
         return '#1d4428';
@@ -92,38 +95,37 @@ const About = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex(prev => (prev + 1) % feedbacks.length);
+      setIndex((prev) => (prev + 1) % feedbacks.length);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section
-      className="w-full px-6 md:px-16 bg-black text-center mb-24 p-16"
-      id="about"
-    >
-      <div className="max-w-3xl mx-auto mb-16">
-        <h3 className="text-green-500 text-sm tracking-widest mb-8">
+    <section className="w-full px-6 md:px-16 bg-black text-start mb-24 p-16">
+      {/* Hero */}
+      <div className="max-w-xl mx-auto mb-16 text-center">
+        <h3 className="text-green-500 text-sm tracking-widest mb-4">
           MADE ACCESSIBLE
         </h3>
-        <h2 className="text-4xl md:text-5xl font-bold text-white">
-          Open-source development
+        <h2 className="text-4xl md:text-3xl font-semibold text-white">
+          Open-Source That Levels You Up
         </h2>
         <p className="text-gray-400 mt-4">
-          Join DCODE and transform your coding journey. Contribute to real
-          projects, learn from industry experts, and build a portfolio that
-          stands out.
+          Build, learn, and grow in the world of real open-source. Ship
+          production-ready code, get mentored by industry pros, and craft a
+          portfolio that gets noticed.
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
-          <h3 className="text-white font-bold text-lg mb-2">
-            <span className="text-[#BCDD19] mr-2">&lt;/&gt;</span> Real-World
-            Experience
+        {/* Real-World Experience */}
+        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col text-left h-full w-full max-w-sm mx-auto">
+          <h3 className="text-white font-bold text-md mb-2">
+            Real-World Experience
           </h3>
-          <p className="text-gray-400 mb-6">
-            Work on production-level code in curated open-source repositories.
+          <p className="text-gray-400 mb-6 text-sm">
+            Contribute to high-impact repos and write code that ships to
+            production.
           </p>
           <div className="bg-[#121A12] border rounded-xl p-4 text-left flex flex-col">
             <div className="flex items-center mb-2">
@@ -133,7 +135,7 @@ const About = () => {
               </span>
             </div>
             <p className="text-white mb-1 flex items-center">
-              <span className="mr-2">🌿</span> feat: Add user authentication
+              <span className="mr-2"></span> feat: Add user authentication
             </p>
             <p className="text-gray-400 text-sm mb-3">
               +127 -43 • 3 files changed
@@ -146,12 +148,14 @@ const About = () => {
           </div>
         </div>
 
+        {/* Industry Mentorship */}
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
-          <h3 className="text-white font-bold text-lg mb-2">
-            <span className="text-[#BCDD19] mr-2">👥</span> Industry Mentorship
+          <h3 className="text-white font-bold text-md mb-2">
+            <span className="text-[#BCDD19] mr-2"></span> Industry Mentorship
           </h3>
-          <p className="text-gray-400 mb-6">
-            Get guidance from experienced developers and industry professionals.
+          <p className="text-gray-400 mb-6 text-sm">
+            Learn from seniors, get code reviews, and
+            follow workflows used in real-world teams.
           </p>
           <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col">
             <div className="relative overflow-hidden h-[120px] mb-2">
@@ -186,12 +190,14 @@ const About = () => {
           </div>
         </div>
 
+        {/* Build Portfolio */}
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
-          <h3 className="text-white font-bold text-lg mb-2">
-            <span className="text-[#BCDD19] mr-2">🐱</span> Build Your Portfolio
+          <h3 className="text-white font-bold text-md mb-2">
+            <span className="text-[#BCDD19] mr-2"></span> Build Your Portfolio
           </h3>
-          <p className="text-gray-400 mb-6">
-            Showcase your contributions and build an impressive DCODE profile.
+          <p className="text-gray-400 mb-6 text-sm">
+            Turn every commit, pull request, and feature into a story worth
+            showing off.
           </p>
           <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col scrollbar-hide">
             <p className="text-white mb-4">Contributions</p>
@@ -217,7 +223,7 @@ const About = () => {
             <div className="flex space-x-3 text-gray-400 text-xs mt-3">
               <span>Less</span>
               <div className="flex space-x-1">
-                {levels.map(level => (
+                {levels.map((level) => (
                   <div
                     key={level}
                     className="w-2.5 h-2.5 rounded-[2px]"
@@ -230,26 +236,27 @@ const About = () => {
           </div>
         </div>
 
+        {/* Collaborative Learning */}
         <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-4 md:col-span-2 h-full">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-white font-bold mb-1 flex items-center pb-2">
-                <span className="text-[#BCDD19] mr-1">↗</span> Collaborative
-                Learning
+              <h3 className="text-white font-bold mb-1 ml-2 mt-2 flex items-center pb-2">
+                Collaborative Learning
               </h3>
-              <p className="text-gray-400">
-                Git workflows, code reviews, and dev practices.
+              <p className="text-gray-400 text-sm pl-2 pb-2">
+                Master professional Git workflows, peer reviews, and dev
+                practices that top teams rely on.
               </p>
             </div>
           </div>
 
           <div className="bg-[#121A12] border border-[#1D261D] rounded p-5 mt-2">
             <div className="flex flex-wrap gap-3 mb-3">
-              {phases.map(phase => (
+              {phases.map((phase) => (
                 <button
                   key={phase.name}
                   onClick={() => setActivePhase(phase)}
-                  className={`px-6 py-1 rounded-lg p-3 text-2xs transition-all
+                  className={`px-6 py-1 rounded-lg p-3 text-2xs transition-all cursor-pointer
                     ${
                       activePhase.name === phase.name
                         ? 'bg-[#333D00] border border-[#BCDD19] text-white'
@@ -304,9 +311,9 @@ const About = () => {
                   {activePhase.leaderboard.slice(0, 3).map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center"
+                      className="flex justify-between "
                     >
-                      <span className="text-white text-2xs flex items-center">
+                      <span className="text-white text-2xs flex">
                         {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}{' '}
                         {item.name.split(' ')[0]}
                       </span>
@@ -321,41 +328,43 @@ const About = () => {
           </div>
         </div>
 
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full">
+        {/* Career Opportunities */}
+        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col items-start h-full">
           <div className="mb-4">
             <h3 className="text-white font-bold text-lg mb-1">
-              <span className="text-[#BCDD19] mr-2">🎓</span> Career
+              <span className="text-[#BCDD19] mr-2"></span> Career
               Opportunities
             </h3>
             <p className="text-gray-400 text-sm">
-              Access internships, recommendations, and industry connections
+              Unlock internships, opportunities, and industry
+              connections.
             </p>
           </div>
 
           <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col items-start">
             <div className="mb-3 text-left">
-              <h4 className="text-white font-medium text-sm mb-2">
+              {/* <h4 className="text-white font-medium text-sm mb-2">
                 Top Performer
-              </h4>
-              <p className="text-[#BCDD19] text-xs">Merge Phase Winner</p>
+              </h4> */}
+              <p className="text-[#BCDD19] text-xs text-bold">Top Performers</p>
             </div>
 
             <ul className="space-y-2 w-full text-left">
               <li className="flex items-center text-white text-sm">
                 <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Internship interviews
+                Direct internship interviews
               </li>
               <li className="flex items-center text-white text-sm">
                 <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Industry mentorship
+                1-on-1 industry mentorship
               </li>
               <li className="flex items-center text-white text-sm">
                 <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Letter of recommendation
+                Strong letters of recommendation
               </li>
               <li className="flex items-center text-white text-sm">
                 <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Premium Development Kits
+                Exclusive dev resources & toolkits
               </li>
             </ul>
           </div>

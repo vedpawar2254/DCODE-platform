@@ -72,7 +72,7 @@ const ContactFormPanel = () => {
 
     setIsSubmitting(true);
     try {
-      // ✅ send the full form data to your backend
+      
       await axios.post(API_URL, formData);
 
       setToast({ show: true, message: 'Message sent successfully!', isError: false });
@@ -86,7 +86,7 @@ const ContactFormPanel = () => {
       });
       setAgreedToTerms(false);
     } catch (err) {
-      console.error("❌ Contact form submit failed:", err);
+      console.error("Contact form submit failed:", err);
       setToast({ show: true, message: 'Failed to send message. Please try again.', isError: true });
     } finally {
       setTimeout(() => setToast({ show: false, message: '', isError: false }), 3000);
@@ -117,7 +117,7 @@ const ContactFormPanel = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name Fields */}
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {['firstName', 'lastName'].map(field => (
               <div key={field}>
@@ -138,7 +138,7 @@ const ContactFormPanel = () => {
             ))}
           </div>
 
-          {/* Email */}
+          
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
@@ -155,7 +155,7 @@ const ContactFormPanel = () => {
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
 
-          {/* Subject Dropdown */}
+          
           <div>
             <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
               Which best describes you?
@@ -195,7 +195,7 @@ const ContactFormPanel = () => {
             </div>
           </div>
 
-          {/* Message */}
+          
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
               Message
@@ -212,7 +212,7 @@ const ContactFormPanel = () => {
             {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
           </div>
 
-          {/* Terms */}
+          
           <div className="flex items-start space-x-3">
             <input
               id="terms"
@@ -233,7 +233,7 @@ const ContactFormPanel = () => {
             </label>
           </div>
 
-          {/* Submit */}
+          
           <button
             type="submit"
             disabled={isSubmitting}

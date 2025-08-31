@@ -19,11 +19,11 @@ export const routes = createBrowserRouter([
   //   children: [
   {
     path: '/',
-    element: <WaitList />
+    element: <Home />
   },
   {
-    path: '/home',
-    element: <Home />
+    path: '/waitlist',
+    element: <WaitList />
   },
 
   {

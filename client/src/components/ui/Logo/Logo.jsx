@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 
 export default function Logo() {
   return (
-    <Link
-      to="/"
-      className="flex items-center space-x-2 text-2xl font-bold text-white"
-    >
-      <img src="../../../../images/logoicon.svg" alt="DCODE Logo" className="w-10 h-10" />D
-      <span className="text-[#BCDD19] font-bold text-2xl">CODE</span>
+    <Link to="/" className="flex items-center space-x-2  font-bold text-white">
+      <img
+        src="../../../../images/d.png"
+        alt="DCODE Logo"
+        className="h-10 w-35 object-contain"
+      />
     </Link>
   );
 }
