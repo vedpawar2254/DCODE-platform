@@ -6,18 +6,12 @@ import ContactPage from "../pages/Contact/ContactPage";
 import { AuthPage } from "../pages/Auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
-import Fork from "../components/Onboarding/Fork";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
-import { OnboardingPage } from "../pages/Onboarding/OnboardingPage";
-import { element } from "prop-types";
-import { CreateBranch } from "../components/Onboarding/CreateBranch";
-import CreateFork  from "../components/Onboarding/CreateForkStatic";
-import { CreatePullRunChecks } from "../components/Onboarding/CreatePullRunChecks";
-import { EndFlow } from "../components/Onboarding/EndFlow";
 import { LoginSignup } from "../pages/auth/loginSignup";
+import CreateFork from "../components/Onboarding/CreateForkStatic";
 export const routes = createBrowserRouter([
   // {
   //   path: '/',
@@ -49,14 +43,6 @@ export const routes = createBrowserRouter([
     element: <ContactPage />,
   },
   {
-    path: "/onboarding",
-    element: <Onboarding />,
-    children: [
-      { path: "askExp", element: <AskExperience /> },
-      { path: "fork", element: <Fork /> },
-    ],
-  },
-  {
     path: "/terms",
     element: <TermsOfUse />,
   },
@@ -73,11 +59,7 @@ export const routes = createBrowserRouter([
     element: <Onboarding />,
     children: [
       { path: "exp", element: <AskExperience /> },
-      { path: "auth", element: <AuthPage /> },
-      { path: "createFork", element: <CreateFork /> },
-      { path: "createBranch", element: <CreateBranch /> },
-      { path: "createPullRunChecks", element: <CreatePullRunChecks /> },
-      { path: "end", element: <EndFlow /> },
+      { path: "fork", element: <CreateFork /> },
     ],
   },
   {
