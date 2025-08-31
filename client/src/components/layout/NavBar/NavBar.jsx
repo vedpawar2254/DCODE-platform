@@ -49,6 +49,17 @@ export default function NavBar() {
     { name: 'Contact', path: '/contact' }
   ];
 
+  const handleSectionNavigation = (e, sectionId) => {
+    e.preventDefault();
+    if (location.pathname !== '/home') {
+      navigate('/home', { state: { scrollTo: sectionId } });
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
   return (
     <nav className="w-full py-4 pt-[2rem] px-4 sm:px-8 lg:px-16">
       <div className="flex items-center justify-between">

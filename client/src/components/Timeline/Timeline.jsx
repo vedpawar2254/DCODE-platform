@@ -91,7 +91,6 @@ const DCodeTimeline = () => {
           <TimelineLine height={1100} />
         </div>
 
-        
         <div className="relative w-full max-w-6xl mx-auto min-h-[130vh]">
           {phases.map((phase, index) => (
             <TimelineStep
