@@ -10,17 +10,15 @@ const ContactInfoPanel = () => {
     'Transparent & Supportive'
   ];
 
+  // <Link
+  //           to="/"
+  //           className="inline-flex items-center text-gray-400 hover:text-[#7A900F] transition-colors"
+  //         >
+  //           <ArrowLeft className="w-4 h-4 mr-2" />
+  //           <span className="text-sm font-medium">Go Back</span>
+  //         </Link>
   return (
     <div className="text-white flex flex-col justify-center h-full w-full md:w-1/2 p-6 sm:p-8 overflow-y-auto">
-      <div className="mb-6 -ml-6">
-          <Link
-            to="/"
-            className="inline-flex items-center text-gray-400 hover:text-[#7A900F] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            <span className="text-sm font-medium">Go Back</span>
-          </Link>
-        </div>
       <div className="relative z-10 max-w-lg mx-auto md:max-w-md">
 
         
