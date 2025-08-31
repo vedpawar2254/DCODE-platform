@@ -6,6 +6,7 @@ import ContactPage from '../pages/Contact/ContactPage';
 import { AuthPage } from '../pages/Auth/AuthPage';
 import Onboarding from '../pages/Onboarding/Onboarding';
 import AskExperience from '../components/Onboarding/AskExperience';
+import Fork from '../components/Onboarding/Fork';
 
 export const routes = createBrowserRouter([
   // {
@@ -35,6 +36,9 @@ export const routes = createBrowserRouter([
   {
     path: '/onboarding',
     element: <Onboarding />,
-    children: [{ path: 'askExp', element: <AskExperience /> }]
+    children: [
+      { path: 'askExp', element: <AskExperience /> },
+      { path: 'fork', element: <Fork /> }
+    ]
   }
 ]);
