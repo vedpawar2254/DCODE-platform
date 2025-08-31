@@ -1,6 +1,6 @@
 export default function AskExperience() {
   return (
-    <div className="bg-[#121212]/50 border border-white/10 rounded-2xl p-8 max-w-2xl w-full">
+    <div className="bg-black border border-white/10 rounded-2xl p-8 max-w-2xl w-full ">
       <h2 className="text-2xl font-semibold mb-2">
         What's your experience with{' '}
         <span className="text-[#BCDD19]">Pull Requests?</span>
