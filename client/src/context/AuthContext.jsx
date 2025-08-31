@@ -1,9 +1,11 @@
+import { createContext, useContext } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

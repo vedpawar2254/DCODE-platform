@@ -3,6 +3,11 @@ import WaitList from '../pages/Waitlist/WaitList';
 import Home from '../pages/Home/Home';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ContactPage from '../pages/Contact/ContactPage';
+import { AuthPage } from '../pages/Auth/AuthPage';
+import Onboarding from '../pages/Onboarding/Onboarding';
+import AskExperience from '../components/Onboarding/AskExperience';
+import Fork from '../components/Onboarding/Fork';
+
 import TermsOfUse from '../pages/Terms/TermsOfUse';
 import PrivacyPolicy from '../pages/Terms/PrivacyPolicy';
 
@@ -30,6 +35,10 @@ export const routes = createBrowserRouter([
   },
 
   {
+    path: '/auth',
+    element: <AuthPage />
+  },
+  {
     path: '/dashboard',
     element: <Dashboard />
   },
@@ -40,6 +49,14 @@ export const routes = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />
+  },
+  {
+    path: '/onboarding',
+    element: <Onboarding />,
+    children: [
+      { path: 'askExp', element: <AskExperience /> },
+      { path: 'fork', element: <Fork /> }
+    ]
   },
   {
     path: '/terms',
