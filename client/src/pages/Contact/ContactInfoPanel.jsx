@@ -22,12 +22,14 @@ const ContactInfoPanel = () => {
           </Link>
         </div>
       <div className="relative z-10 max-w-lg mx-auto md:max-w-md">
+
+        
         {/* Header Section */}
         <div className="space-y-6 mb-10">
           <p className="text-sm font-medium text-gray-400 tracking-widest uppercase">
             CONTACT US
           </p>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          <h1 className="sm:text-3xl md:text-4xl font-bold leading-tight mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
             Get in Touch with Us
           </h1>
           <p className="text-gray-400 text-base leading-relaxed max-w-md">
