@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
-import {useAuthStore} from "../../store/useAuthStore";
+import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 
 export const RightSide = () => {
@@ -33,25 +33,38 @@ export const RightSide = () => {
       acceptTerms: false,
     });
   };
-  const { loading, error, register, login, githubAuth, isRegistering, isLoggingIn, isGitHubAuth } = useAuthStore();
+  const {
+    loading,
+    error,
+    register,
+    login,
+    githubAuth,
+    isRegistering,
+    isLoggingIn,
+    isGitHubAuth,
+  } = useAuthStore();
   const handleSubmit = async () => {
     if (isLogin) {
-      await login({
+      const response = await login({
         email: formData.email,
         password: formData.password,
       });
-      navigate("/dashboard");
+      if (response) {
+        navigate("/dashboard");
+      }
     } else {
       if (!formData.acceptTerms) {
         alert("Please accept the terms and conditions");
         return;
       }
-      await register({
+      const response = await register({
         name: formData.username,
         email: formData.email,
         password: formData.password,
       });
-      navigate("/dashboard");
+      if (response) {
+        navigate("/onboarding");
+      }
     }
   };
 
