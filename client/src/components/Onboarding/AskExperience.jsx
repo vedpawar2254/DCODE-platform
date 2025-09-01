@@ -18,9 +18,11 @@ export default function AskExperience() {
         </p>
 
         {/* Options */}
-        <div className="flex flex-col sm:flex-row gap-20 justify-center max-w-2xl mx-auto">
+        <div
+         className="flex flex-col sm:flex-row gap-20 justify-center max-w-2xl mx-auto cursor-pointer">
           {/* Experienced */}
-          <div className="flex-1 border bg-transparent border-white/10 rounded-xl px-0 py-6 hover:border-[#BCDD194D] transition h-fit">
+          <div onClick={() => navigate('/dashboard')}
+           className="flex-1 border bg-transparent border-white/10 rounded-xl px-0 py-6 hover:border-[#BCDD194D] transition h-fit">
             <span className="px-3 py-1 text-xs rounded-full bg-[#BCDD19]/30 text-[#BCDD19] font-medium">
               Experienced
             </span>
