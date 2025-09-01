@@ -12,12 +12,38 @@ export const LeftSide = () => {
 
       {/* Center Content */}
       <div className="flex flex-col items-center text-center max-w-md flex-grow justify-center">
-        {/* Main illustration */}
-        <img
-          src="/images/Illustration.png"
-          alt="Developer Illustration"
-          className="mb-8"
-        />
+        {/* Illustration with floating symbols */}
+        <div className="relative inline-block mb-8">
+          <img
+            src="/images/Illustration.png"
+            alt="Developer Illustration"
+            className="rounded-lg"
+          />
+
+          {/* Floating Symbols (relative to the illustration) */}
+          <div className="absolute inset-0 pointer-events-none select-none">
+            {/* Top-left {} */}
+            <div className="absolute top-2 left-2 text-gray-500 text-2xl">{`{}`}</div>
+
+            {/* Top-right ; */}
+            <div className="absolute top-2 right-2 text-gray-500 text-2xl">
+              ;
+            </div>
+
+            {/* Bottom-left <> */}
+            <div className="absolute bottom-2 left-2 text-gray-500 text-2xl">{`<>`}</div>
+
+            {/* Bottom-center 0x3234 */}
+            <div className="absolute bottom-10 left-1/3 -translate-x-1/2 text-gray-500 text-xl">
+              0x3234
+            </div>
+
+            {/* Bottom-right $ */}
+            <div className="absolute bottom-2 right-2 text-gray-500 text-2xl">
+              $
+            </div>
+          </div>
+        </div>
 
         {/* Heading + text */}
         <h2 className="text-2xl font-semibold text-white mb-4">
@@ -28,26 +54,6 @@ export const LeftSide = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt.
         </p>
-      </div>
-
-      {/* Floating Symbols */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none select-none">
-        {/* Top-left {} */}
-        <div className="absolute top-6 left-8 text-white text-2xl">{`{}`}</div>
-
-        {/* Top-right ; */}
-        <div className="absolute top-10 right-8 text-white text-2xl">;</div>
-
-        {/* Bottom-left <> */}
-        <div className="absolute bottom-10 left-8 text-white text-2xl">{`<>`}</div>
-
-        {/* Bottom-center 0x3234 */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white text-xl">
-          0x3234
-        </div>
-
-        {/* Bottom-right $ */}
-        <div className="absolute bottom-8 right-8 text-white text-2xl">$</div>
       </div>
     </div>
   );
