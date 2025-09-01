@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const PrivacyPolicy = () => {
   return (
@@ -164,7 +164,7 @@ const PrivacyPolicy = () => {
       <p className="text-white mb-6">
         Questions about this Privacy Policy? Reach out to us at:
         <br />
-        📧{' '}
+        📧{" "}
         <a
           href="mailto:dcode.codes@gmail.com"
           className="text-blue-600 hover:underline"
