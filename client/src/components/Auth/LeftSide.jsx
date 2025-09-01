@@ -51,8 +51,7 @@ export const LeftSide = () => {
           <span className="text-[#BCDD19]">OPEN SOURCE</span> Developers
         </h2>
         <p className="text-sm text-[#F5F5F5]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt.
+          They raise motivational levels, thereby efficiently fighting procrastination and laziness.
         </p>
       </div>
     </div>

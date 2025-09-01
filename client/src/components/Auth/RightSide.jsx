@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import {useAuthStore} from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 export const RightSide = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -12,6 +13,8 @@ export const RightSide = () => {
     password: "",
     acceptTerms: false,
   });
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,14 +33,14 @@ export const RightSide = () => {
       acceptTerms: false,
     });
   };
-  const { user, loading, error, register, login, logout, githubAuth } =
-    useAuthStore();
+  const { loading, error, register, login, githubAuth, isRegistering, isLoggingIn, isGitHubAuth } = useAuthStore();
   const handleSubmit = async () => {
     if (isLogin) {
       await login({
         email: formData.email,
         password: formData.password,
       });
+      navigate("/dashboard");
     } else {
       if (!formData.acceptTerms) {
         alert("Please accept the terms and conditions");
@@ -48,6 +51,7 @@ export const RightSide = () => {
         email: formData.email,
         password: formData.password,
       });
+      navigate("/dashboard");
     }
   };
 
@@ -58,7 +62,6 @@ export const RightSide = () => {
   };
 
   const handleGithub = async () => {
-    console.log("wrhefgvd")
     await githubAuth();
   };
 
@@ -96,7 +99,7 @@ export const RightSide = () => {
               {/* GitHub Button */}
               <button
                 onClick={handleGithub}
-                className="w-full max-w-sm mx-auto flex items-center justify-center gap-3 bg-transparent border border-gray-600 text-white py-3 px-6 rounded-full hover:border-gray-500 transition-colors duration-200 mt-15 mb-15"
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-3 bg-transparent border border-gray-300 text-white py-3 px-6 rounded-full hover:border-gray-500 transition-colors duration-200 mt-15 mb-15 cursor-pointer"
                 disabled={loading}
               >
                 <svg
@@ -108,6 +111,7 @@ export const RightSide = () => {
                 </svg>
                 <span>
                   {isLogin ? "Sign in with Github" : "Sign up with Github"}
+                  {loading ? "..." : ""}
                 </span>
               </button>
             </div>
@@ -132,7 +136,7 @@ export const RightSide = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-2"
+                  className=""
                 >
                   <label className="block text-gray-300 text-sm">
                     Username
@@ -142,7 +146,7 @@ export const RightSide = () => {
                     name="username"
                     value={formData.username}
                     onChange={handleInputChange}
-                    placeholder=""
+                    placeholder="johndev"
                     className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                     disabled={loading}
                   />
@@ -150,21 +154,21 @@ export const RightSide = () => {
               )}
 
               {/* Email Field */}
-              <div className="space-y-2">
+              <div className="">
                 <label className="block text-gray-300 text-sm">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder=""
+                  placeholder="email@example.com"
                   className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                   disabled={loading}
                 />
               </div>
 
               {/* Password Field */}
-              <div className="space-y-2">
+              <div className="">
                 <label className="block text-gray-300 text-sm">Password</label>
                 <div className="relative">
                   <input
@@ -173,13 +177,13 @@ export const RightSide = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="••••••••••••••••"
-                    className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 pr-10 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
+                    className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                     disabled={loading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200"
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
                     disabled={loading}
                   >
                     {showPassword ? (
@@ -224,7 +228,7 @@ export const RightSide = () => {
                   {/* Inline Submit Button for Signup */}
                   <button
                     onClick={handleSubmit}
-                    className="bg-[#7A900F] text-white font-semibold py-3 px-8 rounded-full hover:bg-lime-300 transition-colors duration-200 text-sm flex-shrink-0"
+                    className="bg-[#7A900F] text-white font-semibold py-3 px-8 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-sm flex-shrink-0 cursor-pointer"
                     disabled={loading}
                   >
                     {loading ? "Loading..." : "SIGN UP"}
@@ -236,7 +240,7 @@ export const RightSide = () => {
               {isLogin && (
                 <button
                   onClick={handleSubmit}
-                  className="w-full bg-[#7A900F] text-white font-semibold py-4 px-6 rounded-full hover:bg-lime-300 transition-colors duration-200 text-lg mt-15"
+                  className="w-full bg-[#7A900F] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-lg mt-15 cursor-pointer"
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "SIGN IN"}
@@ -250,7 +254,7 @@ export const RightSide = () => {
                 {isLogin ? "Don't have an Account? " : "Own an Account? "}
                 <button
                   onClick={toggleMode}
-                  className="text-[#7A900F] hover:text-lime-300 transition-colors duration-200 font-medium"
+                  className="hover:text-lime-300 transition-colors duration-200 font-medium underline cursor-pointer"
                   disabled={loading}
                 >
                   {isLogin ? "SIGN UP" : "JUMP RIGHT IN"}

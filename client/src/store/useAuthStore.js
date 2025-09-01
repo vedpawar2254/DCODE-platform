@@ -66,7 +66,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ verifiedUser: res.data.user });
 
-      //   if (res.data?.message) toast.success(res.data.message);
+        if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
 
