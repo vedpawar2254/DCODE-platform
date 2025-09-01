@@ -1,9 +1,11 @@
 import { AuthLayout } from '../../components/Auth/AuthLayout';
 import { AuthProvider } from '../../context/AuthContext';
-export const AuthPage = () => {
+const AuthPage = () => {
   return (
     <AuthProvider>
       <AuthLayout />
     </AuthProvider>
   );
 };
+
+export default AuthPage;

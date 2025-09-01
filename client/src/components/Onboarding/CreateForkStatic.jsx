@@ -4,7 +4,6 @@ import { cn } from "../../utils/cn";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 const steps = [
   {
     id: 1,
@@ -291,6 +290,7 @@ function Snippet({ label, code, language = "bash", className }) {
 }
 
 function Completion({ onRestart }) {
+  const navigate = useNavigate();
   return (
     <motion.div
       className="p-6 md:p-10 text-center"
@@ -307,12 +307,12 @@ function Completion({ onRestart }) {
       <h2 className="text-2xl md:text-3xl font-semibold text-balance">
         Congratulations! Your contribution is on its way.
       </h2>
-      <p className="text-muted-foreground mt-2">
+      <p className="text-[#A1A1A1] mt-2">
         Crackers popped, confetti flew—thanks for helping the community grow.
       </p>
       <div className="mt-8">
-        <Button className="rounded-xl" onClick={() => navigate("/dashboard")}>
-          Start Over
+        <Button className="rounded-sm" onClick={() => navigate("/dashboard")}>
+          Move to Dashboard
         </Button>
       </div>
     </motion.div>
