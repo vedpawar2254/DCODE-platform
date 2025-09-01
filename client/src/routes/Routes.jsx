@@ -3,14 +3,13 @@ import WaitList from "../pages/Waitlist/WaitList";
 import Home from "../pages/Home/Home";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ContactPage from "../pages/Contact/ContactPage";
-import { AuthPage } from "../pages/Auth/AuthPage";
+import AuthPage  from "../pages/auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
-import { LoginSignup } from "../pages/auth/loginSignup";
 import CreateFork from "../components/Onboarding/CreateForkStatic";
 export const routes = createBrowserRouter([
   // {
@@ -58,12 +57,9 @@ export const routes = createBrowserRouter([
     path: "/onboarding",
     element: <Onboarding />,
     children: [
-      { path: "exp", element: <AskExperience /> },
+      { path: "", element: <AskExperience /> },
       { path: "fork", element: <CreateFork /> },
     ],
   },
-  {
-    path: "/auth",
-    element: <LoginSignup />,
-  },
+  
 ]);
