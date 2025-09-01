@@ -19,21 +19,25 @@ export const useAuthStore = create((set, get) => ({
   isGitHubAuth: false,
 
   // === AUTH CHECK ===
-  checkAuth: async () => {
-    if (get().isCheckingAuth) return; // prevent duplicate calls
-    set({ isCheckingAuth: true });
+  checkAuth: () => {
+    return new Promise(async (resolve, reject) => {
+      if (get().isCheckingAuth) return; // prevent duplicate calls
+      set({ isCheckingAuth: true });
 
-    try {
-      const res = await axiosInstance.get("/auth/profile", {
-        timeout: 8000, // safeguard slow network
-      });
-      set({ verifiedUser: res.data });
-    } catch (error) {
-      //   console.error("❌ Auth check failed:", error);
-      set({ verifiedUser: null });
-    } finally {
-      set({ isCheckingAuth: false });
-    }
+      try {
+        const res = await axiosInstance.get("/auth/profile", {
+          timeout: 8000, // safeguard slow network
+        });
+        set({ verifiedUser: res.data });
+        resolve({ status: true, is_signedup: res.data.is_signedup });
+      } catch (error) {
+        //   console.error("❌ Auth check failed:", error);
+        set({ verifiedUser: null });
+        resolve({ status: false });
+      } finally {
+        set({ isCheckingAuth: false });
+      }
+    });
   },
 
   // === REGISTER ===
@@ -66,10 +70,9 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ verifiedUser: res.data.user });
 
-        if (res.data?.message) toast.success(res.data.message);
+      if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
-
       console.warn("⚠️ Login failed, attempting auto-register...");
       if (data?.image) {
         try {
@@ -118,6 +121,9 @@ export const useAuthStore = create((set, get) => ({
     try {
       // backend should handle both login & register internally
       const res = await axiosInstance.get("/auth/github");
+      if (res?.data?.redirect) {
+        window.location.href = res.data.redirect;
+      }
 
       set({ authUser: res.data.user ?? res.data });
       if (res.data?.message) toast.success(res.data.message);
@@ -132,5 +138,4 @@ export const useAuthStore = create((set, get) => ({
       set({ isGitHubAuth: false });
     }
   },
-
 }));

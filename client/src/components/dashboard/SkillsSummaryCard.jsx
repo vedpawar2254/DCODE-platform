@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const RadarChart = ({ data }) => {
   const centerX = 100;
@@ -7,7 +7,7 @@ const RadarChart = ({ data }) => {
   const levels = 5;
 
   // Generate pentagon points for the grid
-  const generatePentagonPoints = radius => {
+  const generatePentagonPoints = (radius) => {
     const points = [];
     for (let i = 0; i < 5; i++) {
       const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
@@ -23,7 +23,7 @@ const RadarChart = ({ data }) => {
     const points = [];
     for (let i = 0; i < data.length; i++) {
       const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
-      const radius = (data[i].value / 100) * maxRadius;
+      const radius = (data[i].percentage / 100) * maxRadius;
       const x = centerX + radius * Math.cos(angle);
       const y = centerY + radius * Math.sin(angle);
       points.push([x, y]);
@@ -47,7 +47,7 @@ const RadarChart = ({ data }) => {
           return (
             <polygon
               key={i}
-              points={points.map(p => p.join(',')).join(' ')}
+              points={points.map((p) => p.join(",")).join(" ")}
               fill="none"
               stroke="#333333"
               strokeWidth="1"
@@ -77,7 +77,7 @@ const RadarChart = ({ data }) => {
 
         {/* Data area */}
         <polygon
-          points={dataPoints.map(p => p.join(',')).join(' ')}
+          points={dataPoints.map((p) => p.join(",")).join(" ")}
           fill="#12b76a"
           fillOpacity="0.1"
           stroke="#12b76a"
@@ -112,11 +112,11 @@ const RadarChart = ({ data }) => {
               textAnchor="middle"
               dominantBaseline="middle"
               fontSize="10"
-              fill={item.skill === 'Javascript' ? '#12b76a' : '#8a8a8a'}
-              fontWeight={item.skill === 'Javascript' ? '600' : '400'}
+              fill={item.name === "Javascript" ? "#12b76a" : "#8a8a8a"}
+              fontWeight={item.name === "Javascript" ? "600" : "400"}
               className="sm:text-xs"
             >
-              {item.skill}
+              {item.name}
             </text>
           );
         })}
@@ -126,11 +126,11 @@ const RadarChart = ({ data }) => {
 };
 
 const skillsData = [
-  { skill: 'Javascript', value: 80, percentage: 28, color: '#12b76a' },
-  { skill: 'Rust', value: 65, percentage: 18, color: '#348fe3' },
-  { skill: 'Go', value: 60, percentage: 18, color: '#fdc300' },
-  { skill: 'Python', value: 70, percentage: 18, color: '#f43f5e' },
-  { skill: 'Others', value: 55, percentage: 18, color: '#a855f7' }
+  { skill: "Javascript", value: 80, percentage: 28, color: "#12b76a" },
+  { skill: "Rust", value: 65, percentage: 18, color: "#348fe3" },
+  { skill: "Go", value: 60, percentage: 18, color: "#fdc300" },
+  { skill: "Python", value: 70, percentage: 18, color: "#f43f5e" },
+  { skill: "Others", value: 55, percentage: 18, color: "#a855f7" },
 ];
 const SkillsSummaryCard = ({ languages }) => {
   return (
@@ -145,20 +145,20 @@ const SkillsSummaryCard = ({ languages }) => {
       {/* Radar Chart Placeholder */}
       <div className="flex flex-col justify-between h-[86%]">
         <div className="relative mx-auto mb-4 sm:mb-6 flex-shrink-0">
-          <RadarChart data={skillsData} />
+          <RadarChart data={languages} />
         </div>
 
         {/* Language percentages */}
         <div className="space-y-1 sm:space-y-2">
-          {skillsData.map(lang => (
-            <div key={lang.skill} className="flex items-center justify-between">
+          {languages.map((lang) => (
+            <div key={lang.name} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div
                   className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
                   style={{ backgroundColor: lang.color }}
                 />
                 <span className="text-xs sm:text-sm text-gray-300">
-                  {lang.skill}
+                  {lang.name}
                 </span>
               </div>
               <span className="text-xs sm:text-sm text-gray-400">

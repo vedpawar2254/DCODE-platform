@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Line,
@@ -8,32 +8,33 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer
-} from 'recharts';
+  ResponsiveContainer,
+} from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart';
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 const data = [
-  { day: 'Mon', prs: 150 },
-  { day: 'Tue', prs: 380 },
-  { day: 'Wed', prs: 200 },
-  { day: 'Thu', prs: 460 },
-  { day: 'Fri', prs: 150 },
-  { day: 'Sat', prs: 300 },
-  { day: 'Sun', prs: 120 }
+  { day: "Mon", prs: 150 },
+  { day: "Tue", prs: 380 },
+  { day: "Wed", prs: 200 },
+  { day: "Thu", prs: 460 },
+  { day: "Fri", prs: 150 },
+  { day: "Sat", prs: 300 },
+  { day: "Sun", prs: 120 },
 ];
 
-export default function DailyPrActivityChart({ className }) {
+export default function DailyPrActivityChart({ className, activityData }) {
+  console.log(activityData);
   return (
     <Card
       className={`bg-white/[0.02] border border-gray-800 rounded-xl p-4 sm:p-6 h-full ${className} w-full`}
@@ -53,25 +54,25 @@ export default function DailyPrActivityChart({ className }) {
       <CardContent className="pt-4 px-0 w-full">
         <ChartContainer
           config={{
-            prs: { label: 'PRs', color: 'hsl(var(--chart-1))' }
+            prs: { label: "PRs", color: "hsl(var(--chart-1))" },
           }}
           className="h-[250px] sm:h-[300px] lg:h-[400px] w-full"
         >
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={data}
+              data={activityData}
               margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
             >
               <CartesianGrid stroke="#1a1f1b" vertical={false} />
               <XAxis
                 dataKey="day"
                 stroke="#1a1f1b"
-                tick={{ fill: '#7b827e', fontSize: 10 }}
+                tick={{ fill: "#7b827e", fontSize: 10 }}
                 className="sm:text-xs"
               />
               <YAxis
                 stroke="#1a1f1b"
-                tick={{ fill: '#7b827e', fontSize: 10 }}
+                tick={{ fill: "#7b827e", fontSize: 10 }}
                 className="sm:text-xs"
               />
               <ChartTooltip
@@ -94,12 +95,12 @@ export default function DailyPrActivityChart({ className }) {
                 className="sm:stroke-[3]"
                 dot={{
                   r: 3,
-                  fill: '#0b0f0e',
-                  stroke: '#c7f03d',
+                  fill: "#0b0f0e",
+                  stroke: "#c7f03d",
                   strokeWidth: 2,
-                  className: 'sm:r-4'
+                  className: "sm:r-4",
                 }}
-                activeDot={{ r: 5, className: 'sm:r-6' }}
+                activeDot={{ r: 5, className: "sm:r-6" }}
               />
             </AreaChart>
           </ResponsiveContainer>

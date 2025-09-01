@@ -1,6 +1,6 @@
-import React from 'react';
-import Speedometer from './Speedometer';
-import EnhancedProgressBar from './EnhancedProgressBar';
+import React from "react";
+import Speedometer from "./Speedometer";
+import EnhancedProgressBar from "./EnhancedProgressBar";
 
 const DailyStreakCard = ({ stats }) => {
   return (

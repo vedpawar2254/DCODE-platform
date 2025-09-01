@@ -1,39 +1,39 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Button from '../../ui/Button/Button';
-import Logo from '../../ui/Logo/Logo';
-import WaitList from '../../../pages/Waitlist/WaitList';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Button from "../../ui/Button/Button";
+import Logo from "../../ui/Logo/Logo";
+import WaitList from "../../../pages/Waitlist/WaitList";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const scrollToSection = id => {
+  const scrollToSection = (id) => {
     const section = document.querySelector(id);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const handleNavClick = (e, link) => {
     e.preventDefault();
 
-    if (link.path === '/') {
-      if (location.pathname === '/') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (link.path === "/") {
+      if (location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        navigate('/');
+        navigate("/");
         setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }, 100);
       }
-    } else if (link.path.startsWith('/#')) {
-      const sectionId = link.path.replace('/#', '#');
-      if (location.pathname === '/') {
+    } else if (link.path.startsWith("/#")) {
+      const sectionId = link.path.replace("/#", "#");
+      if (location.pathname === "/") {
         scrollToSection(sectionId);
       } else {
-        navigate('/');
+        navigate("/");
         setTimeout(() => scrollToSection(sectionId), 200);
       }
     } else {
@@ -44,19 +44,19 @@ export default function NavBar() {
   };
 
   const navLinks = [
-    { name: 'About', path: '/#About' },
-    { name: 'Timeline', path: '/#timeline' },
-    { name: 'Contact', path: '/contact' }
+    { name: "About", path: "/#About" },
+    { name: "Timeline", path: "/#timeline" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const handleSectionNavigation = (e, sectionId) => {
     e.preventDefault();
-    if (location.pathname !== '/home') {
-      navigate('/home', { state: { scrollTo: sectionId } });
+    if (location.pathname !== "/home") {
+      navigate("/home", { state: { scrollTo: sectionId } });
     } else {
       const element = document.getElementById(sectionId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
@@ -67,19 +67,19 @@ export default function NavBar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          {navLinks.map(link => (
+          {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.path}
-              onClick={e => handleNavClick(e, link)}
+              onClick={(e) => handleNavClick(e, link)}
               className="relative text-white after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-lime-400 after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {link.name}
             </a>
           ))}
           <Button variant="outline">
-            <a href="/waitlist" className="px-[0.5rem] py-[3rem]">
-              Waitlist
+            <a href="/auth" className="px-[0.5rem] py-[3rem]">
+              Login
             </a>
           </Button>
         </div>
@@ -98,11 +98,11 @@ export default function NavBar() {
       {isMenuOpen && (
         <div className="md:hidden mt-4 py-4 px-4 border-t border-gray-800">
           <div className="flex flex-col space-y-5">
-            {navLinks.map(link => (
+            {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.path}
-                onClick={e => handleNavClick(e, link)}
+                onClick={(e) => handleNavClick(e, link)}
                 className="text-white text-lg py-1 px-2 hover:text-lime-400 transition-colors"
               >
                 {link.name}
@@ -110,8 +110,7 @@ export default function NavBar() {
             ))}
             <div className="pt-2">
               <Button variant="outline" className="w-full">
-                <a href='/waitlist'>WaitList</a>
-               
+                <a href="/auth">Login</a>
               </Button>
             </div>
           </div>

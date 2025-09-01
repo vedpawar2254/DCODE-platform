@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 export const RightSide = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,6 +41,7 @@ export const RightSide = () => {
     register,
     login,
     githubAuth,
+    checkAuth,
     isRegistering,
     isLoggingIn,
     isGitHubAuth,
@@ -77,6 +80,33 @@ export const RightSide = () => {
   const handleGithub = async () => {
     await githubAuth();
   };
+  useEffect(() => {
+    (async () => {
+      window.onload = async () => {
+        if (window?.location?.search) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const code = urlParams.get("code");
+          var axres = await axios
+            .get(
+              "http://localhost:8080/api/v1/auth/github/callback?code=" + code,
+              { withCredentials: true }
+            )
+            .then((d) => d.data);
+        }
+        var check = await checkAuth();
+        if (axres?.data?.is_signedup) {
+          if (check.status) {
+            navigate("/onboarding");
+          }
+        } else {
+          if (check.status) {
+            navigate("/dashboard");
+          }
+        }
+      };
+    })();
+    return () => {};
+  }, [window]);
 
   return (
     <div className="flex-1 flex items-center justify-center min-h-screen p-8">
