@@ -58,7 +58,7 @@ export const routes = createBrowserRouter([
     path: "/onboarding",
     element: <Onboarding />,
     children: [
-      { path: "exp", element: <AskExperience /> },
+      { path: "", element: <AskExperience /> },
       { path: "fork", element: <CreateFork /> },
     ],
   },
