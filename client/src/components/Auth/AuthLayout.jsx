@@ -10,14 +10,16 @@ export const AuthLayout = () => {
   const { checkAuth } = useAuthStore();
   useEffect(() => {
     (async () => {
-      var check = await checkAuth();
-      if (check.status) {
-        if (check?.is_signedup) {
-          navigate("/onboarding");
-        } else {
-          navigate("/dashboard");
+      window.addEventListener("DOMContentLoaded", async () => {
+        var check = await checkAuth();
+        if (check.status) {
+          if (check?.is_signedup) {
+            navigate("/onboarding");
+          } else {
+            navigate("/dashboard");
+          }
         }
-      }
+      });
     })();
   }, []);
   return (

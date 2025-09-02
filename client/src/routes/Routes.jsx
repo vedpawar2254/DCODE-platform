@@ -3,19 +3,19 @@ import WaitList from "../pages/Waitlist/WaitList";
 import Home from "../pages/Home/Home";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ContactPage from "../pages/Contact/ContactPage";
-import AuthPage  from "../pages/auth/AuthPage";
+import AuthPage from "../pages/auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
+import AuthenticatedLayout from "../components/Layout/AuthenticatedLayout";
+import Notifications from "../pages/Notifications/Notifications";
+import Repositories from "../pages/Repositories/Repositories";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
 import CreateFork from "../components/Onboarding/CreateForkStatic";
 export const routes = createBrowserRouter([
-  // {
-  //   path: '/',
-  //   element: <AppLayout />,
-  //   children: [
+  // Public routes (no sidebar)
   {
     path: "/",
     element: <Home />,
@@ -24,18 +24,9 @@ export const routes = createBrowserRouter([
     path: "/waitlist",
     element: <WaitList />,
   },
-
   {
     path: "/auth",
     element: <AuthPage />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
   },
   {
     path: "/contact",
@@ -50,16 +41,31 @@ export const routes = createBrowserRouter([
     element: <PrivacyPolicy />,
   },
   {
-    path: "/contact",
-    element: <ContactPage />,
-  },
-  {
-    path: "/onboarding",
+    path: "onboarding",
     element: <Onboarding />,
     children: [
       { path: "", element: <AskExperience /> },
       { path: "fork", element: <CreateFork /> },
     ],
   },
-  
+
+  // Authenticated routes (with sidebar when logged in)
+  {
+    path: "/",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "notifications",
+        element: <Notifications />,
+      },
+      {
+        path: "repositories",
+        element: <Repositories />,
+      },
+    ],
+  },
 ]);

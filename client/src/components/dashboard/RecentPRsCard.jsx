@@ -122,7 +122,7 @@ const RecentPRsCard = ({ recentPRs, className }) => {
                     onClick={() =>
                       pr.pullRequestUrl && window.open(pr.pullRequestUrl)
                     }
-                    className={`absolute max-w-[10rem] ${pr.pullRequestUrl ? "cursor-pointer hover:border-green-700" : ""} transition-all duration-300 flex items-center bg-white/5 px-2 py-1 rounded-full border border-white/10 justify-center  ${index == prsData.length - 1 ? "right-[-5%]" : "right-[-20%]"} ${index % 2 == 0 ? "top-[-90%]" : "bottom-[-90%]"}`}
+                    className={`absolute w-[10rem] ${pr.pullRequestUrl ? "cursor-pointer hover:border-green-700" : ""} transition-all duration-300 flex items-center bg-white/5 px-2 py-1 rounded-full border border-white/10 justify-center  right-[-28%] ${index % 2 == 0 ? "top-[-90%]" : "bottom-[-90%]"}`}
                   >
                     <h3 className="text-xs line-clamp-1">{`${status === "open" ? "○" : status === "merged" ? "✓" : "✗"} ${pr.name}`}</h3>
                   </div>

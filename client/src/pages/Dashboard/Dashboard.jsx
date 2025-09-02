@@ -293,17 +293,19 @@ export default () => {
 
   // Transform recent PRs data
   const transformedRecentPRs = dashboardData.recentPRs
-    ? dashboardData.recentPRs.map((pr) => ({
-        name: pr.title,
-        status:
-          pr.state === "open" ? "open" : pr.isMerged ? "merged" : "closed",
-        date: new Date(pr.createdAt).toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        }),
-        pullRequestUrl: pr.pullRequestUrl,
-      }))
+    ? dashboardData.recentPRs
+        .map((pr) => ({
+          name: pr.title,
+          status:
+            pr.state === "open" ? "open" : pr.isMerged ? "merged" : "closed",
+          date: new Date(pr.createdAt).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }),
+          pullRequestUrl: pr.pullRequestUrl,
+        }))
+        .reverse()
     : [{ title: "No recent PRs", status: "open", date: "N/A" }];
 
   // Generate milestones based on actual data
@@ -397,7 +399,7 @@ export default () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-[#121212] text-white p-4 sm:p-6 relative"
+      className="bg-[#121212] text-white p-4 sm:p-6 relative min-h-screen"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
