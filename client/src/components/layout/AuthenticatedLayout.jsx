@@ -1,14 +1,19 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useEffect } from "react";
 
 const AuthenticatedLayout = () => {
-  const { verifiedUser, isCheckingAuth } = useAuthStore();
+  const navigate = useNavigate();
+  const { verifiedUser, checkAuth } = useAuthStore();
   useEffect(() => {
-    if (isCheckingAuth) {
-    }
+    (async () => {
+      var loggedin = await checkAuth();
+      if (!loggedin.status) {
+        navigate("/auth");
+      }
+    })();
   }, []);
 
   return (

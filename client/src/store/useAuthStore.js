@@ -14,9 +14,10 @@ export const useAuthStore = create((set, get) => ({
   // loading states
   isCheckingAuth: false,
   isRegistering: false,
-  isLoggingIn: false,
+  // isLoggingIn: false,
   isLoggingOut: false,
   isGitHubAuth: false,
+  isLoggedIn: false,
 
   // === AUTH CHECK ===
   checkAuth: () => {
@@ -28,11 +29,11 @@ export const useAuthStore = create((set, get) => ({
         const res = await axiosInstance.get("/auth/profile", {
           timeout: 8000, // safeguard slow network
         });
-        set({ verifiedUser: res.data });
+        set({ verifiedUser: res.data, isLoggedIn: true });
         resolve({ status: true, is_signedup: res.data.is_signedup });
       } catch (error) {
-        //   console.error("❌ Auth check failed:", error);
-        set({ verifiedUser: null });
+        console.error("❌ Auth check failed:", error);
+        set({ verifiedUser: null, isLoggedIn: false });
         resolve({ status: false });
       } finally {
         set({ isCheckingAuth: false });
