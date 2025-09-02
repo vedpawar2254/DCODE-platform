@@ -11,6 +11,7 @@ import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
 import CreateFork from "../components/Onboarding/CreateForkStatic";
+import Profile from "../pages/Dashboard/Profile";
 export const routes = createBrowserRouter([
   // {
   //   path: '/',
@@ -34,8 +35,8 @@ export const routes = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: "/profile",
+    element: <Profile />,
   },
   {
     path: "/contact",
