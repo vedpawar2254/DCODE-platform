@@ -1,171 +1,111 @@
+import {
+  Calendar,
+  CalendarDays,
+  Github,
+  GitPullRequest,
+  GraduationCap,
+  Linkedin,
+  Locate,
+  Mail,
+  TrendingUp,
+  Twitter,
+} from "lucide-react";
 import React from "react";
 
 const ProfileCard = ({ user }) => (
-  <div className="bg-transparent rounded-md p-6 flex flex-col items-center shadow border border-[#23252B] w-full max-w-md backdrop-blur-md">
+  <div className="bg-transparent rounded-md p-6 flex flex-col items-center shadow border border-[#23252B] w-full max-w-md backdrop-blur-sm">
+    <div className=" absolute right-2 top-2 bg-[#23252B] text-[#C6FF3D] p-2 text-xs font-semibold border rounded-full border-[#23252B]">
+      85%
+    </div>
     <div className="relative mb-4">
       <img
         src={user.avatar}
         alt={user.name}
-        className="w-28 h-28 rounded-full object-cover border-2 border-[#23252B]"
+        className="w-28 h-28 rounded-full object-cover border border-[#C6FF3D]"
       />
-      <div className="absolute top-2 right-2 bg-[#23252B] text-[#C6FF3D] rounded px-2 py-0.5 text-xs font-semibold border border-[#23252B]">
-        85%
-      </div>
     </div>
-    <h2 className="text-lg font-semibold text-white text-center mb-1">
+    <h2 className="text-lg font-semibold text-white text-center">
       {user.name}
     </h2>
-    <div className="text-[#C6FF3D] text-xs mb-2 text-center">
+    <div className="text-[#A1A1AA] text-xs mb-6 text-center">
       @{user.username}
     </div>
-    <p className="text-[#A1A1AA] text-center text-xs mb-4">{user.bio}</p>
-    <div className="flex items-center justify-center gap-2 mb-2">
+    <p className="text-[#A1A1AA] text-center text-xs mb-8">{user.bio}</p>
+    <div className="flex items-center justify-center gap-2 mb-2 text-xs text-[#A1A1AA]">
       <span className="flex items-center gap-1 text-[#C6FF3D] text-xs">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" stroke="#C6FF3D" strokeWidth="2" />
-          <circle cx="12" cy="12" r="3" fill="#C6FF3D" />
-        </svg>
-        {user.location}
+        <Locate cx="12" cy="12" r="10" stroke="#C6FF3D" strokeWidth="2" />
+        <circle cx="12" cy="12" r="3" fill="#C6FF3D" />
       </span>
+      {user.location}
     </div>
     <div className="flex items-center gap-2 text-[#A1A1AA] text-xs mb-4">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
-        <rect
-          x="4"
-          y="8"
-          width="16"
-          height="12"
-          rx="2"
-          stroke="#C6FF3D"
-          strokeWidth="2"
-        />
-        <path d="M8 12h8" stroke="#C6FF3D" strokeWidth="2" />
-      </svg>
+      <Calendar color="#C6FF3D" />
       Joined {user.joined}
-    </div>
-    <div className="flex gap-3 mb-6">
-      {user.socials.map((icon, i) => (
-        <a
-          key={i}
-          href={icon.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#A1A1AA] hover:text-[#C6FF3D]"
-        >
-          {icon.svg}
-        </a>
-      ))}
     </div>
     <div className="flex justify-between w-full mt-4">
       <div className="text-center">
-        <div className="text-[#C6FF3D] text-xl font-bold">
-          {user.contributions}
-        </div>
-        <div className="text-[#A1A1AA] text-xs">Contributions</div>
+        <div className="text-[#C6FF3D] text-xl ">{user.contributions}</div>
+        <div className="text-white text-xs">Contributions</div>
       </div>
       <div className="text-center">
-        <div className="text-[#C6FF3D] text-xl font-bold">
-          {user.linesOfCode}
-        </div>
-        <div className="text-[#A1A1AA] text-xs">Lines of code</div>
+        <div className="text-[#C6FF3D] text-xl">{user.linesOfCode}</div>
+        <div className="text-white text-xs">Lines of code</div>
       </div>
     </div>
 
     <div className="w-full border-t border-[#23252B] my-6"></div>
 
     {/* Education Section */}
-    <div className="w-full mb-6">
-      <div className="flex items-center mb-4">
-        <span className="bg-[#23252B] p-2 rounded-lg mr-3">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18 2H6C4.89543 2 4 2.89543 4 4V22L12 18L20 22V4C20 2.89543 19.1046 2 18 2Z"
-              stroke="#818CF8"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
+    <div className="w-full mb-2">
+      <div className="flex items-center mb-4 gap-2">
+        <GraduationCap color="#C6FF3D" />
         <h3 className="text-white font-semibold text-lg">Education</h3>
       </div>
       <div>
-        <p className="text-white font-medium text-lg">
-          {user.education.college}
-        </p>
+        <p className="text-white text-lg">{user.education.college}</p>
         <p className="text-[#A1A1AA] text-sm mt-1">{user.education.degree}</p>
-        <div className="mt-3 inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs font-medium px-2.5 py-0.5 rounded-full">
+        <div className="mt-3 inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs px-2.5 py-0.5 rounded-full">
           <span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"></span>
           {user.education.year}
         </div>
       </div>
     </div>
-
+    <div className="w-full border-t border-[#23252B] my-6"></div>
     {/* Contact Section */}
-    <div className="w-full">
-      <div className="flex items-center mb-4">
-        <span className="bg-[#23252B] p-2 rounded-lg mr-3">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7"
-              stroke="#C6FF3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <rect
-              x="3"
-              y="5"
-              width="18"
-              height="14"
-              rx="2"
-              stroke="#C6FF3D"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
+    <div className="w-full flex gap-2 flex-col">
+      <div className="flex items-center mb-4 gap-2">
+        <Mail color="#C6FF3D" />
         <h3 className="text-white font-semibold text-lg">Contact</h3>
       </div>
-      <div className="bg-[#23252B] p-3 rounded-lg flex items-center">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="mr-2"
+      <div className="bg-[#23252B] p-3 rounded-lg flex items-center gap-2">
+        <Mail color="#A1A1AA" height="16" width="16" />
+        <a
+          href={`mailto:${user.contact.email}`}
+          className="text-[#A1A1AA] text-sm"
         >
-          <path
-            d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7"
-            stroke="#A1A1AA"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <rect
-            x="3"
-            y="5"
-            width="18"
-            height="14"
-            rx="2"
-            stroke="#A1A1AA"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
+          {user.contact.email}
+        </a>
+      </div>
+      <div className="bg-[#23252B] p-3 rounded-lg flex items-center gap-2">
+        <Twitter color="#A1A1AA" height="16" width="16" />
+        <a
+          href={`mailto:${user.contact.email}`}
+          className="text-[#A1A1AA] text-sm"
+        >
+          {user.contact.email}
+        </a>
+      </div>
+      <div className="bg-[#23252B] p-3 rounded-lg flex items-center gap-2">
+        <Linkedin color="#A1A1AA" height="16" width="16" />
+        <a
+          href={`mailto:${user.contact.email}`}
+          className="text-[#A1A1AA] text-sm"
+        >
+          {user.contact.email}
+        </a>
+      </div>
+      <div className="bg-[#23252B] p-3 rounded-lg flex items-center gap-2">
+        <Github color="#A1A1AA" height="16" width="16" />
         <a
           href={`mailto:${user.contact.email}`}
           className="text-[#A1A1AA] text-sm"
@@ -180,17 +120,17 @@ const ProfileCard = ({ user }) => (
 const ContributionHighlights = ({ highlights }) => (
   <div className="bg-transparent rounded-lg p-6 shadow-lg border border-[#23252B] w-full backdrop-blur-md">
     <div className="flex justify-between items-center mb-2">
-      <div>
-        <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path d="M4 12l6 6L20 6" stroke="#C6FF3D" strokeWidth="2" />
-          </svg>
-          Contribution Highlights
-        </h3>
-        <p className="text-[#A1A1AA] text-xs">Your impact across DCODE</p>
+      <div className="flex gap-2 items-center">
+        <TrendingUp color="#C6FF3D" />
+        <div>
+          <h3 className="text-white text-lg flex items-center gap-2">
+            Contribution Highlights
+          </h3>
+          <p className="text-[#A1A1AA] text-xs">Your impact across DCODE</p>
+        </div>
       </div>
       <div className="flex flex-col items-end">
-        <div className="text-[#C6FF3D] text-xl font-bold">
+        <div className="text-[#C6FF3D] text-xl ">
           {highlights.total}
         </div>
         <div className="text-[#A1A1AA] text-xs">Total Contributions</div>
@@ -199,17 +139,12 @@ const ContributionHighlights = ({ highlights }) => (
     {/* Main content cards */}
     <div className="flex flex-row gap-6 mt-6">
       {/* Pull Requests */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1">
-        <div className="text-white font-semibold mb-2 flex items-center gap-2">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-            <path d="M4 4h16v16H4V4z" stroke="#C6FF3D" strokeWidth="2" />
-          </svg>
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between">
+        <div className="text-white  mb-2 flex items-center gap-2">
+          <GitPullRequest color="#C6FF3D" />
           Pull Requests
-          <a href="#" className="ml-auto text-[#C6FF3D] text-xs underline">
-            View
-          </a>
         </div>
-        <div className="flex flex-col gap-1 mt-4">
+        <div className="flex flex-col gap-1 mt-4 text-white font-light">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#23FF7A] inline-block" />
@@ -232,7 +167,7 @@ const ContributionHighlights = ({ highlights }) => (
             <span className="font-bold text-[#A1A1AA]">2</span>
           </div>
         </div>
-        <div className="mt-4 text-xs">Success Rate</div>
+        <div className="mt-4 text-white font-light text-xs">Success Rate</div>
         <div className="flex items-center gap-2 mt-1">
           <span className="text-[#23FF7A] font-bold">92%</span>
           <div className="flex-1 h-2 bg-[#23252B] rounded-full overflow-hidden">
@@ -244,15 +179,15 @@ const ContributionHighlights = ({ highlights }) => (
         </div>
       </div>
       {/* Contribution Types */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1">
-        <div className="text-white font-semibold mb-2 flex items-center gap-2">
+      {/* <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col">
+        <div className="text-white  mb-2 flex items-center gap-2">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" stroke="#C6FF3D" strokeWidth="2" />
             <circle cx="12" cy="12" r="3" fill="#C6FF3D" />
           </svg>
           Contribution Types
         </div>
-        <div className="flex flex-col gap-2 mt-4">
+        <div className="flex flex-col gap-2 mt-4 text-white font-light">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#23C6FF] inline-block" />
@@ -282,10 +217,10 @@ const ContributionHighlights = ({ highlights }) => (
             <span className="font-bold text-[#FFD923]">9 (10%)</span>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Activity Metrics */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1">
-        <div className="text-white font-semibold mb-2 flex items-center gap-2">
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between">
+        <div className="text-white mb-2 flex items-center gap-2">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
             <rect
               x="4"
@@ -316,7 +251,7 @@ const ContributionHighlights = ({ highlights }) => (
             <div className="text-[#A1A1AA] text-xs">Issues</div>
           </div>
         </div>
-        <div className="flex items-center justify-between mt-2 text-xs">
+        <div className="flex items-center justify-between mt-2 text-xs text-white font-light">
           <span>This Month</span>
           <span className="text-[#23FF7A] font-bold">+12%</span>
         </div>
@@ -513,56 +448,6 @@ export default function Profile() {
     bio: "Passionate coder learning Rust and JavaScript. Building the future one commit at a time.",
     location: "Delhi, India",
     joined: "January 2024",
-    socials: [
-      {
-        link: "#",
-        svg: (
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9" stroke="#A1A1AA" strokeWidth="2" />
-          </svg>
-        ),
-      },
-      {
-        link: "#",
-        svg: (
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <rect
-              x="4"
-              y="4"
-              width="16"
-              height="16"
-              rx="8"
-              stroke="#A1A1AA"
-              strokeWidth="2"
-            />
-          </svg>
-        ),
-      },
-      {
-        link: "#",
-        svg: (
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <rect
-              x="2"
-              y="6"
-              width="20"
-              height="12"
-              rx="6"
-              stroke="#A1A1AA"
-              strokeWidth="2"
-            />
-          </svg>
-        ),
-      },
-      {
-        link: "#",
-        svg: (
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" stroke="#A1A1AA" strokeWidth="2" />
-          </svg>
-        ),
-      },
-    ],
     contributions: 86,
     linesOfCode: 2847,
     education: {
@@ -581,16 +466,15 @@ export default function Profile() {
     <div className="min-h-screen bg-[#121212] p-4">
       <div className="">
         <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-white">
-            My Profile
-          </h1>
+          <h1 className="text-2xl md:text-3xl text-white">My Profile</h1>
           <p className="text-[#A1A1AA] text-sm md:text-base mt-2">
             Welcome back,{" "}
-            <span className="text-[#C6FF3D] font-semibold">Aditya!</span>{" "}
-            <span className="text-[#C6FF3D] font-semibold">Profile</span>{" "}
+            <span className="text-[#C6FF3D] font-semibold">Aditya!</span> Here's
+            your <span className="text-[#C6FF3D] font-semibold">Profile</span>{" "}
             overview.
           </p>
         </div>
+        <div className="w-full border-t border-[#23252B] my-6"></div>
         <div className="flex flex-row gap-6 items-stretch">
           <div className="flex flex-col gap-6 w-full max-w-md">
             <ProfileCard user={user} />
