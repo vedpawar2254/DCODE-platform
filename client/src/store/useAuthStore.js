@@ -9,7 +9,7 @@ const extractErrorMessage = (error, fallback = "Something went wrong") => {
 };
 
 export const useAuthStore = create((set, get) => ({
-  verifiedUser: null,
+  authUser: null,
 
   // loading states
   isCheckingAuth: null,
@@ -37,11 +37,11 @@ export const useAuthStore = create((set, get) => ({
         const res = await axiosInstance.get("/auth/profile", {
           timeout: 8000, // safeguard slow network
         });
-        set({ verifiedUser: res.data, isLoggedIn: true });
+        set({ authUser: res.data, isLoggedIn: true });
         resolve({ status: true, is_signedup: res.data.is_signedup });
       } catch (error) {
         console.error("❌ Auth check failed:", error);
-        set({ verifiedUser: null, isLoggedIn: false });
+        set({ authUser: null, isLoggedIn: false });
         resolve({ status: false });
       } finally {
         set({ isCheckingAuth: false });
@@ -56,7 +56,7 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const res = await axiosInstance.post("/auth/register", data);
-      set({ verifiedUser: res.data.user ?? res.data });
+      set({ authUser: res.data.user ?? res.data });
 
       //   if (res.data?.message) toast.success(res.data.message);
       return true;
@@ -77,25 +77,25 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      set({ verifiedUser: res.data.user });
+      set({ authUser: res.data.user });
 
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
-      console.warn("⚠️ Login failed, attempting auto-register...");
-      if (data?.image) {
-        try {
-          const res = await axiosInstance.post("/auth/register", data);
-          set({ verifiedUser: res.data.user ?? res.data });
-          return true;
-        } catch (regErr) {
-          console.error("❌ Auto-register after login failed:", regErr);
-          toast.error(extractErrorMessage(regErr, "Login failed"));
-          return false;
-        }
-      }
+      // console.warn("⚠️ Login failed, attempting auto-register...");
+      // if (data?.image) {
+      //   try {
+      //     const res = await axiosInstance.post("/auth/register", data);
+      //     set({ verifiedUser: res.data.user ?? res.data });
+      //     return true;
+      //   } catch (regErr) {
+      //     console.error("❌ Auto-register after login failed:", regErr);
+      //     toast.error(extractErrorMessage(regErr, "Login failed"));
+      //     return false;
+      //   }
+      // }
 
-      //   console.error("❌ Login error:", error);
+      // console.error("❌ Login error:", error);
       //   toast.error(extractErrorMessage(error, "Login failed"));
       return false;
     } finally {
@@ -110,7 +110,7 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       await axiosInstance.post("/auth/logout");
-      set({ verifiedUser: null });
+      set({ authUser: null });
       toast.success("Logout successful");
       return true;
     } catch (error) {
@@ -136,7 +136,6 @@ export const useAuthStore = create((set, get) => ({
 
       set({ authUser: res.data.user ?? res.data });
       if (res.data?.message) toast.success(res.data.message);
-
       return true;
     } catch (error) {
       const msg = extractErrorMessage(error, "GitHub authentication failed");
