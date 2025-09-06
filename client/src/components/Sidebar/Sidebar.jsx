@@ -112,21 +112,21 @@ const Sidebar = () => {
                 />
               ) : (
                 <span className="text-lg font-semibold text-gray-300">
-                  {authUser?.data.name?.includes(" ")
-                    ? authUser?.data.name
+                  {authUser?.data?.name?.includes(" ")
+                    ? authUser?.data?.name
                         ?.split(" ")
                         .map((e) => e.charAt(0)?.toUpperCase())
-                    : authUser?.data.name?.charAt(0)?.toUpperCase() +
-                      authUser?.data.name?.charAt(1)?.toUpperCase()}
+                    : authUser?.data?.name?.charAt(0)?.toUpperCase() +
+                      authUser?.data?.name?.charAt(1)?.toUpperCase()}
                 </span>
               )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">
-                {authUser?.data.name}
+                {authUser?.data?.name}
               </p>
               <p className="text-xs text-gray-400 truncate">
-                {authUser?.data.email}
+                {authUser?.data?.email}
               </p>
             </div>
           </div>
