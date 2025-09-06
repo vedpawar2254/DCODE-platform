@@ -1,62 +1,60 @@
-import { React, useEffect, useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { React, useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const About = () => {
   const feedbacks = [
     {
-      initial: 'V',
-      name: 'Ved Pawar',
-      role: 'DCODE Mentor',
-      comment:
-        'Loved the structure of your PRs — makes reviewing so easy!'
+      initial: "V",
+      name: "Ved Pawar",
+      role: "DCODE Mentor",
+      comment: "Loved the structure of your PRs — makes reviewing so easy!",
     },
     {
-      initial: 'R',
-      name: 'Rishik',
-      role: 'DCODE Maintainer',
-      comment:
-        'Great job — can you add more test coverage?'
+      initial: "R",
+      name: "Rishik",
+      role: "DCODE Maintainer",
+      comment: "Great job — can you add more test coverage?",
     },
     {
-      initial: 'A',
-      name: 'Aditya Kumar',
-      role: 'Tech Mentor, DCODE',
+      initial: "A",
+      name: "Aditya Kumar",
+      role: "Tech Mentor, DCODE",
       comment:
-        'Your refactor reduced the codebase size by 15%. That’s pro-level thinking.'
-    }
+        "Your refactor reduced the codebase size by 15%. That's pro-level thinking.",
+    },
   ];
 
   const phases = [
     {
-      name: 'Fork',
+      name: "Fork",
       merged: 12,
       open: 4,
       leaderboard: [
-        { name: 'Ved', score: 600 },
-        { name: 'Rohan Singh', score: 500 },
-        { name: 'Aryan Vibhuti', score: 400 }
-      ]
+        { name: "Ved", score: 600 },
+        { name: "Rohan Singh", score: 500 },
+        { name: "Aryan Vibhuti", score: 400 },
+      ],
     },
     {
-      name: 'Spec',
+      name: "Spec",
       merged: 18,
       open: 3,
       leaderboard: [
-        { name: 'Ved', score: 800 },
-        { name: 'Rohan Singh', score: 700 },
-        { name: 'Aryan Vibhuti', score: 600 }
-      ]
+        { name: "Ved", score: 800 },
+        { name: "Rohan Singh", score: 700 },
+        { name: "Aryan Vibhuti", score: 600 },
+      ],
     },
     {
-      name: 'Merge',
+      name: "Merge",
       merged: 24,
       open: 8,
       leaderboard: [
-        { name: 'Ved', score: 1270 },
-        { name: 'Rohan Singh', score: 1000 },
-        { name: 'Aryan Vibhuti', score: 920 }
-      ]
-    }
+        { name: "Ved", score: 1270 },
+        { name: "Rohan Singh", score: 1000 },
+        { name: "Aryan Vibhuti", score: 920 },
+      ],
+    },
   ];
 
   const [activePhase, setActivePhase] = useState(phases[2]);
@@ -81,15 +79,15 @@ const About = () => {
   const getColor = (level) => {
     switch (level) {
       case 1:
-        return '#1d4428';
+        return "#1d4428";
       case 2:
-        return '#3fa14d';
+        return "#3fa14d";
       case 3:
-        return '#56d364';
+        return "#56d364";
       case 4:
-        return '#6fe87a';
+        return "#6fe87a";
       default:
-        return '#1d4428';
+        return "#1d4428";
     }
   };
 
@@ -101,25 +99,56 @@ const About = () => {
   }, []);
 
   return (
-    <section className="w-full px-6 md:px-16 bg-black text-start mb-24 p-16">
+    <section className="w-full px-6 md:px-16 bg-[#121212] text-start mb-24 p-16">
       {/* Hero */}
-      <div className="max-w-xl mx-auto mb-16 text-center">
-        <h3 className="text-green-500 text-sm tracking-widest mb-4">
+      <motion.div
+        className="max-w-xl mx-auto mb-16 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
+        <motion.h3
+          className="text-green-500 text-sm tracking-widest mb-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
           MADE ACCESSIBLE
-        </h3>
-        <h2 className="text-4xl md:text-3xl font-semibold text-white">
+        </motion.h3>
+        <motion.h2
+          className="text-4xl md:text-3xl font-semibold text-white"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
           Open-Source That Levels You Up
-        </h2>
-        <p className="text-gray-400 mt-4">
+        </motion.h2>
+        <motion.p
+          className="text-gray-400 mt-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+        >
           Build, learn, and grow in the world of real open-source. Ship
           production-ready code, get mentored by industry pros, and craft a
           portfolio that gets noticed.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Real-World Experience */}
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col text-left h-full w-full max-w-sm mx-auto">
+        <motion.div
+          className="bg-[#768529]/5 border-[1px] border-[#768529]/20 rounded-2xl p-6 flex flex-col text-left h-full w-full max-w-sm mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        >
           <h3 className="text-white font-bold text-md mb-2">
             Real-World Experience
           </h3>
@@ -127,9 +156,19 @@ const About = () => {
             Contribute to high-impact repos and write code that ships to
             production.
           </p>
-          <div className="bg-[#121A12] border rounded-xl p-4 text-left flex flex-col">
+          <motion.div
+            className="bg-[#768529]/11 border border-[#768529]/20 rounded-xl p-4 text-left flex flex-col"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
             <div className="flex items-center mb-2">
-              <span className="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+              <motion.span
+                className="w-2 h-2 rounded-full bg-green-400 mr-2"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              ></motion.span>
               <span className="bg-[#1D261D] text-[#BCDD19] text-xs px-2 py-1 rounded">
                 MERGED
               </span>
@@ -142,56 +181,102 @@ const About = () => {
             </p>
             <div className="flex items-center space-x-2">
               <div className="flex-1 h-2 bg-red-800 rounded-full">
-                <div className="h-2 bg-green-400 rounded-full w-3/4"></div>
+                <motion.div
+                  className="h-2 bg-green-400 rounded-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "75%" }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  viewport={{ once: true }}
+                ></motion.div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Industry Mentorship */}
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
+        <motion.div
+          className="bg-[#768529]/5 border-[1px] border-[#768529]/20 rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        >
           <h3 className="text-white font-bold text-md mb-2">
             <span className="text-[#BCDD19] mr-2"></span> Industry Mentorship
           </h3>
           <p className="text-gray-400 mb-6 text-sm">
-            Learn from seniors, get code reviews, and
-            follow workflows used in real-world teams.
+            Learn from seniors, get code reviews, and follow workflows used in
+            real-world teams.
           </p>
-          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col">
+          <motion.div
+            className="bg-[#768529]/11 border border-[#768529]/20 rounded-xl p-4 flex flex-col"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
             <div className="relative overflow-hidden h-[120px] mb-2">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={index}
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: '0%', opacity: 1 }}
-                  exit={{ y: '-100%', opacity: 0 }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  exit={{ y: "-100%", opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="absolute inset-0 flex flex-col"
                 >
                   <div className="flex items-center mb-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center mr-3 text-sm font-bold">
+                    <motion.div
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center mr-3 text-sm font-bold"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.3, delay: 0.2 }}
+                    >
                       {feedbacks[index].initial}
-                    </div>
+                    </motion.div>
                     <div>
-                      <p className="text-white text-sm font-semibold leading-tight">
+                      <motion.p
+                        className="text-white text-sm font-semibold leading-tight"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.3 }}
+                      >
                         {feedbacks[index].name}
-                      </p>
-                      <p className="text-gray-400 text-xs">
+                      </motion.p>
+                      <motion.p
+                        className="text-gray-400 text-xs"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.4 }}
+                      >
                         {feedbacks[index].role}
-                      </p>
+                      </motion.p>
                     </div>
                   </div>
-                  <div className="bg-[#1D261D] text-white text-sm px-4 py-2 rounded-lg border-l-2 border-[#BCDD19]">
+                  <motion.div
+                    className="bg-[#1D261D] text-white text-sm px-4 py-2 rounded-lg border-l-2 border-[#BCDD19]"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                  >
                     "{feedbacks[index].comment}"
-                  </div>
+                  </motion.div>
                 </motion.div>
               </AnimatePresence>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Build Portfolio */}
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto">
+        <motion.div
+          className="bg-[#768529]/5 border-[1px] border-[#768529]/20 rounded-2xl p-6 flex flex-col h-full w-full max-w-sm mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        >
           <h3 className="text-white font-bold text-md mb-2">
             <span className="text-[#BCDD19] mr-2"></span> Build Your Portfolio
           </h3>
@@ -199,9 +284,21 @@ const About = () => {
             Turn every commit, pull request, and feature into a story worth
             showing off.
           </p>
-          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col scrollbar-hide">
+          <motion.div
+            className="bg-[#768529]/11 border border-[#768529]/20 rounded-xl p-4 flex flex-col scrollbar-hide"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
             <p className="text-white mb-4">Contributions</p>
-            <div className="overflow-x-auto scrollbar-hide">
+            <motion.div
+              className="overflow-x-auto scrollbar-hide"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
               <div className="flex space-x-1">
                 {Array.from({ length: weeks }).map((_, weekIdx) => (
                   <div key={weekIdx} className="flex flex-col space-y-1">
@@ -209,18 +306,32 @@ const About = () => {
                       const index = weekIdx * days + dayIdx;
                       const level = data[index];
                       return (
-                        <div
+                        <motion.div
                           key={dayIdx}
                           className="w-2.5 h-2.5 rounded-[2px]"
                           style={{ backgroundColor: getColor(level) }}
-                        ></div>
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{
+                            duration: 0.1,
+                            delay: 0.7 + weekIdx * 0.01 + dayIdx * 0.002,
+                          }}
+                          viewport={{ once: true }}
+                          whileHover={{ scale: 1.2 }}
+                        ></motion.div>
                       );
                     })}
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="flex space-x-3 text-gray-400 text-xs mt-3">
+            </motion.div>
+            <motion.div
+              className="flex space-x-3 text-gray-400 text-xs mt-3"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              viewport={{ once: true }}
+            >
               <span>Less</span>
               <div className="flex space-x-1">
                 {levels.map((level) => (
@@ -232,12 +343,19 @@ const About = () => {
                 ))}
               </div>
               <span>More</span>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Collaborative Learning */}
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-4 md:col-span-2 h-full">
+        <motion.div
+          className="bg-[#768529]/5 border-[1px] border-[#768529]/20 rounded-2xl p-4 md:col-span-2 h-full"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        >
           <div className="flex justify-between items-start mb-2">
             <div>
               <h3 className="text-white font-bold mb-1 ml-2 mt-2 flex items-center pb-2">
@@ -250,26 +368,50 @@ const About = () => {
             </div>
           </div>
 
-          <div className="bg-[#121A12] border border-[#1D261D] rounded p-5 mt-2">
-            <div className="flex flex-wrap gap-3 mb-3">
-              {phases.map((phase) => (
-                <button
+          <motion.div
+            className="bg-[#768529]/11 border border-[#768529]/20 rounded p-5 mt-2"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="flex flex-wrap gap-3 mb-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              viewport={{ once: true }}
+            >
+              {phases.map((phase, idx) => (
+                <motion.button
                   key={phase.name}
                   onClick={() => setActivePhase(phase)}
-                  className={`px-6 py-1 rounded-lg p-3 text-2xs transition-all cursor-pointer
+                  className={`px-6 py-1 rounded-lg p-3 text-2xs border-[1px] transition-all duration-200 cursor-pointer
                     ${
                       activePhase.name === phase.name
-                        ? 'bg-[#333D00] border border-[#BCDD19] text-white'
-                        : 'bg-[#1D261D] text-gray-300 hover:border-[#BCDD19]'
+                        ? "bg-[#768529]/30  border-[#768529] text-white"
+                        : "bg-[#768529]/6 text-gray-300 border-[#768529]/10 hover:border-[#768529]/15"
                     }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.8 + idx * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {phase.name.split(' ')[0]}
-                </button>
+                  {phase.name.split(" ")[0]}
+                </motion.button>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-5 gap-2">
-              <div className="col-span-2 bg-[#142416] p-2 rounded-lg border border-[#152918]">
+            <motion.div
+              className="grid grid-cols-5 gap-[1rem]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="col-span-2 bg-[#768529]/6 px-4 py-2 rounded-lg border border-[#768529]/6">
                 <h4 className="text-white font-medium text-2xs mb-1">
                   Pull Requests
                 </h4>
@@ -281,7 +423,7 @@ const About = () => {
                     </div>
                     <div className="w-full bg-[#1D261D] rounded-full h-1 overflow-hidden mt-0.5">
                       <motion.div
-                        className="h-1 bg-[#37CD5A] rounded-full"
+                        className="h-[6px] bg-[#37CD5A] rounded-full"
                         animate={{ width: `${mergedPercent}%` }}
                         transition={{ duration: 0.5 }}
                       />
@@ -294,7 +436,7 @@ const About = () => {
                     </div>
                     <div className="w-full bg-[#1D261D] rounded-full h-1 overflow-hidden mt-0.5">
                       <motion.div
-                        className="h-1 bg-yellow-400 rounded-full"
+                        className="h-[6px] bg-yellow-400 rounded-full"
                         animate={{ width: `${openPercent}%` }}
                         transition={{ duration: 0.5 }}
                       />
@@ -303,72 +445,103 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="col-span-3 bg-[#142416] p-2 rounded-lg border border-[#152918]">
+              <div className="col-span-3 bg-[#768529]/6 px-4 py-2 rounded-lg border border-[#768529]/6">
                 <h4 className="text-white font-medium text-2xs mb-1">
                   Leaderboard
                 </h4>
                 <div className="space-y-1">
                   {activePhase.leaderboard.slice(0, 3).map((item, idx) => (
-                    <div
+                    <motion.div
                       key={idx}
-                      className="flex justify-between "
+                      className="flex justify-between"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.1 }}
                     >
                       <span className="text-white text-2xs flex">
-                        {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}{' '}
-                        {item.name.split(' ')[0]}
+                        {idx === 0 ? "🥇" : idx === 1 ? "🥈" : "🥉"}{" "}
+                        {item.name.split(" ")[0]}
                       </span>
                       <span className="text-white text-2xs px-1.5 py-0.5 rounded">
                         {item.score}
                       </span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Career Opportunities */}
-        <div className="bg-[#0B0F0B] border border-[#1D261D] rounded-2xl p-6 flex flex-col items-start h-full">
-          <div className="mb-4">
+        <motion.div
+          className="bg-[#768529]/5 border-[1px] border-[#768529]/20 rounded-2xl p-6 flex flex-col items-start h-full"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        >
+          <motion.div
+            className="mb-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            viewport={{ once: true }}
+          >
             <h3 className="text-white font-bold text-lg mb-1">
-              <span className="text-[#BCDD19] mr-2"></span> Career
-              Opportunities
+              <span className="text-[#BCDD19] mr-2"></span> Career Opportunities
             </h3>
             <p className="text-gray-400 text-sm">
-              Unlock internships, opportunities, and industry
-              connections.
+              Unlock internships, opportunities, and industry connections.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="bg-[#121A12] border border-[#1D261D] rounded-xl p-4 flex flex-col items-start">
-            <div className="mb-3 text-left">
-              {/* <h4 className="text-white font-medium text-sm mb-2">
-                Top Performer
-              </h4> */}
+          <motion.div
+            className="bg-[#768529]/11 border border-[#768529]/20 rounded-xl p-4 flex flex-col items-start"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="mb-3 text-left"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.9 }}
+              viewport={{ once: true }}
+            >
               <p className="text-[#BCDD19] text-xs text-bold">Top Performers</p>
-            </div>
+            </motion.div>
 
             <ul className="space-y-2 w-full text-left">
-              <li className="flex items-center text-white text-sm">
-                <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Direct internship interviews
-              </li>
-              <li className="flex items-center text-white text-sm">
-                <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                1-on-1 industry mentorship
-              </li>
-              <li className="flex items-center text-white text-sm">
-                <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Strong letters of recommendation
-              </li>
-              <li className="flex items-center text-white text-sm">
-                <span className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"></span>
-                Exclusive dev resources & toolkits
-              </li>
+              {[
+                "Direct internship interviews",
+                "1-on-1 industry mentorship",
+                "Strong letters of recommendation",
+                "Exclusive dev resources & toolkits",
+              ].map((item, idx) => (
+                <motion.li
+                  key={idx}
+                  className="flex items-center text-white text-sm"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 1 + idx * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <motion.span
+                    className="w-1.5 h-1.5 bg-[#BCDD19] rounded-full mr-2"
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 0.2, delay: 1.1 + idx * 0.1 }}
+                    viewport={{ once: true }}
+                  ></motion.span>
+                  {item}
+                </motion.li>
+              ))}
             </ul>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

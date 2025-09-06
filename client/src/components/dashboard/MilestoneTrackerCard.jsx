@@ -146,7 +146,7 @@ const MilestoneTracker = ({ className, milestones }) => {
           </div>
         </div>
         <button className="text-xs sm:text-sm text-[#BCDD19] hover:underline hover:text-[#BCDD19]/80 transition-colors text-center sm:text-right">
-          View Detailed Progress →
+          View Your Achievements →
         </button>
       </div>
     </Card>

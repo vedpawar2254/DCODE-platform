@@ -1,18 +1,18 @@
-import { Mail, Phone, MapPin } from 'lucide-react';
-import { FiGithub } from 'react-icons/fi';
-import { SlSocialLinkedin } from 'react-icons/sl';
-import Logo from '../../ui/Logo/Logo';
+import { Mail, Phone, MapPin } from "lucide-react";
+import { FiGithub } from "react-icons/fi";
+import { SlSocialLinkedin } from "react-icons/sl";
+import Logo from "../../ui/Logo/Logo";
 
 const Footer = () => {
-  const scrollToSection = id => {
+  const scrollToSection = (id) => {
     const section = document.querySelector(id);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <footer className="bg-black text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-32 pt-8 pb-6">
+    <footer className="bg-[#121212] text-white px-4 sm:px-6 md:px-8 lg:px-16 xl:px-32 pt-8 pb-6">
       {/* Top Line */}
       <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-16 xl:-mx-32">
         <hr className="w-full border-t border-[#D5D5D54D]" />
@@ -58,9 +58,9 @@ const Footer = () => {
             <li>
               <a
                 href="#"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 className="hover:text-white transition-colors"
               >
@@ -70,9 +70,9 @@ const Footer = () => {
             <li>
               <a
                 href="#"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
-                  scrollToSection('#About');
+                  scrollToSection("#About");
                 }}
                 className="hover:text-white transition-colors"
               >
@@ -82,9 +82,9 @@ const Footer = () => {
             <li>
               <a
                 href="#"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
-                  scrollToSection('#timeline');
+                  scrollToSection("#timeline");
                 }}
                 className="hover:text-white transition-colors"
               >

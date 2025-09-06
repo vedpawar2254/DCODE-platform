@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button/Button";
+import { motion } from "framer-motion";
 import Logo from "../../ui/Logo/Logo";
 import WaitList from "../../../pages/Waitlist/WaitList";
+import { useAuthStore } from "../../../store/useAuthStore";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { checkIfLoggedIn, isCheckingAuth, isLoggedIn } = useAuthStore();
+  // const [isLoggedIn, setisLoggedIn] = useState(null);
 
   const scrollToSection = (id) => {
     const section = document.querySelector(id);
@@ -60,11 +64,11 @@ export default function NavBar() {
       }
     }
   };
+
   return (
     <nav className="w-full py-4 pt-[2rem] px-4 sm:px-8 lg:px-16">
       <div className="flex items-center justify-between">
         <Logo />
-
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
@@ -77,13 +81,21 @@ export default function NavBar() {
               {link.name}
             </a>
           ))}
-          <Button variant="outline">
-            <a href="/auth" className="px-[0.5rem] py-[3rem]">
-              Login
-            </a>
-          </Button>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: isCheckingAuth ? 0 : 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Button variant="outline">
+              <a
+                href={isLoggedIn ? `/dashboard` : `/auth`}
+                className="px-[0.5rem] py-[3rem]"
+              >
+                {isLoggedIn ? "Dashboard" : "Login"}
+              </a>
+            </Button>
+          </motion.div>
         </div>
-
         {/* Mobile Menu Button */}
         <button
           className="md:hidden text-white text-2xl focus:outline-none"

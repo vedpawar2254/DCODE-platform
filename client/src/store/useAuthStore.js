@@ -12,13 +12,21 @@ export const useAuthStore = create((set, get) => ({
   verifiedUser: null,
 
   // loading states
-  isCheckingAuth: false,
+  isCheckingAuth: null,
   isRegistering: false,
   // isLoggingIn: false,
   isLoggingOut: false,
   isGitHubAuth: false,
-  isLoggedIn: false,
-
+  isLoggedIn: null,
+  checkIfLoggedIn: () => {
+    return new Promise(async (resolve, reject) => {
+      if (!get().isCheckingAuth) {
+        resolve({ status: get().isLoggedIn });
+      } else {
+        resolve({ status: null });
+      }
+    });
+  },
   // === AUTH CHECK ===
   checkAuth: () => {
     return new Promise(async (resolve, reject) => {

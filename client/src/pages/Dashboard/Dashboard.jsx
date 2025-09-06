@@ -300,7 +300,7 @@ export default () => {
             pr.state === "open" ? "open" : pr.isMerged ? "merged" : "closed",
           date: new Date(pr.createdAt).toLocaleDateString("en-US", {
             day: "numeric",
-            month: "long",
+            month: "short",
             year: "numeric",
           }),
           pullRequestUrl: pr.pullRequestUrl,

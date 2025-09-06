@@ -127,7 +127,7 @@ const RecentPRsCard = ({ recentPRs, className }) => {
                     <h3 className="text-xs line-clamp-1">{`${status === "open" ? "○" : status === "merged" ? "✓" : "✗"} ${pr.name}`}</h3>
                   </div>
                   <h3
-                    className={`absolute text-[0.6rem] text-gray-700 bottom-1/2 -left-[38%]  ${index % 2 == 0 ? "bottom-[53%]" : "top-[53%]"}`}
+                    className={`absolute text-[0.6rem] text-gray-700 bottom-1/2 -left-[28%]  ${index % 2 == 0 ? "bottom-[53%]" : "top-[53%]"}`}
                   >
                     {pr.date}
                   </h3>
@@ -228,9 +228,9 @@ const RecentPRsCard = ({ recentPRs, className }) => {
             );
           })()}
         </div>
-        <button className="text-[#BCDD19] text-xs sm:text-sm hover:underline text-left sm:text-right">
+        {/* <button className="text-[#BCDD19] text-xs sm:text-sm hover:underline text-left sm:text-right">
           View all →
-        </button>
+        </button> */}
       </div>
     </div>
   );
