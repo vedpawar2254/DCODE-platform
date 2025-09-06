@@ -6,7 +6,7 @@ import { FiBarChart2, FiBell, FiGitBranch, FiMenu, FiX } from "react-icons/fi";
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { verifiedUser } = useAuthStore();
+  const { authUser } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
@@ -35,7 +35,7 @@ const Sidebar = () => {
     setIsMobileMenuOpen(false); // Close mobile menu after navigation
   };
 
-  if (!verifiedUser) {
+  if (!authUser) {
     return null; // Don't render sidebar if user is not logged in
   }
 
@@ -104,29 +104,29 @@ const Sidebar = () => {
         <div className="p-4 border-t border-gray-800">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-              {verifiedUser?.profilePicture ? (
+              {authUser?.profilePicture ? (
                 <img
-                  src={verifiedUser.profilePicture}
+                  src={authUser.profilePicture}
                   alt="Profile"
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
                 <span className="text-lg font-semibold text-gray-300">
-                  {verifiedUser?.data.name?.includes(" ")
-                    ? verifiedUser?.data.name
+                  {authUser?.data.name?.includes(" ")
+                    ? authUser?.data.name
                         ?.split(" ")
                         .map((e) => e.charAt(0)?.toUpperCase())
-                    : verifiedUser?.data.name?.charAt(0)?.toUpperCase() +
-                      verifiedUser?.data.name?.charAt(1)?.toUpperCase()}
+                    : authUser?.data.name?.charAt(0)?.toUpperCase() +
+                      authUser?.data.name?.charAt(1)?.toUpperCase()}
                 </span>
               )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">
-                {verifiedUser?.data.name}
+                {authUser?.data.name}
               </p>
               <p className="text-xs text-gray-400 truncate">
-                {verifiedUser?.data.email}
+                {authUser?.data.email}
               </p>
             </div>
           </div>

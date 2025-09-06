@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const AuthenticatedLayout = () => {
   const navigate = useNavigate();
-  const { verifiedUser, checkAuth } = useAuthStore();
+  const { authUser, checkAuth } = useAuthStore();
   useEffect(() => {
     (async () => {
       var loggedin = await checkAuth();
@@ -18,9 +18,9 @@ const AuthenticatedLayout = () => {
 
   return (
     <div className="min-h-screen bg-[#121212]">
-      {verifiedUser && <Sidebar />}
+      {authUser && <Sidebar />}
       <div
-        className={`${verifiedUser ? "lg:ml-64" : "ml-0"} transition-all duration-300`}
+        className={`${authUser ? "lg:ml-64" : "ml-0"} transition-all duration-300`}
       >
         <Outlet />
       </div>

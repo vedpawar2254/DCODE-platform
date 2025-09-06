@@ -30,7 +30,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 
 export default () => {
   // Auth store
-  const { verifiedUser } = useAuthStore();
+  const { authUser } = useAuthStore();
 
   // State for dynamic data
   const [dashboardData, setDashboardData] = useState({
@@ -136,16 +136,16 @@ export default () => {
   useEffect(() => {
     console.log(dashboardData.loading, !dashboardData.error);
     const fetchDashboardData = async () => {
-      if (!verifiedUser?.data?.id) return;
+      if (!authUser?.data?.id) return;
 
       try {
         setDashboardData((prev) => ({ ...prev, loading: true, error: null }));
 
         const [statsResponse, profileResponse, prsResponse] = await Promise.all(
           [
-            dashboardService.getUserStats(verifiedUser.data.id),
+            dashboardService.getUserStats(authUser.data.id),
             dashboardService.getUserProfile(),
-            dashboardService.getLatestPRs(verifiedUser.data.id, 8),
+            dashboardService.getLatestPRs(authUser.data.id, 8),
           ]
         );
         setDashboardData({
@@ -166,19 +166,19 @@ export default () => {
     };
 
     fetchDashboardData();
-  }, [verifiedUser?.data?.id]);
+  }, [authUser?.data?.id]);
 
   // Refresh function
   const refreshDashboard = async () => {
-    if (!verifiedUser?.data?.id || dashboardData.loading) return;
+    if (!authUser?.data?.id || dashboardData.loading) return;
 
     try {
       setDashboardData((prev) => ({ ...prev, loading: true, error: null }));
 
       const [statsResponse, profileResponse, prsResponse] = await Promise.all([
-        dashboardService.getUserStats(verifiedUser.data.id),
+        dashboardService.getUserStats(authUser.data.id),
         dashboardService.getUserProfile(),
-        dashboardService.getLatestPRs(verifiedUser.data.id, 8),
+        dashboardService.getLatestPRs(authUser.data.id, 8),
       ]);
 
       setDashboardData({
@@ -389,7 +389,7 @@ export default () => {
   const transformedMilestones = generateMilestones(dashboardData.stats);
 
   // Show loading spinner if user is not yet available
-  // if (!verifiedUser?.data?.id) {
+  // if (!authUser?.data?.id) {
   //   return (
   //     <div className="min-h-screen bg-[#121212] text-white flex items-center justify-center">
   //       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>

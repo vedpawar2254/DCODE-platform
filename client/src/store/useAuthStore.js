@@ -86,7 +86,7 @@ export const useAuthStore = create((set, get) => ({
       // if (data?.image) {
       //   try {
       //     const res = await axiosInstance.post("/auth/register", data);
-      //     set({ verifiedUser: res.data.user ?? res.data });
+      //     set({ authUser: res.data.user ?? res.data });
       //     return true;
       //   } catch (regErr) {
       //     console.error("❌ Auto-register after login failed:", regErr);
