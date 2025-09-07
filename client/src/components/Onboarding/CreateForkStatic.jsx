@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button/Button";
 import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const steps = [
   {
@@ -240,6 +241,7 @@ async function getConfetti() {
 }
 
 export default function CreateFork() {
+  const { authUser, checkAuth } = useAuthStore();
   const [index, setIndex] = useState(0);
   const total = steps.length;
   const isComplete = index === total;
@@ -280,6 +282,17 @@ export default function CreateFork() {
     }
     if (!isComplete) popped.current = false;
   }, [isComplete]);
+
+  useEffect(() => {
+    (async () => {
+      var loggedin = await checkAuth();
+      if (!loggedin.status) {
+        navigate("/auth");
+      } else {
+        console.log("authUser:", authUser);
+      }
+    })();
+  }, []);
 
   return (
     <>
@@ -733,7 +746,64 @@ function Snippet({ label, code, language = "bash", className }) {
 }
 
 function Completion({ onRestart }) {
+  const { authUser, checkAuth, githubAuth } = useAuthStore();
+
+  useEffect(() => {
+    (async () => {
+      var loggedin = await checkAuth();
+      console.log("authUser:", authUser);
+      if (!loggedin.status) {
+        navigate("/auth");
+      }
+    })();
+  }, []);
   const navigate = useNavigate();
+
+  const handleGithub = async () => {
+    await githubAuth();
+  };
+  useEffect(() => {
+    (async () => {
+      window.onload = async () => {
+        if (window?.location?.search) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const code = urlParams.get("code");
+          if (code) {
+            setIsProcessingGitHubCallback(true);
+            try {
+              var axres = await axios
+                .get(
+                  "http://localhost:8080/api/v1/auth/github/callback?code=" +
+                    code,
+                  { withCredentials: true }
+                )
+                .then((d) => d.data);
+
+              var check = await checkAuth();
+              if (axres?.data?.is_signedup) {
+                if (check.status) {
+                  navigate("/onboarding");
+                }
+              } else {
+                if (check.status) {
+                  navigate("/dashboard");
+                }
+              }
+            } catch (error) {
+              console.error("GitHub auth error:", error);
+              setIsProcessingGitHubCallback(false);
+            }
+          }
+        } else {
+          var check = await checkAuth();
+          if (check.status) {
+            navigate("/dashboard");
+          }
+        }
+      };
+    })();
+    return () => {};
+  }, [window]);
   return (
     <motion.div
       className="p-8 text-center h-full flex flex-col items-center justify-center"
@@ -776,12 +846,21 @@ function Completion({ onRestart }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <Button
-          className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
-          onClick={() => navigate("/dashboard")}
-        >
-          Move to Dashboard ✨
-        </Button>
+        {authUser.is_github_login ? (
+          <Button
+            className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+            onClick={() => navigate("/dashboard")}
+          >
+            Move to Dashboard ✨
+          </Button>
+        ) : (
+          <Button
+            className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+            onClick={handleGithub}
+          >
+            Connect Your Github
+          </Button>
+        )}
       </motion.div>
     </motion.div>
   );

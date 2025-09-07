@@ -130,8 +130,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       // backend should handle both login & register internally
       const res = await axiosInstance.get("/auth/github");
+      console.log("res",res.data)
       if (res?.data?.redirect) {
         window.location.href = res.data.redirect;
+        console.log("reloaded")
       }
 
       set({ authUser: res.data.user ?? res.data });

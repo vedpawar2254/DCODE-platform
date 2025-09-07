@@ -37,7 +37,7 @@ export const AuthLayout = () => {
           initial={{ opacity: 0.1, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex-1"
+          className="flex-1 flex justify-between items-center"
           style={{ mixBlendMode: "lighten" }}
         >
           <LeftSide />
