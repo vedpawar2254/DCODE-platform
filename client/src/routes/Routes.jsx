@@ -14,7 +14,7 @@ import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
 import CreateFork from "../components/Onboarding/CreateForkStatic";
-import Profile from "../pages/Dashboard/Profile";
+import Profile from "../pages/Profile/Profile";
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
   {
