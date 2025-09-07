@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const ContributionHighlights = ({ highlights }) => (
-  <div className="bg-transparent rounded-lg p-6 shadow-lg border border-[#23252B] w-full backdrop-blur-md">
+  <div className="bg-[#FFFFFF05] rounded-lg p-6 shadow-lg border border-[#23252B] w-full backdrop-blur-md">
     <div className="flex justify-between items-center mb-2">
       <div className="flex gap-2 items-center">
         <TrendingUp color="#C6FF3D" />
@@ -24,7 +24,7 @@ const ContributionHighlights = ({ highlights }) => (
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <div className="text-[#C6FF3D] text-xl ">
+        <div className="text-[#C6FF3D] text-xl font-semibold">
           {highlights.total}
         </div>
         <div className="text-[#A1A1AA] text-xs">Total Contributions</div>
@@ -33,9 +33,9 @@ const ContributionHighlights = ({ highlights }) => (
     {/* Main content cards */}
     <div className="flex flex-row gap-6 mt-6">
       {/* Pull Requests */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between">
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between bg-[#FFFFFF05]">
         <div className="text-white  mb-2 flex items-center gap-2">
-          <GitPullRequest color="#C6FF3D" />
+          <GitPullRequest color="#01FF80" />
           Pull Requests
         </div>
         <div className="flex flex-col gap-1 mt-4 text-white font-light">
@@ -113,7 +113,7 @@ const ContributionHighlights = ({ highlights }) => (
         </div>
       </div> */}
       {/* Activity Metrics */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between">
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between bg-[#FFFFFF05]">
         <div className="text-white mb-2 flex items-center gap-2">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
             <rect
@@ -164,9 +164,9 @@ const ContributionHighlights = ({ highlights }) => (
           </svg>
           Top Contributing Repositories
         </div>
-        <a href="#" className="text-[#C6FF3D] text-xs underline">
+        {/* <a href="#" className="text-[#C6FF3D] text-xs underline">
           View All
-        </a>
+        </a> */}
       </div>
       <div className="flex flex-row gap-6">
         {/* Repo 1 */}

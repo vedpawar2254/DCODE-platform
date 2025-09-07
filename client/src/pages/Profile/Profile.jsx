@@ -1,4 +1,6 @@
 
+import React, { useState, useCallback } from "react";
+import { Pencil, X, Upload, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import SkillsOverview from "../../components/Profile/SkillsOverview";
 import ContributionHighlights from "../../components/Profile/ContributionHighlights";
 import ProfileCard from "../../components/Profile/ProfileCard";
@@ -433,24 +435,93 @@ import AchievementsRecognition from "../../components/Profile/AchievementsRecogn
 // }
 
 export default function Profile() {
-  const user = {
-    avatar: "https://avatar.iran.liara.run/public",
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileData, setProfileData] = useState({
     name: "Aditya Kumar",
-    username: "adityainnovates",
+    email: "aditya@example.com",
+    github_username: "adityainnovates",
+    college: {
+      name: "Jorhat Engineering College",
+      location: "Jorhat, Assam, India",
+      currentYear: "3rd Year",
+      degree: "B.Tech Computer Science Engineering"
+    },
     bio: "Passionate coder learning Rust and JavaScript. Building the future one commit at a time.",
+    avatar: "https://avatar.iran.liara.run/public",
+    links: {
+      twitter: "https://twitter.com/adityainnovates",
+      linkedin: "https://linkedin.com/in/adityainnovates",
+      github: "https://github.com/adityainnovates"
+    }
+  });
+
+  const user = {
+    avatar: profileData.avatar,
+    name: profileData.name,
+    username: profileData.github_username,
+    bio: profileData.bio,
     location: "Delhi, India",
     joined: "January 2024",
     contributions: 86,
     linesOfCode: 2847,
     education: {
-      college: "Jorhat Engineering College",
-      degree: "B.Tech Computer Science Engineering",
-      year: "3rd Year",
+      college: profileData.college.name,
+      degree: profileData.college.degree,
+      year: profileData.college.currentYear,
     },
     contact: {
-      email: "aditya@example.com",
+      email: profileData.email,
     },
+    socials: {
+      twitter: profileData.links.twitter,
+      linkedin: profileData.links.linkedin,
+      github: profileData.links.github,
+    }
   };
+
+  const handleEditProfile = useCallback(() => {
+    setIsEditingProfile(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsEditingProfile(false);
+  }, []);
+
+  const handleSaveProfile = useCallback(() => {
+    // Here you would typically save to your backend/state management
+    setIsEditingProfile(false);
+    // You can add an API call here to save the profileData
+  }, [profileData]);
+
+  const handleInputChange = useCallback((field) => (e) => {
+    if (field.includes('.')) {
+      const fieldParts = field.split('.');
+      if (fieldParts.length === 2) {
+        const [parent, child] = fieldParts;
+        setProfileData(prev => ({
+          ...prev,
+          [parent]: {
+            ...prev[parent],
+            [child]: e.target.value
+          }
+        }));
+      }
+    } else {
+      setProfileData(prev => ({ ...prev, [field]: e.target.value }));
+    }
+  }, []);
+
+  const handleImageUpload = useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileData(prev => ({ ...prev, avatar: e.target.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  }, []);
+
   const highlights = {
     total: 86,
   };
@@ -458,13 +529,24 @@ export default function Profile() {
     <div className="min-h-screen bg-[#121212] p-4">
       <div className="">
         <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl text-white font-semibold">My Profile</h1>
-          <p className="text-[#D5D5D5] text-sm md:text-base mt-2">
-            Welcome back,{" "}
-            <span className="text-[#C6FF3D] ">Aditya!</span> Here's
-            your <span className="text-[#C6FF3D] ">Profile</span>{" "}
-            overview.
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl md:text-3xl text-white font-semibold">My Profile</h1>
+              <p className="text-[#D5D5D5] text-sm md:text-base mt-2">
+                Welcome back,{" "}
+                <span className="text-[#C6FF3D] ">Aditya!</span> Here's
+                your <span className="text-[#C6FF3D] ">Profile</span>{" "}
+                overview.
+              </p>
+            </div>
+            <button
+              onClick={handleEditProfile}
+              className="flex items-center gap-2 bg-[#C6FF3D] text-black px-4 py-2 rounded-lg hover:bg-[#B8E835] transition-colors font-medium"
+            >
+              <Pencil size={16} />
+              Edit Profile
+            </button>
+          </div>
         </div>
         <div className="w-full border-t border-[#23252B] my-6"></div>
         <div className="flex flex-row gap-6 items-stretch">
@@ -478,6 +560,214 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {isEditingProfile && (
+        <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-white font-semibold text-xl">Edit Profile</h3>
+              <button
+                onClick={handleCloseModal}
+                className="text-[#A1A1AA] hover:text-white transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Profile Image Section */}
+              <div className="flex flex-col items-center mb-6">
+                <div className="relative mb-4">
+                  <img
+                    src={profileData.avatar}
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-[#C6FF3D]"
+                  />
+                  <label className="absolute bottom-0 right-0 bg-[#C6FF3D] text-black p-2 rounded-full cursor-pointer hover:bg-[#B8E835] transition-colors">
+                    <Upload size={16} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <p className="text-[#A1A1AA] text-sm">Click the upload icon to change your profile picture</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <h4 className="text-white font-medium text-lg border-b border-[#23252B] pb-2">Basic Information</h4>
+                  
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">Full Name</label>
+                    <input
+                      type="text"
+                      value={profileData.name}
+                      onChange={handleInputChange('name')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={profileData.email}
+                      onChange={handleInputChange('email')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="Enter your email address"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">GitHub Username</label>
+                    <input
+                      type="text"
+                      value={profileData.github_username}
+                      onChange={handleInputChange('github_username')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="Enter your GitHub username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">College/University Name</label>
+                    <input
+                      type="text"
+                      value={profileData.college.name}
+                      onChange={handleInputChange('college.name')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="Enter your college or university name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">College Location</label>
+                    <input
+                      type="text"
+                      value={profileData.college.location}
+                      onChange={handleInputChange('college.location')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="Enter college location (City, State, Country)"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">Current Year</label>
+                    <select
+                      value={profileData.college.currentYear}
+                      onChange={handleInputChange('college.currentYear')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                    >
+                      <option value="">Select your current year</option>
+                      <option value="1st Year">1st Year</option>
+                      <option value="2nd Year">2nd Year</option>
+                      <option value="3rd Year">3rd Year</option>
+                      <option value="4th Year">4th Year</option>
+                      <option value="5th Year">5th Year</option>
+                      <option value="Graduate">Graduate</option>
+                      <option value="Post Graduate">Post Graduate</option>
+                      <option value="PhD">PhD</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">Degree</label>
+                    <input
+                      type="text"
+                      value={profileData.college.degree}
+                      onChange={handleInputChange('college.degree')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="e.g., B.Tech Computer Science Engineering"
+                    />
+                  </div>
+                </div>
+
+                {/* Social Links */}
+                                {/* Social Links */}
+                <div className="space-y-4">
+                  <h4 className="text-white font-medium text-lg border-b border-[#23252B] pb-2">Social Links</h4>
+                  
+                  <div>
+                    <label className="flex items-center gap-2 text-[#A1A1AA] text-sm mb-2">
+                      <Twitter size={16} />
+                      Twitter
+                    </label>
+                    <input
+                      type="url"
+                      value={profileData.links.twitter}
+                      onChange={handleInputChange('links.twitter')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="https://twitter.com/username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-2 text-[#A1A1AA] text-sm mb-2">
+                      <Linkedin size={16} />
+                      LinkedIn
+                    </label>
+                    <input
+                      type="url"
+                      value={profileData.links.linkedin}
+                      onChange={handleInputChange('links.linkedin')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="flex items-center gap-2 text-[#A1A1AA] text-sm mb-2">
+                      <Github size={16} />
+                      GitHub
+                    </label>
+                    <input
+                      type="url"
+                      value={profileData.links.github}
+                      onChange={handleInputChange('links.github')}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bio Section */}
+              <div>
+                <label className="block text-[#A1A1AA] text-sm mb-2">Bio</label>
+                <textarea
+                  value={profileData.bio}
+                  onChange={handleInputChange('bio')}
+                  rows="4"
+                  className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors resize-none"
+                  placeholder="Write a short bio about yourself..."
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-4">
+                <button
+                  onClick={handleCloseModal}
+                  className="flex-1 bg-[#23252B] text-white py-3 px-4 rounded-lg hover:bg-[#2A2A2A] transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveProfile}
+                  className="flex-1 bg-[#C6FF3D] text-black py-3 px-4 rounded-lg hover:bg-[#B8E835] transition-colors font-medium"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

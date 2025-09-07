@@ -70,7 +70,7 @@ export default function AchievementsRecognition() {
     },
   ];
   return (
-    <div className="bg-transparent rounded-md p-6 shadow border border-[#23252B] w-full backdrop-blur-md">
+    <div className="bg-[#FFFFFF05] rounded-md p-6 shadow border border-[#23252B] w-full backdrop-blur-md">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
@@ -81,9 +81,9 @@ export default function AchievementsRecognition() {
             Achievements & Recognition
           </span>
         </div>
-        <a href="#" className="text-[#23FF7A] text-xs font-semibold">
+        {/* <a href="#" className="text-[#23FF7A] text-xs font-semibold">
           View All
-        </a>
+        </a> */}
       </div>
       <div className="flex flex-row gap-6 mb-8">
         {achievements.map((a, i) => (
@@ -109,7 +109,7 @@ export default function AchievementsRecognition() {
           </div>
         ))}
       </div>
-      <div className="text-[#A1A1AA] font-semibold text-xs mb-4">
+      {/* <div className="text-[#A1A1AA] font-semibold text-xs mb-4">
         ACTIVE QUESTS
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -143,7 +143,7 @@ export default function AchievementsRecognition() {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

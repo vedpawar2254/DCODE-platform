@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Calendar,
   CalendarDays,
@@ -8,15 +9,42 @@ import {
   Locate,
   Mail,
   MapPin,
+  Pencil,
   TrendingUp,
   Twitter,
+  X,
 } from "lucide-react";
 
-const ProfileCard = ({ user }) => (
+const ProfileCard = ({ user }) => {
+  const completionPercentage = user.completionPercentage || 69; // Default to 85% if not provided
+  
+  return (
   <div className="bg-[#FFFFFF05] rounded-md px-2 flex flex-col items-center shadow border border-[#23252B] w-full backdrop-blur-sm">
     <div className="py-10 px-14 flex flex-col items-center">
-      <div className=" absolute right-4 top-4  text-[#C6FF3D] p-2 text-xs font-semibold border-2 border-[#C6FF3D] h-10 w-10 rounded-full flex items-center justify-center">
-        <span className="text-white font-extralight">85%</span>
+      <div className="absolute right-4 top-4 w-12 h-12 flex items-center justify-center">
+        <svg className="w-12 h-12 transform -rotate-0" viewBox="0 0 36 36">
+          <path
+            className="text-[#23252B]"
+            stroke="currentColor"
+            strokeWidth="2"
+            fill="none"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            className="text-[#C6FF3D]"
+            stroke="currentColor"
+            strokeWidth="2"
+            fill="none"
+            strokeDasharray={`${completionPercentage}, 100`}
+            strokeLinecap="round"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <span className="absolute text-white font-extralight text-xs">{completionPercentage}%</span>
       </div>
       <div className="relative mb-4">
         <img
@@ -120,7 +148,8 @@ const ProfileCard = ({ user }) => (
           {user.contact.email}
         </a>
       </div>
-  </div>
-);
+    </div>
+  );
+};
 
 export default ProfileCard;
