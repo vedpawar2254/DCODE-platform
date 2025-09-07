@@ -846,7 +846,7 @@ function Completion({ onRestart }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        {authUser.is_github_login ? (
+        {authUser.data?.is_github_login ? (
           <Button
             className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
             onClick={() => navigate("/dashboard")}
