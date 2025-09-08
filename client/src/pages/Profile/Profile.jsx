@@ -15,6 +15,7 @@ import AchievementsRecognition from "../../components/Profile/AchievementsRecogn
 import { useAuthStore } from "../../store/useAuthStore";
 import SkillsSummaryCard from "@/components/Profile/SkillSummaryCard";
 import { dashboardService } from "../../services/dashboardService";
+import { profileService } from "../../services/profileService";
 
 export default function Profile() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -67,17 +68,78 @@ export default function Profile() {
   //   },
   // };
 
+  const getLanguageColor = (language) => {
+    const colorMap = {
+      JavaScript: "#F7DF1E",
+      TypeScript: "#3178C6",
+      Python: "#3776AB",
+      Java: "#ED8B00",
+      "C++": "#00599C",
+      C: "#A8B9CC",
+      "C#": "#239120",
+      Go: "#00ADD8",
+      Rust: "#CE422B",
+      PHP: "#777BB4",
+      Ruby: "#CC342D",
+      Swift: "#FA7343",
+      Kotlin: "#A97BFF",
+      Dart: "#0175C2",
+      HTML: "#E34F26",
+      HTML5: "#E34F26",
+      CSS: "#1572B6",
+      SQL: "#336791",
+      Shell: "#89E051",
+      R: "#276DC3",
+      MATLAB: "#E16737",
+      Scala: "#DC322F",
+      Perl: "#39457E",
+      Lua: "#2C2D72",
+      Haskell: "#5E5086",
+      Clojure: "#5881D8",
+      Erlang: "#B83998",
+      Elixir: "#6E4A7E",
+      "F#": "#B845FC",
+      OCaml: "#3BE133",
+      Vue: "#4FC08D",
+      React: "#61DAFB",
+      Angular: "#DD0031",
+    };
+    return colorMap[language] || "#6B7280";
+  };
+  const sanitizeLangName = (lang) => {
+    if (lang == "HTML") {
+      return "HTML5";
+    }
+    return lang;
+  };
   useEffect(() => {
     (async () => {
       if (authUser?.data) {
-        const [statsResponse, prsResponse] = await Promise.all([
+        const [statsResponse, prsResponse, topProjects] = await Promise.all([
           dashboardService.getUserStats(authUser.data.id),
           dashboardService.getLatestPRs(authUser.data.id, 8),
+          profileService.getTopProjects(),
         ]);
 
+        const transformedLanguages =
+          statsResponse.message?.languagesWithPercentage?.length > 0
+            ? statsResponse.message.languagesWithPercentage.map((lang) => ({
+                name: sanitizeLangName(lang.language),
+                percentage: lang.percentage,
+                color: getLanguageColor(lang.language),
+              }))
+            : [
+                {
+                  name: "No data available",
+                  percentage: 100,
+                  color: "#6B7280",
+                },
+              ];
+        statsResponse.message.languagesWithPercentage = transformedLanguages;
         setProfileStats({
           stats: statsResponse.message,
           recentPRs: prsResponse.message,
+          topProjects,
           loading: false,
           error: null,
         });
@@ -131,9 +193,6 @@ export default function Profile() {
     }
   }, []);
 
-  const highlights = {
-    total: 86,
-  };
   if (!user) {
     return (
       <div className="min-h-screen bg-[#121212] flex items-center justify-center">
@@ -173,15 +232,26 @@ export default function Profile() {
         <div className="w-full border-t border-[#23252B] my-6"></div>
         <div className="grid md:grid-cols-3 grid-cols-1 /gap-[2] /flex /flex-row gap-5 /items-stretch">
           <div className="flex flex-col gap-5 /w-full /max-w-100">
-            <ProfileCard user={user} />
+            <ProfileCard
+              contributions={ProfileStats?.stats?.totalCommits}
+              linesOfCode={ProfileStats?.stats?.totalLOC}
+              user={user}
+            />
             {/* <SkillsOverview /> */}
           </div>
           <div className="flex flex-col gap-5 w-full col-span-2">
             {ProfileStats?.stats && (
-              <ContributionHighlights highlights={ProfileStats.stats} />
+              <ContributionHighlights
+                highlights={ProfileStats.stats}
+                topProjects={ProfileStats.topProjects}
+              />
             )}
             <AchievementsRecognition />
-            <SkillsSummaryCard />
+            {ProfileStats?.stats?.languagesWithPercentage && (
+              <SkillsSummaryCard
+                skills={ProfileStats?.stats?.languagesWithPercentage}
+              />
+            )}
           </div>
         </div>
       </div>

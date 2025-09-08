@@ -139,7 +139,9 @@ const SkillsSummaryCard = ({ languages }) => {
         <h3 className="text-base sm:text-lg font-semibold">
           Skills <span className="text-[#BCDD19]">Summary</span>
         </h3>
-        <span className="text-xs sm:text-sm text-gray-400">4 Total</span>
+        <span className="text-xs sm:text-sm text-gray-400">
+          {languages.length || 0} Total
+        </span>
       </div>
 
       {/* Radar Chart Placeholder */}

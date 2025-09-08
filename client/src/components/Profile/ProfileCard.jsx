@@ -15,7 +15,8 @@ import {
   X,
 } from "lucide-react";
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user, linesOfCode, contributions }) => {
+  console.log(contributions);
   const completionPercentage = user?.completionPercentage || 70; // Default to 85% if not provided
 
   return (
@@ -107,11 +108,11 @@ const ProfileCard = ({ user }) => {
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full p-2 /border group border-[#A1A1AA] bg-[#23252B] hover:border-[#C6FF3D] transition"
+                className="rounded-full p-2 /border group border-[#A1A1AA] bg-[#23252B] transition"
               >
                 <Icon
                   size={16}
-                  className="text-[#A1A1AA] group-hover:text-[#C6FF3D]"
+                  className="text-[#A1A1AA] group-hover:text-[#C6FF3D] transition-all duration-300"
                 />
               </a>
             ))}
@@ -120,13 +121,13 @@ const ProfileCard = ({ user }) => {
           <div className="flex justify-between w-full mt-4">
             <div className="text-center">
               <div className="text-[#C6FF3D] text-xl font-semibold">
-                {user.contributions || 10}
+                {contributions || 10}
               </div>
               <div className="text-white text-xs">Contributions</div>
             </div>
             <div className="text-center">
               <div className="text-[#FACC15] text-xl font-semibold">
-                {user.linesOfCode || 110}
+                {(linesOfCode && linesOfCode.toLocaleString()) || 110}
               </div>
               <div className="text-white text-xs">Lines of code</div>
             </div>

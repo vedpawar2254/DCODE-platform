@@ -12,7 +12,7 @@ import {
   Twitter,
 } from "lucide-react";
 
-const ContributionHighlights = ({ highlights }) => (
+const ContributionHighlights = ({ highlights, topProjects }) => (
   <div className="bg-[#FFFFFF05] rounded-lg p-6 shadow-lg border border-[#23252B] w-full backdrop-blur-md">
     <div className="flex justify-between items-center mb-2">
       <div className="flex gap-2 items-center">
@@ -143,48 +143,8 @@ const ContributionHighlights = ({ highlights }) => (
           </div>
         </div>
       </div>
-      {/* Contribution Types */}
-      {/* <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col">
-        <div className="text-white  mb-2 flex items-center gap-2">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" stroke="#C6FF3D" strokeWidth="2" />
-            <circle cx="12" cy="12" r="3" fill="#C6FF3D" />
-          </svg>
-          Contribution Types
-        </div>
-        <div className="flex flex-col gap-2 mt-4 text-white font-light">
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#23C6FF] inline-block" />
-              Code
-            </span>
-            <span className="font-bold text-[#23C6FF]">34 (40%)</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#23FF7A] inline-block" />
-              Documentation
-            </span>
-            <span className="font-bold text-[#23FF7A]">26 (30%)</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FF2323] inline-block" />
-              Bug Fixes
-            </span>
-            <span className="font-bold text-[#FF2323]">17 (20%)</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FFD923] inline-block" />
-              Reviews
-            </span>
-            <span className="font-bold text-[#FFD923]">9 (10%)</span>
-          </div>
-        </div>
-      </div> */}
-      {/* Activity Metrics */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between bg-[#FFFFFF05]">
+      {/* Activity Metrics  */}
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between bg-[#FFFFFF05] hover:bg-[#FFFFFF08] transition-all duration-300">
         <div className="text-white mb-2 flex items-center gap-2">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
             <rect
@@ -200,25 +160,38 @@ const ContributionHighlights = ({ highlights }) => (
           </svg>
           Activity Metrics
         </div>
-        <div className="mt-4 mb-2">
-          <div className="bg-[#23252B] rounded-lg p-4 text-center">
-            <div className="text-[#23FF7A] text-2xl font-bold">2,847</div>
-            <div className="text-[#A1A1AA] text-xs">Lines of Code</div>
+        <div>
+          <div className="mt-4 mb-2">
+            <div className="bg-[#23252B] rounded-lg p-5 text-center">
+              <div className="text-[#23FF7A] text-2xl font-bold">
+                {(highlights.totalLOC || 0).toLocaleString()}
+              </div>
+              <div className="text-[#A1A1AA] text-xs">Lines of Code</div>
+            </div>
           </div>
-        </div>
-        <div className="flex gap-4 mb-2">
-          <div className="bg-[#23252B] rounded-lg p-2 flex-1 text-center">
-            <div className="text-[#7A6FF4] text-lg font-bold">15</div>
-            <div className="text-[#A1A1AA] text-xs">Reviews</div>
-          </div>
-          <div className="bg-[#23252B] rounded-lg p-2 flex-1 text-center">
-            <div className="text-[#FF7A6F] text-lg font-bold">8</div>
-            <div className="text-[#A1A1AA] text-xs">Issues</div>
+          <div className="flex gap-2 mb-2">
+            <div className="bg-[#23252B] rounded-lg p-3 flex-1 text-center">
+              <div className="text-[#7A6FF4] text-lg font-bold">
+                {highlights.projectCount || 0}
+              </div>
+              <div className="text-[#A1A1AA] text-xs">Projects</div>
+            </div>
+            <div className="bg-[#23252B] rounded-lg p-3 flex-1 text-center">
+              <div className="text-[#FF7A6F] text-lg font-bold">
+                {highlights.avgReposContributed || 0}
+              </div>
+              <div className="text-[#A1A1AA] text-xs">Avg Contributions</div>
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-between mt-2 text-xs text-white font-light">
-          <span>This Month</span>
-          <span className="text-[#23FF7A] font-bold">+12%</span>
+          <span>PR's Last 7 days</span>
+          <span className="text-[#23FF7A] font-bold">
+            {highlights.prActivityLast7Days.reduce(
+              (pre, cur) => cur.prs + pre,
+              0
+            )}
+          </span>
         </div>
       </div>
     </div>
@@ -235,62 +208,34 @@ const ContributionHighlights = ({ highlights }) => (
       </div>
       <div className="flex flex-row gap-6">
         {/* Repo 1 */}
-        <div className="border border-[#23252B] rounded-lg p-4 flex-1 min-w-[180px]">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-white font-semibold">dcode-core</span>
-            <span className="text-[#FFD923] text-xs">JavaScript</span>
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[#C6FF3D] font-bold text-lg">34</span>
-            <span className="text-[#A1A1AA] text-xs">commits</span>
-          </div>
-          <div className="w-full h-2 bg-[#23252B] rounded-full overflow-hidden mb-2">
-            <div
-              className="h-2 bg-[#23C6FF] rounded-full"
-              style={{ width: "80%" }}
-            ></div>
-          </div>
-          <div className="text-[#A1A1AA] text-xs">Last commit: 2 days ago</div>
-          <div className="text-[#C6FF3D] text-xs">#1</div>
-        </div>
-        {/* Repo 2 */}
-        <div className="border border-[#23252B] rounded-lg p-4 flex-1 min-w-[180px]">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-white font-semibold">dcode-ui</span>
-            <span className="text-[#23C6FF] text-xs">TypeScript</span>
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[#C6FF3D] font-bold text-lg">18</span>
-            <span className="text-[#A1A1AA] text-xs">commits</span>
-          </div>
-          <div className="w-full h-2 bg-[#23252B] rounded-full overflow-hidden mb-2">
-            <div
-              className="h-2 bg-[#23C6FF] rounded-full"
-              style={{ width: "50%" }}
-            ></div>
-          </div>
-          <div className="text-[#A1A1AA] text-xs">Last commit: 2 days ago</div>
-          <div className="text-[#C6FF3D] text-xs">#2</div>
-        </div>
-        {/* Repo 3 */}
-        {/* <div className="border border-[#23252B] rounded-lg p-4 flex-1 min-w-[180px]">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-white font-semibold">dcode-docs</span>
-            <span className="text-[#FFD923] text-xs">Markdown</span>
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[#C6FF3D] font-bold text-lg">15</span>
-            <span className="text-[#A1A1AA] text-xs">commits</span>
-          </div>
-          <div className="w-full h-2 bg-[#23252B] rounded-full overflow-hidden mb-2">
-            <div
-              className="h-2 bg-[#FFD923] rounded-full"
-              style={{ width: "40%" }}
-            ></div>
-          </div>
-          <div className="text-[#A1A1AA] text-xs">Last commit: 2 days ago</div>
-          <div className="text-[#C6FF3D] text-xs">#3</div>
-        </div> */}
+        {topProjects.map((el, idx) => {
+          return (
+            <div className="border border-[#23252B] rounded-lg p-4 flex-1 min-w-[180px]">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-white font-semibold">
+                  {el.repositoryName}
+                </span>
+                {/* <span className="text-[#FFD923] text-xs">JavaScript</span> */}
+              </div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[#C6FF3D] font-bold text-lg">
+                  {el.statistics.totalCommits}
+                </span>
+                <span className="text-[#A1A1AA] text-xs">commits</span>
+              </div>
+              <div className="w-full h-2 bg-[#23252B] rounded-full overflow-hidden mb-2">
+                <div
+                  className="h-2 bg-[#23C6FF] rounded-full"
+                  style={{ width: "80%" }}
+                ></div>
+              </div>
+              <div className="text-[#A1A1AA] text-xs">
+                Merged PR's: {el.statistics.mergedPRs}
+              </div>
+              <div className="text-[#C6FF3D] text-xs">#{idx + 1}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   </div>

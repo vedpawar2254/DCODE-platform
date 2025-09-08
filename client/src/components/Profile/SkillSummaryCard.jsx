@@ -132,25 +132,27 @@ const languages = [
   { name: "Python", value: 70, percentage: 18, color: "#f43f5e" },
   { name: "Others", value: 55, percentage: 18, color: "#a855f7" },
 ];
-const SkillsSummaryCard = () => {
+const SkillsSummaryCard = ({ skills }) => {
   return (
     <div className="bg-white/[0.02] border border-gray-800 rounded-xl p-4 sm:p-6 h-full">
       <div className="flex justify-between items-center mb-4 sm:mb-6">
         <h3 className="text-base text-white sm:text-lg font-semibold">
           Skills <span className="text-[#BCDD19]">Summary</span>
         </h3>
-        <span className="text-xs sm:text-sm text-gray-400">4 Total</span>
+        <span className="text-xs sm:text-sm text-gray-400">
+          {skills.length || 0} Total
+        </span>
       </div>
 
       {/* Radar Chart Placeholder */}
       <div className="flex justify-between h-full">
         <div className="relative /mx-auto ml-20 /mb-4 /sm:mb-6 flex-shrink-0">
-          <RadarChart data={languages} />
+          <RadarChart data={skills} />
         </div>
 
         {/* Language percentages */}
         <div className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3">
-          {languages.map((lang) => (
+          {skills.map((lang) => (
             <div
               key={lang.name}
               className="flex items-center justify-between /bg-white/5 rounded-sm px-3 py-2 h-fit"
