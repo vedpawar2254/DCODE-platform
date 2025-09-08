@@ -1,14 +1,12 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Sidebar from "../Sidebar/Sidebar";
 import { useAuthStore } from "../../store/useAuthStore";
-import { SidebarProvider, useSidebar } from "../../context/SidebarContext";
+import { SidebarProvider } from "../../context/SidebarContext";
 import { useEffect } from "react";
 
 const AuthenticatedLayoutContent = () => {
   const navigate = useNavigate();
-  const { authUser, checkAuth } = useAuthStore();
-  const { isCollapsed } = useSidebar();
+  const { checkAuth } = useAuthStore();
 
   useEffect(() => {
     (async () => {
@@ -19,16 +17,7 @@ const AuthenticatedLayoutContent = () => {
     })();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-[#121212]">
-      {authUser && <Sidebar />}
-      <div
-        className={`${authUser ? (isCollapsed ? "lg:ml-16" : "lg:ml-64") : "ml-0"} transition-all duration-300`}
-      >
-        <Outlet />
-      </div>
-    </div>
-  );
+  return <Outlet />;
 };
 
 const AuthenticatedLayout = () => {

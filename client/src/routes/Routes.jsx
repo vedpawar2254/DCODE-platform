@@ -7,6 +7,8 @@ import AuthPage from "../pages/auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
 import AuthenticatedLayout from "../components/Layout/AuthenticatedLayout";
+import SidebarLayout from "../components/Layout/SidebarLayout";
+import NoSidebarLayout from "../components/Layout/NoSidebarLayout";
 import Notifications from "../pages/Notifications/Notifications";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
@@ -51,7 +53,7 @@ export const routes = createBrowserRouter([
     children: [
       { path: "", element: <AskExperience /> },
       { path: "fork", element: <CreateFork /> },
-      { path: "connect-github", element: <ConnectGithub /> }
+      { path: "connect-github", element: <ConnectGithub /> },
     ],
   },
 
@@ -60,25 +62,48 @@ export const routes = createBrowserRouter([
     path: "/",
     element: <AuthenticatedLayout />,
     children: [
+      // Routes without sidebar
       {
-        path: "/profile",
-        element: <Profile />,
+        path: "/",
+        element: <NoSidebarLayout />,
+        children: [
+          {
+            path: "onboarding",
+            element: <Onboarding />,
+            children: [
+              { path: "", element: <AskExperience /> },
+              { path: "fork", element: <CreateFork /> },
+              { path: "connect-github", element: <ConnectGithub /> },
+            ],
+          },
+        ],
       },
+      // Routes with sidebar
       {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "notifications",
-        element: <Notifications />,
-      },
-      {
-        path: "repositories",
-        element: <RepositoriesListing />,
-      },
-      {
-        path: "repositories/:id",
-        element: <RepositoryDetails />,
+        path: "/",
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: "/profile",
+            element: <Profile />,
+          },
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "notifications",
+            element: <Notifications />,
+          },
+          {
+            path: "repositories",
+            element: <RepositoriesListing />,
+          },
+          {
+            path: "repositories/:id",
+            element: <RepositoryDetails />,
+          },
+        ],
       },
     ],
   },
