@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+
 import { 
   ArrowLeft, 
   Star, 
@@ -31,6 +32,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const API_BASE_URL = 'http://localhost:8080';
 
 const RepositoriesListing = () => {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -98,6 +100,14 @@ const RepositoriesListing = () => {
   
     fetchProjects();
   }, []);
+
+  const handleRepoClick = (repoId, event) => {
+    if (event.target.tagName === 'A' || event.target.closest('a')) {
+      return;
+    }
+    
+    navigate(`/repositories/${repoId}`);
+  };
 
   // Fixed date formatting function
   const formatDate = (dateString) => {
@@ -510,11 +520,12 @@ const RepositoriesListing = () => {
               {filteredProjects.map((project, index) => (
                 <motion.div 
                   key={project._id || project.id} 
-                  className="group relative bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl overflow-hidden hover:border-[#BCDD19]/30 hover:shadow-2xl hover:shadow-[#BCDD19]/10 transition-all duration-500"
+                  className="group relative bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl overflow-hidden hover:border-[#BCDD19]/30 hover:shadow-2xl hover:shadow-[#BCDD19]/10 transition-all duration-500 cursor-pointer"
                   variants={itemVariants}
                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
                   onHoverStart={() => setHoveredRepo(project._id || project.id)}
                   onHoverEnd={() => setHoveredRepo(null)}
+                  onClick={(e) => handleRepoClick(project._id || project.id, e)}
                 >
                   <div className="p-6">
                     {/* Header */}
@@ -664,9 +675,10 @@ const RepositoriesListing = () => {
               {filteredProjects.map((project, index) => (
                 <motion.div 
                   key={project._id || project.id} 
-                  className="group relative bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl overflow-hidden hover:border-[#BCDD19]/30 transition-all duration-300"
+                  className="group relative bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl overflow-hidden hover:border-[#BCDD19]/30 transition-all duration-300 cursor-pointer"
                   variants={itemVariants}
                   whileHover={{ x: 5, transition: { duration: 0.2 } }}
+                  onClick={(e) => handleRepoClick(project._id || project.id, e)}
                 >
                   <div className="p-6">
                     <div className="flex flex-col lg:flex-row gap-6">
