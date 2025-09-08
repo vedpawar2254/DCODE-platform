@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Star, 
-  GitPullRequest, 
-  Users, 
-  Code, 
-  Github, 
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  Star,
+  GitPullRequest,
+  Users,
+  Code,
+  Github,
   ExternalLink,
   Calendar,
   Shield,
@@ -24,25 +24,23 @@ import {
   GitFork,
   AlertTriangle,
   CheckCircle,
-  Merge
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import markdownToHtml from "../../utils/markdowntohtml"
+  Merge,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import markdownToHtml from "../../utils/markdowntohtml";
 import DOMPurify from "dompurify";
-
-
-
-const API_BASE_URL = 'http://localhost:8080';
+import { axiosInstance } from "@/utils/axios";
 
 // Default fallback image as base64 or use a placeholder service
-const DEFAULT_REPO_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23BCDD19'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23000' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
+const DEFAULT_REPO_IMAGE =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23BCDD19'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23000' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
 
 const RepositoryDetails = () => {
   const { id } = useParams();
   const [repository, setRepository] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('readme');
+  const [activeTab, setActiveTab] = useState("readme");
   const [isStarred, setIsStarred] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [repoImage, setRepoImage] = useState(DEFAULT_REPO_IMAGE);
@@ -51,12 +49,12 @@ const RepositoryDetails = () => {
     issues: [],
     pullRequests: [],
     loading: false,
-    error: null
+    error: null,
   });
-  
+
   // Get user data from localStorage for authentication
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
   // Extract owner and repo from GitHub URL
   const extractGitHubInfo = (url) => {
     if (!url) return null;
@@ -66,10 +64,10 @@ const RepositoryDetails = () => {
 
   // Truncate description to max 100 words
   const truncateDescription = (text, maxWords = 20) => {
-    if (!text) return '';
-    const words = text.split(' ');
+    if (!text) return "";
+    const words = text.split(" ");
     if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(' ') + '...';
+    return words.slice(0, maxWords).join(" ") + "...";
   };
 
   // Handle repository image loading
@@ -95,9 +93,11 @@ const RepositoryDetails = () => {
   };
 
   const tryGithubImage = (repository) => {
-    const githubInfo = repository?.repositoryUrl ? extractGitHubInfo(repository.repositoryUrl) : null;
+    const githubInfo = repository?.repositoryUrl
+      ? extractGitHubInfo(repository.repositoryUrl)
+      : null;
     if (githubInfo && !imageLoaded) {
-      const githubImageUrl = `https://opengraph.githubassets.com/1/${githubInfo.owner}/${githubInfo.repo}`;
+      const githubImageUrl = `https://opengraph.githubassets.com/1/${githubInfo?.owner}/${githubInfo?.repo}`;
       const img = new Image();
       img.onload = () => {
         setRepoImage(githubImageUrl);
@@ -119,46 +119,30 @@ const RepositoryDetails = () => {
       try {
         setLoading(true);
         setError(null);
-        
-        const headers = {
-          'Content-Type': 'application/json',
-        };
-        
-        if (user && user.token) {
-          headers['Authorization'] = `Bearer ${user.token}`;
-        }
-        
-        const response = await fetch(`${API_BASE_URL}/api/v1/project/get/${id}`, {
-          method: 'GET',
-          headers: headers
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        // Handle API response - check for different response structures
-        let repositoryData = null;
-        if (data.data) {
-          repositoryData = data.data;
-        } else if (data.project) {
-          repositoryData = data.project;
-        } else {
-          repositoryData = data;
-        }
-        
+
+        // const headers = {
+        //   "Content-Type": "application/json",
+        // };
+
+        // if (user && user.token) {
+        //   headers["Authorization"] = `Bearer ${user.token}`;
+        // }
+
+        const response = await axiosInstance.get(`/project/get/${id}`);
+
+        const repositoryData = response.data.data;
+        console.log(repositoryData);
         setRepository(repositoryData);
-        
       } catch (error) {
-        console.error('Error fetching repository');
-        setError(error.message || 'Failed to load repository. Please try again later.');
+        console.error("Error fetching repository");
+        setError(
+          error.message || "Failed to load repository. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
-  
+
     if (id) {
       fetchRepository();
     }
@@ -174,133 +158,164 @@ const RepositoryDetails = () => {
   // Fetch GitHub issues and PRs with proper authentication and error handling
   const fetchGitHubData = async () => {
     if (!repository || !repository.repositoryUrl || githubData.loading) return;
-    
+
     const githubInfo = extractGitHubInfo(repository.repositoryUrl);
     if (!githubInfo) return;
-    
+
     try {
-      setGithubData(prev => ({ ...prev, loading: true, error: null }));
-      
+      setGithubData((prev) => ({ ...prev, loading: true, error: null }));
+
       // GitHub API headers - you might need a personal access token for higher rate limits
       const githubHeaders = {
-        'Accept': 'application/vnd.github.v3+json',
+        Accept: "application/vnd.github.v3+json",
         // will add later
         // 'Authorization': 'token YOUR_GITHUB_TOKEN_HERE',
       };
-      
+
       // Fetch issues and PRs concurrently
       const [issuesResponse, prResponse] = await Promise.allSettled([
-        fetch(`https://api.github.com/repos/${githubInfo.owner}/${githubInfo.repo}/issues?state=open&per_page=5`, {
-          headers: githubHeaders
-        }),
-        fetch(`https://api.github.com/repos/${githubInfo.owner}/${githubInfo.repo}/pulls?state=open&per_page=5`, {
-          headers: githubHeaders
-        })
+        fetch(
+          `https://api.github.com/repos/${githubInfo?.owner}/${githubInfo?.repo}/issues?state=open&per_page=5`,
+          {
+            headers: githubHeaders,
+          }
+        ),
+        fetch(
+          `https://api.github.com/repos/${githubInfo?.owner}/${githubInfo?.repo}/pulls?state=open&per_page=5`,
+          {
+            headers: githubHeaders,
+          }
+        ),
       ]);
-      
+
       let issues = [];
       let pullRequests = [];
       let errorMessage = null;
-      
+
       // Handle issues response
-      if (issuesResponse.status === 'fulfilled' && issuesResponse.value.ok) {
+      if (issuesResponse.status === "fulfilled" && issuesResponse.value.ok) {
         const issuesData = await issuesResponse.value.json();
         // Filter out pull requests (GitHub API returns PRs as issues)
-        issues = issuesData.filter(issue => !issue.pull_request);
-      } else if (issuesResponse.status === 'fulfilled') {
-        console.warn('Issues fetch failed:', issuesResponse.value.status);
+        issues = issuesData.filter((issue) => !issue.pull_request);
+      } else if (issuesResponse.status === "fulfilled") {
+        console.warn("Issues fetch failed:", issuesResponse.value.status);
         if (issuesResponse.value.status === 403) {
-          errorMessage = 'GitHub API rate limit exceeded. Please try again later.';
+          errorMessage =
+            "GitHub API rate limit exceeded. Please try again later.";
         }
       }
-      
+
       // Handle PRs response
-      if (prResponse.status === 'fulfilled' && prResponse.value.ok) {
+      if (prResponse.status === "fulfilled" && prResponse.value.ok) {
         const prData = await prResponse.value.json();
         pullRequests = prData;
-      } else if (prResponse.status === 'fulfilled') {
-        console.warn('PRs fetch failed:', prResponse.value.status);
+      } else if (prResponse.status === "fulfilled") {
+        console.warn("PRs fetch failed:", prResponse.value.status);
         if (prResponse.value.status === 403 && !errorMessage) {
-          errorMessage = 'GitHub API rate limit exceeded. Please try again later.';
+          errorMessage =
+            "GitHub API rate limit exceeded. Please try again later.";
         }
       }
-      
+
       setGithubData({
         issues,
         pullRequests,
         loading: false,
-        error: errorMessage
+        error: errorMessage,
       });
-      
     } catch (error) {
-      console.error('Error fetching GitHub data:', error);
-      setGithubData(prev => ({ 
-        ...prev, 
-        loading: false, 
-        error: 'Failed to fetch GitHub data. Please check your connection.' 
+      console.error("Error fetching GitHub data:", error);
+      setGithubData((prev) => ({
+        ...prev,
+        loading: false,
+        error: "Failed to fetch GitHub data. Please check your connection.",
       }));
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return 'text-emerald-500';
-      case 'maintenance': return 'text-amber-500';
-      case 'archived': return 'text-gray-500';
-      default: return 'text-gray-500';
+      case "active":
+        return "text-emerald-500";
+      case "maintenance":
+        return "text-amber-500";
+      case "archived":
+        return "text-gray-500";
+      default:
+        return "text-gray-500";
     }
   };
 
   const getCategoryColor = (category) => {
     const colors = {
-      'platform': 'from-blue-600 to-cyan-600',
-      'productivity': 'from-purple-600 to-pink-600',
-      'sustainability': 'from-green-600 to-emerald-600',
-      'social': 'from-orange-600 to-red-600',
-      'education': 'from-indigo-600 to-purple-600'
+      platform: "from-blue-600 to-cyan-600",
+      productivity: "from-purple-600 to-pink-600",
+      sustainability: "from-green-600 to-emerald-600",
+      social: "from-orange-600 to-red-600",
+      education: "from-indigo-600 to-purple-600",
     };
-    return colors[category?.toLowerCase()] || 'from-gray-600 to-gray-700';
+    return colors[category?.toLowerCase()] || "from-gray-600 to-gray-700";
   };
 
   // Get PR status color and icon
   const getPRStatus = (pr) => {
     if (pr.merged) {
-      return { color: 'bg-purple-500/10 text-purple-500 border-purple-500/20', icon: <Merge className="w-3 h-3" />, text: 'Merged' };
-    } else if (pr.state === 'closed') {
-      return { color: 'bg-gray-500/10 text-gray-500 border-gray-500/20', icon: <CheckCircle className="w-3 h-3" />, text: 'Closed' };
+      return {
+        color: "bg-purple-500/10 text-purple-500 border-purple-500/20",
+        icon: <Merge className="w-3 h-3" />,
+        text: "Merged",
+      };
+    } else if (pr.state === "closed") {
+      return {
+        color: "bg-gray-500/10 text-gray-500 border-gray-500/20",
+        icon: <CheckCircle className="w-3 h-3" />,
+        text: "Closed",
+      };
     } else {
-      return { color: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', icon: <GitPullRequest className="w-3 h-3" />, text: 'Open' };
+      return {
+        color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+        icon: <GitPullRequest className="w-3 h-3" />,
+        text: "Open",
+      };
     }
   };
 
   // Get issue status color and icon
   const getIssueStatus = (issue) => {
-    if (issue.state === 'closed') {
-      return { color: 'bg-gray-500/10 text-gray-500 border-gray-500/20', icon: <CheckCircle className="w-3 h-3" />, text: 'Closed' };
+    if (issue.state === "closed") {
+      return {
+        color: "bg-gray-500/10 text-gray-500 border-gray-500/20",
+        icon: <CheckCircle className="w-3 h-3" />,
+        text: "Closed",
+      };
     } else {
-      return { color: 'bg-amber-500/10 text-amber-500 border-amber-500/20', icon: <AlertCircle className="w-3 h-3" />, text: 'Open' };
+      return {
+        color: "bg-amber-500/10 text-amber-500 border-amber-500/20",
+        icon: <AlertCircle className="w-3 h-3" />,
+        text: "Open",
+      };
     }
   };
 
   // Format date function
   const formatDate = (dateString) => {
-    if (!dateString) return 'Unknown date';
-    
+    if (!dateString) return "Unknown date";
+
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     const diffWeeks = Math.floor(diffDays / 7);
     const diffMonths = Math.floor(diffDays / 30);
-    
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
+
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
     if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffWeeks === 1) return '1 week ago';
+    if (diffWeeks === 1) return "1 week ago";
     if (diffWeeks < 4) return `${diffWeeks} weeks ago`;
-    if (diffMonths === 1) return '1 month ago';
+    if (diffMonths === 1) return "1 month ago";
     if (diffMonths < 12) return `${diffMonths} months ago`;
-    
+
     return `${Math.floor(diffMonths / 12)} years ago`;
   };
 
@@ -309,8 +324,8 @@ const RepositoryDetails = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { duration: 0.4 }
-    }
+      transition: { duration: 0.4 },
+    },
   };
 
   const slideUp = {
@@ -318,8 +333,8 @@ const RepositoryDetails = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   const staggerChildren = {
@@ -327,23 +342,23 @@ const RepositoryDetails = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const tabContentVariants = {
     hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.3 }
+      transition: { duration: 0.3 },
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       y: -10,
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
   const copyToClipboard = (text) => {
@@ -416,9 +431,12 @@ const RepositoryDetails = () => {
     status: repository.status || "active",
     category: repository.category || "Platform",
     // Generate full description if not available
-    fullDescription: repository.readme || repository.description || `# ${repository.name}
+    fullDescription:
+      repository.readme ||
+      repository.description ||
+      `# ${repository.name}
 
-${repository.description || 'No description available'}
+${repository.description || "No description available"}
 
 ## Features
 
@@ -428,9 +446,11 @@ ${repository.description || 'No description available'}
 
 ## Tech Stack
 
-${repository.techStack && repository.techStack.length > 0 
-  ? repository.techStack.map(tech => `- ${tech}`).join('\n') 
-  : '- No technologies specified'}
+${
+  repository.techStack && repository.techStack.length > 0
+    ? repository.techStack.map((tech) => `- ${tech}`).join("\n")
+    : "- No technologies specified"
+}
 
 ## Getting Started
 
@@ -454,7 +474,7 @@ npm run dev
 
 ## Contributing
 
-We welcome contributions! Please read our contributing guidelines before submitting a pull request.`
+We welcome contributions! Please read our contributing guidelines before submitting a pull request.`,
   };
 
   // Get GitHub info for links
@@ -466,7 +486,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
       <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E0A] via-[#0b0f0b]/20 to-[#0A0E0A]"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
-      
+
       {/* Header */}
       <div className="relative z-10 p-6">
         <div className="max-w-7xl mx-auto">
@@ -488,7 +508,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pb-16">
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 lg:grid-cols-3 gap-6"
           initial="hidden"
           animate="visible"
@@ -497,7 +517,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
           {/* Left Column - Repository Info */}
           <motion.div className="lg:col-span-2" variants={slideUp}>
             {/* Repository Header */}
-            <motion.div 
+            <motion.div
               className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl p-6 mb-6"
               variants={fadeIn}
             >
@@ -520,8 +540,12 @@ We welcome contributions! Please read our contributing guidelines before submitt
                     />
                   </motion.div> */}
                   <div>
-                    <h1 className="text-2xl font-bold text-white mb-1">{repository.name}</h1>
-                    <p className="text-gray-400 text-sm">{truncateDescription(repository.description)}</p>
+                    <h1 className="text-2xl font-bold text-white mb-1">
+                      {repository.name}
+                    </h1>
+                    <p className="text-gray-400 text-sm">
+                      {truncateDescription(repository.description)}
+                    </p>
                   </div>
                 </div>
                 {/* <span className={`text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(staticData.status)} bg-opacity-10 border ${getStatusColor(staticData.status)}/20`}>
@@ -548,12 +572,16 @@ We welcome contributions! Please read our contributing guidelines before submitt
                 </div>
                 <div className="flex items-center gap-2">
                   <GitPullRequest className="w-4 h-4 text-emerald-500" />
-                  <span className="font-medium">{githubData.pullRequests.length || staticData.openPRs}</span>
+                  <span className="font-medium">
+                    {githubData.pullRequests.length || staticData.openPRs}
+                  </span>
                   <span className="text-gray-500">Open PRs</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-amber-500" />
-                  <span className="font-medium">{githubData.issues.length || staticData.issues}</span>
+                  <span className="font-medium">
+                    {githubData.issues.length || staticData.issues}
+                  </span>
                   <span className="text-gray-500">Issues</span>
                 </div>
               </div>
@@ -587,15 +615,18 @@ We welcome contributions! Please read our contributing guidelines before submitt
                 <motion.button
                   onClick={() => setIsStarred(!isStarred)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors text-sm ${
-                    isStarred 
-                      ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' 
-                      : 'bg-[#0b0f0b] border border-[#1A1E1A] text-gray-200 hover:bg-[#131712]'
+                    isStarred
+                      ? "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20"
+                      : "bg-[#0b0f0b] border border-[#1A1E1A] text-gray-200 hover:bg-[#131712]"
                   }`}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Star className="w-4 h-4" fill={isStarred ? 'currentColor' : 'none'} />
-                  <span>{isStarred ? 'Starred' : 'Star'}</span>
+                  <Star
+                    className="w-4 h-4"
+                    fill={isStarred ? "currentColor" : "none"}
+                  />
+                  <span>{isStarred ? "Starred" : "Star"}</span>
                 </motion.button>
                 <motion.button
                   className="flex items-center gap-2 px-4 py-2 bg-[#0b0f0b] border border-[#1A1E1A] text-gray-200 rounded-xl hover:bg-[#131712] transition-colors text-sm"
@@ -604,8 +635,13 @@ We welcome contributions! Please read our contributing guidelines before submitt
                 >
                   <GitBranch className="w-4 h-4" />
                   <span>
-                    <a href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/fork`} target='_blank'>Fork</a>
-                    </span>
+                    <a
+                      href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/fork`}
+                      target="_blank"
+                    >
+                      Fork
+                    </a>
+                  </span>
                 </motion.button>
                 {/* <motion.button
                   onClick={() => setIsBookmarked(!isBookmarked)}
@@ -631,35 +667,56 @@ We welcome contributions! Please read our contributing guidelines before submitt
             </motion.div>
 
             {/* Tabs */}
-            <motion.div 
+            <motion.div
               className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl overflow-hidden mb-6"
               variants={fadeIn}
             >
               <div className="flex border-b border-[#1A1E1A]">
-                {['readme', 'issues', 'pull-requests'].map((tab) => (
+                {["readme", "issues", "pull-requests"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => {
                       setActiveTab(tab);
-                      if ((tab === 'issues' || tab === 'pull-requests') && !githubData.loading && githubData.issues.length === 0 && githubData.pullRequests.length === 0 && !githubData.error) {
+                      if (
+                        (tab === "issues" || tab === "pull-requests") &&
+                        !githubData.loading &&
+                        githubData.issues.length === 0 &&
+                        githubData.pullRequests.length === 0 &&
+                        !githubData.error
+                      ) {
                         fetchGitHubData();
                       }
                     }}
                     className={`px-5 py-3 text-sm font-medium transition-all duration-300 relative ${
-                      activeTab === tab 
-                        ? 'text-[#BCDD19]' 
-                        : 'text-gray-400 hover:text-gray-200'
+                      activeTab === tab
+                        ? "text-[#BCDD19]"
+                        : "text-gray-400 hover:text-gray-200"
                     }`}
                   >
-                    {tab === 'readme' && <FileText className="w-4 h-4 inline mr-2 -mt-0.5" />}
-                    {tab === 'issues' && <AlertCircle className="w-4 h-4 inline mr-2 -mt-0.5" />}
-                    {tab === 'pull-requests' && <GitPullRequest className="w-4 h-4 inline mr-2 -mt-0.5" />}
-                    {tab.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    {tab === "readme" && (
+                      <FileText className="w-4 h-4 inline mr-2 -mt-0.5" />
+                    )}
+                    {tab === "issues" && (
+                      <AlertCircle className="w-4 h-4 inline mr-2 -mt-0.5" />
+                    )}
+                    {tab === "pull-requests" && (
+                      <GitPullRequest className="w-4 h-4 inline mr-2 -mt-0.5" />
+                    )}
+                    {tab
+                      .split("-")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
                     {activeTab === tab && (
-                      <motion.div 
+                      <motion.div
                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#BCDD19]"
                         layoutId="activeTab"
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 30,
+                        }}
                       />
                     )}
                   </button>
@@ -669,26 +726,28 @@ We welcome contributions! Please read our contributing guidelines before submitt
               {/* Tab Content */}
               <div className="p-6">
                 <AnimatePresence mode="wait">
-                {activeTab === 'readme' && (
-                <motion.div
-                  key="readme"
-                  variants={tabContentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <div
-                    className="prose prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(
-                        markdownToHtml(repository.readme || staticData.fullDescription)
-                      )
-                    }}
-                  />
-                </motion.div>
-              )}
+                  {activeTab === "readme" && (
+                    <motion.div
+                      key="readme"
+                      variants={tabContentVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                    >
+                      <div
+                        className="prose prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(
+                            markdownToHtml(
+                              repository.readme || staticData.fullDescription
+                            )
+                          ),
+                        }}
+                      />
+                    </motion.div>
+                  )}
 
-                  {activeTab === 'issues' && (
+                  {activeTab === "issues" && (
                     <motion.div
                       key="issues"
                       variants={tabContentVariants}
@@ -697,10 +756,12 @@ We welcome contributions! Please read our contributing guidelines before submitt
                       exit="exit"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-white">Open Issues</h2>
+                        <h2 className="text-lg font-semibold text-white">
+                          Open Issues
+                        </h2>
                         {githubInfo && (
                           <motion.a
-                            href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/issues`}
+                            href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/issues`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 text-sm text-[#BCDD19] hover:underline"
@@ -711,7 +772,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                           </motion.a>
                         )}
                       </div>
-                      
+
                       {githubData.loading ? (
                         <div className="flex justify-center py-8">
                           <Loader2 className="w-6 h-6 text-[#BCDD19] animate-spin" />
@@ -728,7 +789,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                         </div>
                       ) : (
                         <div className="space-y-3">
-                          {githubData.issues.map(issue => {
+                          {githubData.issues.map((issue) => {
                             const status = getIssueStatus(issue);
                             return (
                               <motion.a
@@ -741,17 +802,25 @@ We welcome contributions! Please read our contributing guidelines before submitt
                                 whileHover={{ y: -2 }}
                               >
                                 <div className="flex items-center justify-between mb-2">
-                                  <h3 className="font-medium text-white text-sm">{issue.title}</h3>
-                                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border ${status.color}`}>
+                                  <h3 className="font-medium text-white text-sm">
+                                    {issue.title}
+                                  </h3>
+                                  <span
+                                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border ${status.color}`}
+                                  >
                                     {status.icon}
                                     <span>{status.text}</span>
                                   </span>
                                 </div>
                                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                                  {issue.body || 'No description provided'}
+                                  {issue.body || "No description provided"}
                                 </p>
                                 <div className="flex items-center justify-between text-xs text-gray-500">
-                                  <span>#{issue.number} opened {formatDate(issue.created_at)} by {issue.user?.login}</span>
+                                  <span>
+                                    #{issue.number} opened{" "}
+                                    {formatDate(issue.created_at)} by{" "}
+                                    {issue.user?.login}
+                                  </span>
                                   <div className="flex items-center gap-3">
                                     <span>Comments: {issue.comments}</span>
                                   </div>
@@ -764,7 +833,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                     </motion.div>
                   )}
 
-                  {activeTab === 'pull-requests' && (
+                  {activeTab === "pull-requests" && (
                     <motion.div
                       key="pull-requests"
                       variants={tabContentVariants}
@@ -773,10 +842,12 @@ We welcome contributions! Please read our contributing guidelines before submitt
                       exit="exit"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-white">Pull Requests</h2>
+                        <h2 className="text-lg font-semibold text-white">
+                          Pull Requests
+                        </h2>
                         {githubInfo && (
                           <motion.a
-                            href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/pulls`}
+                            href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/pulls`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 text-sm text-[#BCDD19] hover:underline"
@@ -787,7 +858,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                           </motion.a>
                         )}
                       </div>
-                      
+
                       {githubData.loading ? (
                         <div className="flex justify-center py-8">
                           <Loader2 className="w-6 h-6 text-[#BCDD19] animate-spin" />
@@ -804,7 +875,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                         </div>
                       ) : (
                         <div className="space-y-3">
-                          {githubData.pullRequests.map(pr => {
+                          {githubData.pullRequests.map((pr) => {
                             const status = getPRStatus(pr);
                             return (
                               <motion.a
@@ -816,17 +887,25 @@ We welcome contributions! Please read our contributing guidelines before submitt
                                 whileHover={{ y: -2 }}
                               >
                                 <div className="flex items-center justify-between mb-2">
-                                  <h3 className="font-medium text-white text-sm">{pr.title}</h3>
-                                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border ${status.color}`}>
+                                  <h3 className="font-medium text-white text-sm">
+                                    {pr.title}
+                                  </h3>
+                                  <span
+                                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border ${status.color}`}
+                                  >
                                     {status.icon}
                                     <span>{status.text}</span>
                                   </span>
                                 </div>
                                 <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                                  {pr.body || 'No description provided'}
+                                  {pr.body || "No description provided"}
                                 </p>
                                 <div className="flex items-center justify-between text-xs text-gray-500">
-                                  <span>#{pr.number} opened {formatDate(pr.created_at)} by {pr.user?.login}</span>
+                                  <span>
+                                    #{pr.number} opened{" "}
+                                    {formatDate(pr.created_at)} by{" "}
+                                    {pr.user?.login}
+                                  </span>
                                   <div className="flex items-center gap-3">
                                     <span>Comments: {pr.comments}</span>
                                     <span>Commits: {pr.commits}</span>
@@ -847,11 +926,11 @@ We welcome contributions! Please read our contributing guidelines before submitt
           {/* Right Column - Sidebar */}
           <motion.div className="lg:col-span-1" variants={slideUp}>
             {/* Repository Image */}
-            <motion.div 
+            <motion.div
               className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl p-5 mb-5 overflow-hidden"
               variants={fadeIn}
             >
-              <img 
+              <img
                 src={repoImage}
                 alt={repository.name}
                 className="w-full h-48 object-cover rounded-lg mb-4"
@@ -862,47 +941,63 @@ We welcome contributions! Please read our contributing guidelines before submitt
                 }}
               />
               <h2 className="text-lg font-semibold text-white mb-4">About</h2>
-              <p className="text-gray-400 text-sm mb-5 leading-relaxed">{(repository.description)}</p>
-              
+              <p className="text-gray-400 text-sm mb-5 leading-relaxed">
+                {repository.description}
+              </p>
+
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-xs font-medium text-gray-500 mb-2">Maintainer</h3>
+                  <h3 className="text-xs font-medium text-gray-500 mb-2">
+                    Maintainer
+                  </h3>
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 bg-[#0b0f0b] border border-[#1A1E1A] rounded-full flex items-center justify-center">
                       <Users className="w-3.5 h-3.5 text-gray-400" />
                     </div>
-                    <span className="text-white text-sm">{repository.assignedMentor || 'Not assigned'}</span>
+                    <span className="text-white text-sm">
+                      {repository.assignedMentor || "Not assigned"}
+                    </span>
                   </div>
                 </div>
-                
+
                 <div>
-                  <h3 className="text-xs font-medium text-gray-500 mb-2">License</h3>
+                  <h3 className="text-xs font-medium text-gray-500 mb-2">
+                    License
+                  </h3>
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 bg-[#0b0f0b] border border-[#1A1E1A] rounded-full flex items-center justify-center">
                       <FileText className="w-3.5 h-3.5 text-gray-400" />
                     </div>
-                    <span className="text-white text-sm">{staticData.license} License</span>
+                    <span className="text-white text-sm">
+                      {staticData.license} License
+                    </span>
                   </div>
                 </div>
-                
+
                 <div>
-                  <h3 className="text-xs font-medium text-gray-500 mb-2">Updated</h3>
+                  <h3 className="text-xs font-medium text-gray-500 mb-2">
+                    Updated
+                  </h3>
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 bg-[#0b0f0b] border border-[#1A1E1A] rounded-full flex items-center justify-center">
                       <Calendar className="w-3.5 h-3.5 text-gray-400" />
                     </div>
-                    <span className="text-white text-sm">{formatDate(repository.updatedAt)}</span>
+                    <span className="text-white text-sm">
+                      {formatDate(repository.updatedAt)}
+                    </span>
                   </div>
                 </div>
               </div>
             </motion.div>
 
             {/* Tech Stack */}
-            <motion.div 
+            <motion.div
               className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl p-5 mb-5"
               variants={fadeIn}
             >
-              <h2 className="text-lg font-semibold text-white mb-4">Tech Stack</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">
+                Tech Stack
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {repository.techStack && repository.techStack.length > 0 ? (
                   repository.techStack.map((tech, index) => (
@@ -914,14 +1009,16 @@ We welcome contributions! Please read our contributing guidelines before submitt
                     </motion.span>
                   ))
                 ) : (
-                  <span className="text-gray-400 text-sm">No technologies specified</span>
+                  <span className="text-gray-400 text-sm">
+                    No technologies specified
+                  </span>
                 )}
               </div>
             </motion.div>
 
             {/* Tags */}
             {repository.tags && repository.tags.length > 0 && (
-              <motion.div 
+              <motion.div
                 className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl p-5 mb-5"
                 variants={fadeIn}
               >
@@ -941,14 +1038,16 @@ We welcome contributions! Please read our contributing guidelines before submitt
 
             {/* GitHub Links */}
             {githubInfo && (
-              <motion.div 
+              <motion.div
                 className="bg-[#0b0f0b] backdrop-blur-sm border border-[#1A1E1A] rounded-2xl p-5"
                 variants={fadeIn}
               >
-                <h2 className="text-lg font-semibold text-white mb-4">GitHub</h2>
+                <h2 className="text-lg font-semibold text-white mb-4">
+                  GitHub
+                </h2>
                 <div className="space-y-3">
                   <motion.a
-                    href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}`}
+                    href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm text-gray-300 hover:text-[#BCDD19] transition-colors"
@@ -958,7 +1057,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                     <span>Repository</span>
                   </motion.a>
                   <motion.a
-                    href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/issues`}
+                    href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/issues`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm text-gray-300 hover:text-[#BCDD19] transition-colors"
@@ -968,7 +1067,7 @@ We welcome contributions! Please read our contributing guidelines before submitt
                     <span>Issues</span>
                   </motion.a>
                   <motion.a
-                    href={`https://github.com/${githubInfo.owner}/${githubInfo.repo}/pulls`}
+                    href={`https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/pulls`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-sm text-gray-300 hover:text-[#BCDD19] transition-colors"
