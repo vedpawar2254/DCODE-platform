@@ -14,6 +14,7 @@ import ProfileCard from "../../components/Profile/ProfileCard";
 import AchievementsRecognition from "../../components/Profile/AchievementsRecognition";
 import { useAuthStore } from "../../store/useAuthStore";
 import SkillsSummaryCard from "@/components/Profile/SkillSummaryCard";
+import { dashboardService } from "../../services/dashboardService";
 
 export default function Profile() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -36,6 +37,7 @@ export default function Profile() {
     },
   });
   const [user, setuser] = useState(null);
+  const [ProfileStats, setProfileStats] = useState(null);
   const { authUser, isLoggedIn } = useAuthStore();
   useEffect(() => {
     setuser(authUser?.data);
@@ -64,6 +66,24 @@ export default function Profile() {
   //     github: profileData.links.github,
   //   },
   // };
+
+  useEffect(() => {
+    (async () => {
+      if (authUser?.data) {
+        const [statsResponse, prsResponse] = await Promise.all([
+          dashboardService.getUserStats(authUser.data.id),
+          dashboardService.getLatestPRs(authUser.data.id, 8),
+        ]);
+
+        setProfileStats({
+          stats: statsResponse.message,
+          recentPRs: prsResponse.message,
+          loading: false,
+          error: null,
+        });
+      }
+    })();
+  }, [isLoggedIn]);
 
   const handleEditProfile = useCallback(() => {
     setIsEditingProfile(true);
@@ -157,7 +177,9 @@ export default function Profile() {
             {/* <SkillsOverview /> */}
           </div>
           <div className="flex flex-col gap-5 w-full col-span-2">
-            <ContributionHighlights highlights={highlights} />
+            {ProfileStats?.stats && (
+              <ContributionHighlights highlights={ProfileStats.stats} />
+            )}
             <AchievementsRecognition />
             <SkillsSummaryCard />
           </div>

@@ -26,7 +26,7 @@ const ContributionHighlights = ({ highlights }) => (
       </div>
       <div className="flex flex-col items-end">
         <div className="text-[#C6FF3D] text-xl font-semibold">
-          {highlights.total}
+          {highlights.totalCommits || 0}
         </div>
         <div className="text-[#A1A1AA] text-xs">Total Contributions</div>
       </div>
@@ -34,41 +34,111 @@ const ContributionHighlights = ({ highlights }) => (
     {/* Main content cards */}
     <div className="flex flex-row gap-6 mt-6">
       {/* Pull Requests */}
-      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col justify-between bg-[#FFFFFF05]">
-        <div className="text-white  mb-2 flex items-center gap-2">
-          <GitPullRequest color="#01FF80" />
-          Pull Requests
-        </div>
-        <div className="flex flex-col gap-1 mt-4 text-white font-light">
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#23FF7A] inline-block" />
-              Merged
-            </span>
-            <span className="font-bold text-[#23FF7A]">23</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#3B82F6] inline-block" />
-              Open
-            </span>
-            <span className="font-bold text-[#3B82F6]">5</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#A1A1AA] inline-block" />
-              Closed
-            </span>
-            <span className="font-bold text-[#A1A1AA]">2</span>
+      <div className="border border-[#23252B] rounded-lg p-6 min-w-[220px] flex-1 flex flex-col bg-[#FFFFFF05] hover:bg-[#FFFFFF08] transition-all duration-300">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg /bg-[#01FF80]/10 /border border-[#01FF80]/20">
+              <GitPullRequest color="#01FF80" size={18} />
+            </div>
+            <div>
+              <h4 className="text-white font-semibold text-sm">
+                Pull Requests
+              </h4>
+              <p className="text-[#A1A1AA] text-xs mt-0.5">
+                Contribution activity
+              </p>
+            </div>
           </div>
         </div>
-        <div className="mt-4 text-white font-light text-xs">Success Rate</div>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-[#23FF7A] font-bold">92%</span>
-          <div className="flex-1 h-2 bg-[#23252B] rounded-full overflow-hidden">
+
+        {/* Stats Grid */}
+        <div className="space-y-2 flex-1">
+          {/* Merged PRs */}
+          <div className="bg-[#23FF7A]/5 border border-[#23FF7A]/20 rounded-lg px-4 py-2 hover:bg-[#23FF7A]/10 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-[#23FF7A] shadow-lg shadow-[#23FF7A]/30"></div>
+                <span className="text-white text-sm font-medium">Merged</span>
+              </div>
+              <div className="text-right">
+                <div className="text-[#23FF7A] font-bold text-lg">
+                  {highlights?.totalMergedPRs || 0}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Open PRs */}
+          <div className="bg-[#3B82F6]/5 border border-[#3B82F6]/20 rounded-lg px-4 py-2 hover:bg-[#3B82F6]/10 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-[#3B82F6] shadow-lg shadow-[#3B82F6]/30"></div>
+                <span className="text-white text-sm font-medium">Open</span>
+              </div>
+              <div className="text-right">
+                <div className="text-[#3B82F6] font-bold text-lg">
+                  {highlights?.totalOpenPRs || 0}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Closed PRs */}
+          <div className="bg-[#A1A1AA]/5 border border-[#A1A1AA]/20 rounded-lg px-4 py-2 hover:bg-[#A1A1AA]/10 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-[#A1A1AA] shadow-lg shadow-[#A1A1AA]/30"></div>
+                <span className="text-white text-sm font-medium">Closed</span>
+              </div>
+              <div className="text-right">
+                <div className="text-[#A1A1AA] font-bold text-lg">
+                  {highlights?.totalClosedPRs || 0}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Success Rate Indicator */}
+        <div className="mt-6 pt-4 border-t border-[#23252B]">
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-[#A1A1AA]">Merge Rate</span>
+            <span className="text-[#23FF7A] font-semibold">
+              {highlights?.totalMergedPRs &&
+              highlights?.totalMergedPRs +
+                highlights?.totalClosedPRs +
+                highlights?.totalOpenPRs >
+                0
+                ? Math.round(
+                    (highlights.totalMergedPRs /
+                      (highlights.totalMergedPRs +
+                        highlights.totalClosedPRs +
+                        highlights.totalOpenPRs)) *
+                      100
+                  )
+                : 0}
+              %
+            </span>
+          </div>
+          <div className="mt-2 h-1.5 bg-[#23252B] rounded-full overflow-hidden">
             <div
-              className="h-2 bg-[#23FF7A] rounded-full"
-              style={{ width: "92%" }}
+              className="h-full bg-gradient-to-r from-[#23FF7A] to-[#01FF80] rounded-full transition-all duration-500"
+              style={{
+                width: `${
+                  highlights?.totalMergedPRs &&
+                  highlights?.totalMergedPRs +
+                    highlights?.totalClosedPRs +
+                    highlights?.totalOpenPRs >
+                    0
+                    ? (highlights.totalMergedPRs /
+                        (highlights.totalMergedPRs +
+                          highlights.totalClosedPRs +
+                          highlights.totalOpenPRs)) *
+                      100
+                    : 0
+                }%`,
+              }}
             ></div>
           </div>
         </div>

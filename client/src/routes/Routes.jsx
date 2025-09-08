@@ -8,7 +8,6 @@ import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
 import AuthenticatedLayout from "../components/Layout/AuthenticatedLayout";
 import Notifications from "../pages/Notifications/Notifications";
-import Repositories from "../pages/Repositories/Repositories";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
@@ -18,7 +17,6 @@ import Profile from "../pages/Profile/Profile";
 
 import RepositoriesListing from "../pages/Repositories/repositoriesListing";
 import RepositoryDetails from "../pages/Repositories/RepositoryDetails";
-
 
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)

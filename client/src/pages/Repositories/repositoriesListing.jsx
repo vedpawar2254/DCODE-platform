@@ -28,8 +28,9 @@ import {
   Hash,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { axiosInstance } from "../../utils/axios";
 
-const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "http://localhost:8080";
 
 const RepositoriesListing = () => {
   const navigate = useNavigate();
@@ -57,25 +58,17 @@ const RepositoriesListing = () => {
         setLoading(true);
         setError(null);
 
-        const headers = {
-          "Content-Type": "application/json",
-        };
+        // const headers = {
+        //   "Content-Type": "application/json",
+        // };
 
-        if (user && user.token) {
-          headers["Authorization"] = `Bearer ${user.token}`;
-        }
+        // if (user && user.token) {
+        //   headers["Authorization"] = `Bearer ${user.token}`;
+        // }
 
-        const response = await fetch(`${API_BASE_URL}/api/v1/project/get-all`, {
-          method: "GET",
-          headers: headers,
-          credentials: "include", // Include cookies for session management
-        });
+        const response = await axiosInstance.get(`/project/get-all`);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
+        const data = response.data;
 
         // Handle API response - check for different response structures
         let projectsData = [];
