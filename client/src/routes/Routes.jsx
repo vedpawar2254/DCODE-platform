@@ -17,6 +17,7 @@ import Profile from "../pages/Profile/Profile";
 
 import RepositoriesListing from "../pages/Repositories/repositoriesListing";
 import RepositoryDetails from "../pages/Repositories/RepositoryDetails";
+import ConnectGithub from "../components/Onboarding/ConnectGithub";
 
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
@@ -50,6 +51,7 @@ export const routes = createBrowserRouter([
     children: [
       { path: "", element: <AskExperience /> },
       { path: "fork", element: <CreateFork /> },
+      { path: "connect-github", element: <ConnectGithub /> }
     ],
   },
 

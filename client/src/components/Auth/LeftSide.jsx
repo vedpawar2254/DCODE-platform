@@ -6,7 +6,7 @@ export const LeftSide = () => {
       {/* Logo */}
       <div className="w-full flex justify-center mb-2 mt-10">
         <img
-          src="/images/d-removebg-preview.png"
+          src="/images/d.png"
           alt="DCODE Logo"
           className="h-8"
         />
