@@ -18,7 +18,7 @@ export default function Profile() {
     collegeInfo: {
       name: "",
       location: "",
-      current_year: null,
+      currentYear: null,
       degree: "",
     },
     socialLinks: {
@@ -31,11 +31,12 @@ export default function Profile() {
   });
   const [user, setuser] = useState(null);
   const [ProfileStats, setProfileStats] = useState(null);
+  const [badges, setBadges] = useState([]);
+  const [badgesLoading, setBadgesLoading] = useState(false);
   const { authUser, isLoggedIn } = useAuthStore();
   useEffect(() => {
     setuser(authUser?.data);
   }, [isLoggedIn]);
-
 
   const getLanguageColor = (language) => {
     const colorMap = {
@@ -84,34 +85,49 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       if (authUser?.data) {
-        const [statsResponse, prsResponse, topProjects] = await Promise.all([
-          dashboardService.getUserStats(authUser.data.id),
-          dashboardService.getLatestPRs(authUser.data.id, 8),
-          profileService.getTopProjects(),
-        ]);
+        setBadgesLoading(true);
+        try {
+          const [statsResponse, prsResponse, topProjects, badgesResponse] =
+            await Promise.all([
+              dashboardService.getUserStats(authUser.data.id),
+              dashboardService.getLatestPRs(authUser.data.id, 8),
+              profileService.getTopProjects(),
+              axiosInstance.get("/badges/my"),
+            ]);
 
-        const transformedLanguages =
-          statsResponse.message?.languagesWithPercentage?.length > 0
-            ? statsResponse.message.languagesWithPercentage.map((lang) => ({
-                name: sanitizeLangName(lang.language),
-                percentage: lang.percentage,
-                color: getLanguageColor(lang.language),
-              }))
-            : [
-                {
-                  name: "No data available",
-                  percentage: 100,
-                  color: "#6B7280",
-                },
-              ];
-        statsResponse.message.languagesWithPercentage = transformedLanguages;
-        setProfileStats({
-          stats: statsResponse.message,
-          recentPRs: prsResponse.message,
-          topProjects,
-          loading: false,
-          error: null,
-        });
+          const transformedLanguages =
+            statsResponse.message?.languagesWithPercentage?.length > 0
+              ? statsResponse.message.languagesWithPercentage.map((lang) => ({
+                  name: sanitizeLangName(lang.language),
+                  percentage: lang.percentage,
+                  color: getLanguageColor(lang.language),
+                }))
+              : [
+                  {
+                    name: "No data available",
+                    percentage: 100,
+                    color: "#6B7280",
+                  },
+                ];
+          statsResponse.message.languagesWithPercentage = transformedLanguages;
+          setProfileStats({
+            stats: statsResponse.message,
+            recentPRs: prsResponse.message,
+            topProjects,
+            loading: false,
+            error: null,
+          });
+
+          // Set badges from API response
+          if (badgesResponse.data.success) {
+            setBadges(badgesResponse.data.message || []);
+          }
+        } catch (error) {
+          console.error("Error fetching profile data:", error);
+          setBadges([]);
+        } finally {
+          setBadgesLoading(false);
+        }
       }
     })();
   }, [isLoggedIn]);
@@ -119,22 +135,35 @@ export default function Profile() {
   const handleEditProfile = useCallback(() => {
     // Initialize edit form with current user data from authUser
     const userData = authUser?.data || {};
-    
+
     setEditFormData({
       github_username: userData.github_username || "",
       bio: userData.bio || "",
       collegeInfo: {
         name: userData.collegeInfo?.name || userData.college_info?.name || "",
-        location: userData.collegeInfo?.location || userData.college_info?.location || "",
-        current_year: userData.collegeInfo?.current_year || userData.college_info?.current_year || "",
-        degree: userData.collegeInfo?.degree || userData.college_info?.degree || "",
+        location:
+          userData.collegeInfo?.location ||
+          userData.college_info?.location ||
+          "",
+        currentYear:
+          userData.collegeInfo?.currentYear ||
+          userData.college_info?.currentYear ||
+          "",
+        degree:
+          userData.collegeInfo?.degree || userData.college_info?.degree || "",
       },
       socialLinks: {
         x: userData.socialLinks?.x || userData.social_links?.x || "",
-        linkedin: userData.socialLinks?.linkedin || userData.social_links?.linkedin || "",
-        github: userData.socialLinks?.github || userData.social_links?.github || "",
-        upwork: userData.socialLinks?.upwork || userData.social_links?.upwork || "",
-        fiverr: userData.socialLinks?.fiverr || userData.social_links?.fiverr || "",
+        linkedin:
+          userData.socialLinks?.linkedin ||
+          userData.social_links?.linkedin ||
+          "",
+        github:
+          userData.socialLinks?.github || userData.social_links?.github || "",
+        upwork:
+          userData.socialLinks?.upwork || userData.social_links?.upwork || "",
+        fiverr:
+          userData.socialLinks?.fiverr || userData.social_links?.fiverr || "",
       },
     });
     setIsEditingProfile(true);
@@ -155,7 +184,7 @@ export default function Profile() {
 
       // Helper function to check if an object has any valid values
       const hasValidValues = (obj) => {
-        return Object.values(obj).some(value => isValidValue(value));
+        return Object.values(obj).some((value) => isValidValue(value));
       };
 
       // Build update data object with only valid values
@@ -179,8 +208,10 @@ export default function Profile() {
       if (isValidValue(editFormData.collegeInfo.location)) {
         collegeInfo.location = editFormData.collegeInfo.location;
       }
-      if (isValidValue(editFormData.collegeInfo.current_year)) {
-        collegeInfo.currentYear = parseInt(editFormData.collegeInfo.current_year);
+      if (isValidValue(editFormData.collegeInfo.currentYear)) {
+        collegeInfo.currentYear = parseInt(
+          editFormData.collegeInfo.currentYear
+        );
       }
       if (isValidValue(editFormData.collegeInfo.degree)) {
         collegeInfo.degree = editFormData.collegeInfo.degree;
@@ -223,26 +254,33 @@ export default function Profile() {
 
       // Make PATCH request to auth/update-profile
       console.log("update data", updateData);
-      const response = await axiosInstance.patch('/auth/update-profile', updateData);
+      const response = await axiosInstance.patch(
+        "/auth/update-profile",
+        updateData
+      );
 
       if (response.data) {
         // Update local user state with the new data
-        setuser(prev => ({
+        setuser((prev) => ({
           ...prev,
           ...updateData,
-          ...(updateData.college_info && { college_info: { ...prev.college_info, ...updateData.college_info } }),
-          ...(updateData.social_links && { social_links: { ...prev.social_links, ...updateData.social_links } }),
+          ...(updateData.college_info && {
+            college_info: { ...prev.college_info, ...updateData.college_info },
+          }),
+          ...(updateData.social_links && {
+            social_links: { ...prev.social_links, ...updateData.social_links },
+          }),
         }));
 
         console.log("Profile updated successfully:", response.data);
         setIsEditingProfile(false);
-        
+
         // Optional: Show success toast/notification
         // toast.success("Profile updated successfully!");
       }
     } catch (error) {
       console.error("Error saving profile:", error);
-      
+
       // Handle different error scenarios
       if (error.response?.status === 401) {
         console.error("Unauthorized: Please log in again");
@@ -252,7 +290,7 @@ export default function Profile() {
       } else {
         console.error("Network error or server issue");
       }
-      
+
       // Optional: Show error toast/notification
       // toast.error("Failed to update profile. Please try again.");
     } finally {
@@ -335,7 +373,7 @@ export default function Profile() {
                 topProjects={ProfileStats.topProjects}
               />
             )}
-            <AchievementsRecognition />
+            <AchievementsRecognition badges={badges} />
             {ProfileStats?.stats?.languagesWithPercentage && (
               <SkillsSummaryCard
                 skills={ProfileStats?.stats?.languagesWithPercentage}
@@ -441,15 +479,15 @@ export default function Profile() {
                       Current Year
                     </label>
                     <select
-                      value={editFormData.collegeInfo.current_year}
-                      onChange={handleInputChange("collegeInfo.current_year")}
+                      value={editFormData.collegeInfo.currentYear || ""}
+                      onChange={handleInputChange("collegeInfo.currentYear")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
                     >
                       <option value="">Select your current year</option>
-                      <option value="1st Year">1st Year</option>
-                      <option value="2nd Year">2nd Year</option>
-                      <option value="3rd Year">3rd Year</option>
-                      <option value="4th Year">4th Year</option>
+                      <option value="1">1st Year</option>
+                      <option value="2">2nd Year</option>
+                      <option value="3">3rd Year</option>
+                      <option value="4">4th Year</option>
                     </select>
                   </div>
 
@@ -475,8 +513,7 @@ export default function Profile() {
 
                   <div>
                     <label className="flex items-center gap-2 text-[#A1A1AA] text-sm mb-2">
-                      <Twitter size={16} />
-                      X (Twitter)
+                      <Twitter size={16} />X (Twitter)
                     </label>
                     <input
                       type="url"

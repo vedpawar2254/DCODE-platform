@@ -11,33 +11,31 @@ import {
   Twitter,
 } from "lucide-react";
 
-export default function AchievementsRecognition() {
-  const achievements = [
-    {
-      icon: "🏆",
-      title: "First PR Merged",
-      desc: "Successfully merged your first pull request",
-      date: "2024-01-15",
-      rarity: "COMMON",
-      rarityColor: "bg-[#23252B] text-[#A1A1AA]",
-    },
-    {
-      icon: "🐛",
-      title: "Bug Slayer",
-      desc: "Fixed 10+ critical bugs across repositories",
-      date: "2024-02-20",
-      rarity: "RARE",
-      rarityColor: "bg-[#23252B] text-[#3B82F6]",
-    },
-    {
-      icon: "📚",
-      title: "Documentation Master",
-      desc: "Contributed extensively to project documentation",
-      date: "2024-03-10",
-      rarity: "EPIC",
-      rarityColor: "bg-[#23252B] text-[#FF7A6F]",
-    },
-  ];
+export default function AchievementsRecognition({ badges = [] }) {
+  const getRarityColor = (rarity) => {
+    const colorMap = {
+      COMMON: "bg-[#23252B] text-[#A1A1AA]",
+      RARE: "bg-[#23252B] text-[#3B82F6]",
+      EPIC: "bg-[#23252B] text-[#FF7A6F]",
+      LEGENDARY: "bg-[#23252B] text-[#FFD923]",
+    };
+    return colorMap[rarity] || "bg-[#23252B] text-[#A1A1AA]";
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  // Transform API data to component format
+  const achievements = badges.map((badgeData) => ({
+    icon: badgeData.badge.icon_url,
+    title: badgeData.badge.title,
+    desc: badgeData.badge.description,
+    date: formatDate(badgeData.earnedAt),
+    rarity: badgeData.badge.rarity,
+    rarityColor: getRarityColor(badgeData.badge.rarity),
+  }));
+
   const quests = [
     {
       title: "Resolve 5 Issues",
@@ -68,6 +66,7 @@ export default function AchievementsRecognition() {
       done: false,
     },
   ];
+
   return (
     <div className="bg-[#FFFFFF05] rounded-md p-6 shadow border border-[#23252B] w-full backdrop-blur-md">
       <div className="flex justify-between items-center mb-6">
@@ -85,28 +84,40 @@ export default function AchievementsRecognition() {
         </a> */}
       </div>
       <div className="flex flex-row gap-6 mb-8">
-        {achievements.map((a, i) => (
-          <div
-            key={i}
-            className="flex flex-col items-center justify-center bg-[#23252B]/40 rounded-lg p-6 flex-1 min-w-[180px]"
-          >
-            <span role="img" aria-label={a.title} className="text-3xl">
-              {a.icon}
-            </span>
-            <div className="text-white font-semibold text-base mt-2 mb-1 text-center">
-              {a.title}
-            </div>
-            <div className="text-[#A1A1AA] text-xs mb-2 text-center">
-              {a.desc}
-            </div>
-            <div className="text-[#A1A1AA] text-xs mb-2">{a.date}</div>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold ${a.rarityColor}`}
+        {achievements.length > 0 ? (
+          achievements.map((a, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center justify-center bg-[#23252B]/40 rounded-lg p-6 flex-1 min-w-[180px]"
             >
-              {a.rarity}
-            </span>
+              {a.icon.startsWith("http") ? (
+                <img src={a.icon} alt={a.title} className="w-8 h-8 mb-2" />
+              ) : (
+                <span role="img" aria-label={a.title} className="text-3xl">
+                  {a.icon}
+                </span>
+              )}
+              <div className="text-white font-semibold text-base mt-2 mb-1 text-center">
+                {a.title}
+              </div>
+              <div className="text-[#A1A1AA] text-xs mb-2 text-center">
+                {a.desc}
+              </div>
+              <div className="text-[#A1A1AA] text-xs mb-2">{a.date}</div>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-semibold ${a.rarityColor}`}
+              >
+                {a.rarity}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="flex-1 text-center py-8">
+            <div className="text-[#A1A1AA] text-sm">
+              No badges earned yet. Keep contributing to unlock achievements!
+            </div>
           </div>
-        ))}
+        )}
       </div>
       {/* <div className="text-[#A1A1AA] font-semibold text-xs mb-4">
         ACTIVE QUESTS
