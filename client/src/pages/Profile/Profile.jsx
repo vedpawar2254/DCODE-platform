@@ -117,26 +117,28 @@ export default function Profile() {
   }, [isLoggedIn]);
 
   const handleEditProfile = useCallback(() => {
-    // Initialize edit form with current user data
+    // Initialize edit form with current user data from authUser
+    const userData = authUser?.data || {};
+    
     setEditFormData({
-      github_username: user?.github_username || "",
-      bio: user?.bio || "",
+      github_username: userData.github_username || "",
+      bio: userData.bio || "",
       collegeInfo: {
-        name: user?.college_info?.name || "",
-        location: user?.college_info?.location || "",
-        current_year: user?.college_info?.current_year || null,
-        degree: user?.college_info?.degree || "",
+        name: userData.collegeInfo?.name || userData.college_info?.name || "",
+        location: userData.collegeInfo?.location || userData.college_info?.location || "",
+        current_year: userData.collegeInfo?.current_year || userData.college_info?.current_year || "",
+        degree: userData.collegeInfo?.degree || userData.college_info?.degree || "",
       },
       socialLinks: {
-        x: user?.social_links?.x || "",
-        linkedin: user?.social_links?.linkedin || "",
-        github: user?.social_links?.github || "",
-        upwork: user?.social_links?.upwork || "",
-        fiverr: user?.social_links?.fiverr || "",
+        x: userData.socialLinks?.x || userData.social_links?.x || "",
+        linkedin: userData.socialLinks?.linkedin || userData.social_links?.linkedin || "",
+        github: userData.socialLinks?.github || userData.social_links?.github || "",
+        upwork: userData.socialLinks?.upwork || userData.social_links?.upwork || "",
+        fiverr: userData.socialLinks?.fiverr || userData.social_links?.fiverr || "",
       },
     });
     setIsEditingProfile(true);
-  }, [user]);
+  }, [authUser]);
 
   const handleCloseModal = useCallback(() => {
     setIsEditingProfile(false);
