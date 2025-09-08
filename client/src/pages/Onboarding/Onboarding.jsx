@@ -11,7 +11,7 @@ export default function Onboarding() {
         {/* Logo */}
         <div className="absolute left-[2rem] top-0 /w-full flex justify-center mt-[1rem]">
           {/* <img
-            src="/images/d-removebg-preview.png"
+            src="/images/d.png"
             alt="DCODE Logo"
             className="h-[3rem] w-[14rem]  object-cover mb-[1rem]"
           /> */}
