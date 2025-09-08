@@ -17,6 +17,7 @@ import CreateFork from "../components/Onboarding/CreateForkStatic";
 import Profile from "../pages/Profile/Profile";
 
 import RepositoriesListing from "../pages/Repositories/repositoriesListing";
+import RepositoryDetails from "../pages/Repositories/RepositoryDetails";
 
 
 export const routes = createBrowserRouter([
@@ -74,6 +75,10 @@ export const routes = createBrowserRouter([
       {
         path: "repositories",
         element: <RepositoriesListing />,
+      },
+      {
+        path: "repositories/:id",
+        element: <RepositoryDetails />,
       },
     ],
   },
