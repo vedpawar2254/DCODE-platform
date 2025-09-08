@@ -72,14 +72,14 @@ const Hero = () => {
           </motion.span>{" "}
           Platform Where
           <br />
-          {`Builders Shape`}
+          {`Builders Shape `}
           <motion.span
             variants={highlightVariants}
             className="text-[#BCDD19] inline-block"
           >
             {` Tomorrow's `}
           </motion.span>
-          {`World`}
+          {` World`}
         </motion.h1>
 
         <motion.p
