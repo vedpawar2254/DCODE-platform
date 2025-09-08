@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
-import { FiBarChart2, FiBell, FiGitBranch, FiMenu, FiX } from "react-icons/fi";
+import { useSidebar } from "../../context/SidebarContext";
+import {
+  FiBarChart2,
+  FiBell,
+  FiGitBranch,
+  FiMenu,
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { authUser } = useAuthStore();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMenuOpen } =
+    useSidebar();
+  const [isHovered, setIsHovered] = useState(false);
 
   const menuItems = [
     {
@@ -59,21 +70,64 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-full w-64 bg-[#161616] text-white z-50 flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 h-full ${isCollapsed && !isHovered ? "w-[5rem]" : "w-64"} bg-[#161616] text-white z-50 flex flex-col transform transition-all duration-300 ease-in-out ${
           isMobileMenuOpen
             ? "translate-x-0"
             : "-translate-x-full lg:translate-x-0"
         }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Logo Section */}
-        <div className="p-6 border-b border-gray-800">
-          <img
-            src="/images/d.png"
-            className="h-[2rem] translate-x-[-0.3rem]"
-            style={{ mixBlendMode: "lighten" }}
-            alt=""
-          />
-          <p className="text-gray-400 text-sm mt-2">PLATFORM</p>
+        <div
+          className={`${isCollapsed && !isHovered ? "p-6" : "p-6"} border-b border-gray-800 relative`}
+        >
+          {
+            <div
+              className={`flex flex-col ${!(isCollapsed && !isHovered) ? "items-start" : "items-center justify-center"} `}
+            >
+              <img
+                src={
+                  !(isCollapsed && !isHovered)
+                    ? "/images/d.png"
+                    : "/images/d-favicon.png"
+                }
+                className={`h-[2rem] /object-contain ${!(isCollapsed && !isHovered) ? "translate-x-[-0.3rem]" : ""} transition-all duration-300`}
+                style={{ mixBlendMode: "lighten" }}
+                alt=""
+              />
+              <p
+                className={`text-gray-400 text-sm mt-2 ${!(isCollapsed && !isHovered) ? "opacity-100" : "opacity-0"} transition-all duration-300`}
+              >
+                PLATFORM
+              </p>
+            </div>
+          }
+          {/* { ? (
+            <>
+              <img
+                src="/images/d.png"
+                className="h-[2rem] translate-x-[-0.3rem]"
+                style={{ mixBlendMode: "lighten" }}
+                alt=""
+              />
+              <p className="text-gray-400 text-sm mt-2">PLATFORM</p>
+            </>
+          ) : (
+            
+          )} */}
+
+          {/* Desktop Collapse Toggle */}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="hidden  lg:block absolute -right-3 top-6 bg-[#161616] border border-gray-600 rounded-full p-1 text-gray-400 hover:text-white hover:border-gray-400 transition-colors"
+          >
+            {isCollapsed ? (
+              <FiChevronRight size={16} />
+            ) : (
+              <FiChevronLeft size={16} />
+            )}
+          </button>
         </div>
 
         {/* Navigation Menu */}
@@ -83,27 +137,35 @@ const Sidebar = () => {
               <button
                 key={index}
                 onClick={() => handleNavigation(item.path)}
-                className={`w-full flex cursor-pointer items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
+                className={`w-full flex cursor-pointer items-center ${isCollapsed && !isHovered ? "justify-center px-4" : "space-x-3 px-4"} py-3 rounded-lg text-left transition-all duration-200 ${
                   item.isActive
                     ? "bg-green-600 text-white"
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
+                title={isCollapsed && !isHovered ? item.label : ""}
               >
                 <span
-                  className={item.isActive ? "text-white" : "text-gray-400"}
+                  className={`${item.isActive ? "text-white" : "text-gray-400"} h-[24px] pt-[0.1rem]`}
                 >
                   {item.icon}
                 </span>
-                <span className="font-medium">{item.label}</span>
+                {!(isCollapsed && !isHovered) && (
+                  <span className="font-medium">{item.label}</span>
+                )}
               </button>
             ))}
           </div>
         </nav>
 
         {/* User Profile Section */}
-        <div className="p-4 border-t border-gray-800">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+        <div
+          className={`${isCollapsed && !isHovered ? "p-4" : "p-4"} border-t border-gray-800 hover:bg-white/3 cursor-pointer`}
+          onClick={() => navigate("/profile")}
+        >
+          <div
+            className={`flex items-center ${isCollapsed && !isHovered ? "justify-center" : "space-x-3"}`}
+          >
+            <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
               {authUser?.profilePicture ? (
                 <img
                   src={authUser.profilePicture}
@@ -121,14 +183,16 @@ const Sidebar = () => {
                 </span>
               )}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
-                {authUser?.data?.name}
-              </p>
-              <p className="text-xs text-gray-400 truncate">
-                {authUser?.data?.email}
-              </p>
-            </div>
+            {!(isCollapsed && !isHovered) && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">
+                  {authUser?.data?.name}
+                </p>
+                <p className="text-xs text-gray-400 truncate">
+                  {authUser?.data?.email}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

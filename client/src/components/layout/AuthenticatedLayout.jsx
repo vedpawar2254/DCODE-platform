@@ -2,11 +2,14 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import { useAuthStore } from "../../store/useAuthStore";
+import { SidebarProvider, useSidebar } from "../../context/SidebarContext";
 import { useEffect } from "react";
 
-const AuthenticatedLayout = () => {
+const AuthenticatedLayoutContent = () => {
   const navigate = useNavigate();
   const { authUser, checkAuth } = useAuthStore();
+  const { isCollapsed } = useSidebar();
+
   useEffect(() => {
     (async () => {
       var loggedin = await checkAuth();
@@ -20,11 +23,19 @@ const AuthenticatedLayout = () => {
     <div className="min-h-screen bg-[#121212]">
       {authUser && <Sidebar />}
       <div
-        className={`${authUser ? "lg:ml-64" : "ml-0"} transition-all duration-300`}
+        className={`${authUser ? (isCollapsed ? "lg:ml-16" : "lg:ml-64") : "ml-0"} transition-all duration-300`}
       >
         <Outlet />
       </div>
     </div>
+  );
+};
+
+const AuthenticatedLayout = () => {
+  return (
+    <SidebarProvider>
+      <AuthenticatedLayoutContent />
+    </SidebarProvider>
   );
 };
 
