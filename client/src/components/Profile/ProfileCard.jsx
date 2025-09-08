@@ -92,15 +92,15 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
               },
               {
                 icon: Twitter,
-                link: user.socials?.twitter || "#",
+                link: user.socialLinks?.x || "#",
               },
               {
                 icon: Linkedin,
-                link: user.socials?.linkedin || "#",
+                link: user.socialLinks?.linkedin || "#",
               },
               {
                 icon: Github,
-                link: user.socials?.github || "#",
+                link: user.socialLinks?.github || "#",
               },
             ].map(({ icon: Icon, link }, index) => (
               <a
