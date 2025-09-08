@@ -340,14 +340,14 @@ export default () => {
       {
         icon: <FiFolder className="w-5 h-5 text-blue-400" />,
         title: "30 Unique Repositories",
-        progress: `${stats.avgReposContributed} / 30`,
-        percentage: Math.min((stats.avgReposContributed / 30) * 100, 100),
-        status: `${Math.min((stats.avgReposContributed / 30) * 100, 100).toFixed(2)}%`,
+        progress: `${stats.projectCount} / 30`,
+        percentage: Math.min((stats.projectCount / 30) * 100, 100),
+        status: `${Math.min((stats.projectCount / 30) * 100, 100).toFixed(2)}%`,
         color: "blue-400",
         remaining:
-          stats.avgReposContributed >= 30
+          stats.projectCount >= 30
             ? "Achieved"
-            : `${30 - stats.avgReposContributed} remaining to achieve`,
+            : `${30 - stats.projectCount} remaining to achieve`,
       },
       {
         icon: <FiTarget className="w-5 h-5 text-purple-400" />,
