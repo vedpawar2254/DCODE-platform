@@ -30,7 +30,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { axiosInstance } from "../../utils/axios";
 
-// const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "http://localhost:8080";
 
 const RepositoriesListing = () => {
   const navigate = useNavigate();
@@ -70,6 +70,7 @@ const RepositoriesListing = () => {
 
         const data = response.data;
 
+       
         // Handle API response - check for different response structures
         let projectsData = [];
         if (Array.isArray(data)) {
@@ -197,11 +198,11 @@ const RepositoriesListing = () => {
     });
 
   const getStatusColor = (status) => {
-    return "text-emerald-400"; // Default to active status
+    return "text-emerald-400";
   };
 
   const getStatusBg = (status) => {
-    return "bg-emerald-400/10 border-emerald-400/20"; // Default to active status
+    return "bg-emerald-400/10 border-emerald-400/20";
   };
 
   const getCategoryColor = (tag) => {
@@ -251,7 +252,7 @@ const RepositoriesListing = () => {
     return (
       <div className="min-h-screen bg-[#0A0E0A] flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <Loader2 className="w-12 h-12 text-[#BCDD19] animate-spin mb-4" />
+          <Loader2 className="w-12 h-12 text-[#BCDD19] mb-4" />
           <p className="text-gray-400">Loading repositories...</p>
         </div>
       </div>
@@ -261,9 +262,9 @@ const RepositoriesListing = () => {
   return (
     <div className="min-h-screen bg-[#0A0E0A] text-white relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E0A] via-[#0b0f0b]/20 to-[#0A0E0A]"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E0A] via-[#0b0f0b]/20 to-[#0A0E0A]"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div> */}
 
       {/* Header */}
       <div className="relative z-10 p-6 sm:p-8">
@@ -686,13 +687,13 @@ const RepositoriesListing = () => {
                   </div>
 
                   {/* Bottom Gradient Line */}
-                  <motion.div
+                  {/* <motion.div
                     className="h-1 bg-gradient-to-r from-[#BCDD19] via-[#A2C00C] to-transparent"
                     initial={{ width: "0%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                  />
+                  /> */}
                 </motion.div>
               ))}
             </motion.div>
@@ -748,7 +749,11 @@ const RepositoriesListing = () => {
                         </div>
 
                         <p className="text-gray-300 mb-4">
-                          {project.description || "No description available"}
+                        {project.description
+                          ? project.description.length > 100
+                              ? project.description.slice(0, 100) + "..."
+                              : project.description
+                          : "No description available"}
                         </p>
 
                         {/* Tags and Tech Stack */}
@@ -863,13 +868,13 @@ const RepositoriesListing = () => {
                   </div>
 
                   {/* Bottom Gradient Line */}
-                  <motion.div
+                  {/* <motion.div
                     className="h-1 bg-gradient-to-r from-[#BCDD19] via-[#A2C00C] to-transparent"
                     initial={{ width: "0%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                  />
+                  /> */}
                 </motion.div>
               ))}
             </motion.div>

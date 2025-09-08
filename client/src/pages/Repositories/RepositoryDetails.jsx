@@ -35,6 +35,9 @@ import { axiosInstance } from "@/utils/axios";
 const DEFAULT_REPO_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23BCDD19'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23000' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
 
+// const API_BASE_URL = "http://localhost:8080";
+
+
 const RepositoryDetails = () => {
   const { id } = useParams();
   const [repository, setRepository] = useState(null);
@@ -128,7 +131,8 @@ const RepositoryDetails = () => {
         //   headers["Authorization"] = `Bearer ${user.token}`;
         // }
 
-        const response = await axiosInstance.get(`/project/get/${id}`);
+        const response = await axiosInstance.get(`/api/v1/project/get/${id}`);
+        
 
         const repositoryData = response.data.data;
         console.log(repositoryData);
@@ -483,9 +487,9 @@ We welcome contributions! Please read our contributing guidelines before submitt
   return (
     <div className="min-h-screen bg-[#0A0E0A] text-white relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E0A] via-[#0b0f0b]/20 to-[#0A0E0A]"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-[#0A0E0A] via-[#0b0f0b]/20 to-[#0A0E0A]"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#BCDD19]/5 rounded-full blur-3xl"></div> */}
 
       {/* Header */}
       <div className="relative z-10 p-6">
