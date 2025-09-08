@@ -7,6 +7,7 @@ import {
   Linkedin,
   Locate,
   Mail,
+  Star,
   TrendingUp,
   Twitter,
 } from "lucide-react";
@@ -155,13 +156,7 @@ const ContributionHighlights = ({ highlights }) => (
     <div className="mt-8">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 text-white font-semibold">
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-            <path
-              d="M12 2l3.09 6.26L22 9.27l-5 4.87L17.18 22 12 18.56 6.82 22 8 14.14l-5-4.87 6.91-1.01L12 2z"
-              stroke="#FFD923"
-              strokeWidth="2"
-            />
-          </svg>
+          <Star color="#C6FF3D" size={20} />
           Top Contributing Repositories
         </div>
         {/* <a href="#" className="text-[#C6FF3D] text-xs underline">
@@ -231,4 +226,4 @@ const ContributionHighlights = ({ highlights }) => (
   </div>
 );
 
-export default ContributionHighlights ;
+export default ContributionHighlights;

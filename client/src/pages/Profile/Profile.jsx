@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Pencil,
   X,
@@ -12,6 +12,8 @@ import SkillsOverview from "../../components/Profile/SkillsOverview";
 import ContributionHighlights from "../../components/Profile/ContributionHighlights";
 import ProfileCard from "../../components/Profile/ProfileCard";
 import AchievementsRecognition from "../../components/Profile/AchievementsRecognition";
+import { useAuthStore } from "../../store/useAuthStore";
+import SkillsSummaryCard from "@/components/Profile/SkillSummaryCard";
 
 export default function Profile() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -33,30 +35,35 @@ export default function Profile() {
       github: "https://github.com/adityainnovates",
     },
   });
+  const [user, setuser] = useState(null);
+  const { authUser, isLoggedIn } = useAuthStore();
+  useEffect(() => {
+    setuser(authUser?.data);
+  }, [isLoggedIn]);
 
-  const user = {
-    avatar: profileData.avatar,
-    name: profileData.name,
-    username: profileData.github_username,
-    bio: profileData.bio,
-    location: "Delhi, India",
-    joined: "January 2024",
-    contributions: 86,
-    linesOfCode: 2847,
-    education: {
-      college: profileData.college.name,
-      degree: profileData.college.degree,
-      year: profileData.college.currentYear,
-    },
-    contact: {
-      email: profileData.email,
-    },
-    socials: {
-      twitter: profileData.links.twitter,
-      linkedin: profileData.links.linkedin,
-      github: profileData.links.github,
-    },
-  };
+  // const user = {
+  //   avatar: profileData.avatar,
+  //   name: profileData.name,
+  //   username: profileData.github_username,
+  //   bio: profileData.bio,
+  //   location: "Delhi, India",
+  //   joined: "January 2024",
+  //   contributions: 86,
+  //   linesOfCode: 2847,
+  //   education: {
+  //     college: profileData.college.name,
+  //     degree: profileData.college.degree,
+  //     year: profileData.college.currentYear,
+  //   },
+  //   contact: {
+  //     email: profileData.email,
+  //   },
+  //   socials: {
+  //     twitter: profileData.links.twitter,
+  //     linkedin: profileData.links.linkedin,
+  //     github: profileData.links.github,
+  //   },
+  // };
 
   const handleEditProfile = useCallback(() => {
     setIsEditingProfile(true);
@@ -107,6 +114,17 @@ export default function Profile() {
   const highlights = {
     total: 86,
   };
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C6FF3D] mx-auto mb-4"></div>
+          <p className="text-[#A1A1AA] text-lg">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4">
       <div className="">
@@ -117,7 +135,8 @@ export default function Profile() {
                 My Profile
               </h1>
               <p className="text-[#D5D5D5] text-sm md:text-base mt-2">
-                Welcome back, <span className="text-[#C6FF3D] ">Aditya!</span>{" "}
+                Welcome back,{" "}
+                <span className="text-[#C6FF3D] ">{user.name || "User"}!</span>{" "}
                 Here's your <span className="text-[#C6FF3D] ">Profile</span>{" "}
                 overview.
               </p>
@@ -132,14 +151,15 @@ export default function Profile() {
           </div>
         </div>
         <div className="w-full border-t border-[#23252B] my-6"></div>
-        <div className="flex flex-row gap-6 items-stretch">
-          <div className="flex flex-col gap-6 w-full max-w-100">
+        <div className="grid md:grid-cols-3 grid-cols-1 /gap-[2] /flex /flex-row gap-5 /items-stretch">
+          <div className="flex flex-col gap-5 /w-full /max-w-100">
             <ProfileCard user={user} />
             {/* <SkillsOverview /> */}
           </div>
-          <div className="flex flex-col gap-8 w-full">
+          <div className="flex flex-col gap-5 w-full col-span-2">
             <ContributionHighlights highlights={highlights} />
             <AchievementsRecognition />
+            <SkillsSummaryCard />
           </div>
         </div>
       </div>
@@ -195,7 +215,7 @@ export default function Profile() {
                     </label>
                     <input
                       type="text"
-                      value={profileData.name}
+                      value={user.name}
                       onChange={handleInputChange("name")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
                       placeholder="Enter your full name"
@@ -208,7 +228,7 @@ export default function Profile() {
                     </label>
                     <input
                       type="email"
-                      value={profileData.email}
+                      value={user.email}
                       onChange={handleInputChange("email")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
                       placeholder="Enter your email address"
@@ -221,7 +241,7 @@ export default function Profile() {
                     </label>
                     <input
                       type="text"
-                      value={profileData.github_username}
+                      value={user.github_username}
                       onChange={handleInputChange("github_username")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
                       placeholder="Enter your GitHub username"

@@ -125,37 +125,50 @@ const RadarChart = ({ data }) => {
   );
 };
 
-const skillsData = [
+const languages = [
   { name: "Javascript", value: 80, percentage: 28, color: "#12b76a" },
   { name: "Rust", value: 65, percentage: 18, color: "#348fe3" },
   { name: "Go", value: 60, percentage: 18, color: "#fdc300" },
   { name: "Python", value: 70, percentage: 18, color: "#f43f5e" },
   { name: "Others", value: 55, percentage: 18, color: "#a855f7" },
 ];
-const SkillsSummaryCard = ({ languages }) => {
+const SkillsSummaryCard = () => {
   return (
     <div className="bg-white/[0.02] border border-gray-800 rounded-xl p-4 sm:p-6 h-full">
       <div className="flex justify-between items-center mb-4 sm:mb-6">
-        <h3 className="text-base sm:text-lg font-semibold">
+        <h3 className="text-base text-white sm:text-lg font-semibold">
           Skills <span className="text-[#BCDD19]">Summary</span>
         </h3>
         <span className="text-xs sm:text-sm text-gray-400">4 Total</span>
       </div>
 
       {/* Radar Chart Placeholder */}
-      <div className="flex flex-col justify-between h-[86%]">
-        <div className="relative mx-auto mb-4 sm:mb-6 flex-shrink-0">
+      <div className="flex justify-between h-full">
+        <div className="relative /mx-auto ml-20 /mb-4 /sm:mb-6 flex-shrink-0">
           <RadarChart data={languages} />
         </div>
 
         {/* Language percentages */}
-        <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3">
           {languages.map((lang) => (
-            <div key={lang.name} className="flex items-center justify-between">
+            <div
+              key={lang.name}
+              className="flex items-center justify-between /bg-white/5 rounded-sm px-3 py-2 h-fit"
+            >
               <div className="flex items-center gap-2">
-                <div
+                {/* <div
                   className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
                   style={{ backgroundColor: lang.color }}
+                /> */}
+                <img
+                  src={`https://cdn.simpleicons.org/${lang.name}`}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.filter = `invert(1)`;
+                    e.target.src = "/images/code-icon.png";
+                  }}
+                  className={`w-6 h-6 object-contain`}
+                  alt=""
                 />
                 <span className="text-xs sm:text-sm text-gray-300">
                   {lang.name}

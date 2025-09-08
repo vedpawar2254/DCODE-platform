@@ -3,6 +3,7 @@ node_modules/
 .yarn/*
 .pnp.*
 .yarnrc.yml
+yarn.lock
 
 # === Logs ===
 npm-debug.log*
