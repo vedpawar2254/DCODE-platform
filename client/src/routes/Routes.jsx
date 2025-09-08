@@ -15,6 +15,10 @@ import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
 
 import CreateFork from "../components/Onboarding/CreateForkStatic";
 import Profile from "../pages/Profile/Profile";
+
+import RepositoriesListing from "../pages/Repositories/repositoriesListing";
+
+
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
   {
@@ -69,7 +73,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "repositories",
-        element: <Repositories />,
+        element: <RepositoriesListing />,
       },
     ],
   },
