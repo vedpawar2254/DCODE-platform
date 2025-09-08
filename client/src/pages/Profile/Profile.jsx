@@ -15,9 +15,9 @@ export default function Profile() {
   const [editFormData, setEditFormData] = useState({
     github_username: "",
     bio: "",
+    location: "",
     collegeInfo: {
       name: "",
-      location: "",
       currentYear: null,
       degree: "",
     },
@@ -139,12 +139,9 @@ export default function Profile() {
     setEditFormData({
       github_username: userData.github_username || "",
       bio: userData.bio || "",
+      location: userData?.location || "",
       collegeInfo: {
         name: userData.collegeInfo?.name || userData.college_info?.name || "",
-        location:
-          userData.collegeInfo?.location ||
-          userData.college_info?.location ||
-          "",
         currentYear:
           userData.collegeInfo?.currentYear ||
           userData.college_info?.currentYear ||
@@ -205,8 +202,8 @@ export default function Profile() {
       if (isValidValue(editFormData.collegeInfo.name)) {
         collegeInfo.name = editFormData.collegeInfo.name;
       }
-      if (isValidValue(editFormData.collegeInfo.location)) {
-        collegeInfo.location = editFormData.collegeInfo.location;
+      if (isValidValue(editFormData.location)) {
+        updateData.location = editFormData.location;
       }
       if (isValidValue(editFormData.collegeInfo.currentYear)) {
         collegeInfo.currentYear = parseInt(
@@ -463,14 +460,14 @@ export default function Profile() {
 
                   <div>
                     <label className="block text-[#A1A1AA] text-sm mb-2">
-                      College Location
+                      Your Location
                     </label>
                     <input
                       type="text"
-                      value={editFormData.collegeInfo.location}
-                      onChange={handleInputChange("collegeInfo.location")}
+                      value={editFormData.location}
+                      onChange={handleInputChange("location")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
-                      placeholder="Enter college location (City, State, Country)"
+                      placeholder="Enter Your location (City/State/Country)"
                     />
                   </div>
 
