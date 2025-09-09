@@ -5,6 +5,8 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { toast } from "sonner";
+import { axiosInstance } from "../../utils/axios";
 
 export const RightSide = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -49,26 +51,51 @@ export const RightSide = () => {
     isGitHubAuth,
   } = useAuthStore();
   const handleSubmit = async () => {
-    if (isLogin) {
-      const response = await login({
-        email: formData.email,
-        password: formData.password,
-      });
-      if (response) {
-        navigate("/dashboard");
+    try {
+      if (isLogin) {
+        const response = await login({
+          email: formData.email,
+          password: formData.password,
+        });
+        if (response) {
+          navigate("/dashboard");
+        }
+      } else {
+        if (!formData.acceptTerms) {
+          toast.error("Please accept the terms and conditions");
+          return;
+        }
+        const response = await register({
+          name: formData.username,
+          email: formData.email,
+          password: formData.password,
+        });
+        if (response) {
+          navigate("/onboarding");
+        }
       }
-    } else {
-      if (!formData.acceptTerms) {
-        alert("Please accept the terms and conditions");
-        return;
-      }
-      const response = await register({
-        name: formData.username,
-        email: formData.email,
-        password: formData.password,
-      });
-      if (response) {
-        navigate("/onboarding");
+    } catch (error) {
+      console.error("Auth error:", error);
+
+      // Handle errors from the auth store
+      if (error?.response?.data?.errors) {
+        if (Array.isArray(error.response.data.errors)) {
+          error.response.data.errors.forEach((err) => {
+            toast.error(err.message || err);
+          });
+        } else {
+          toast.error(
+            error.response.data.errors.message || error.response.data.errors
+          );
+        }
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(
+          isLogin
+            ? "Login failed. Please try again."
+            : "Registration failed. Please try again."
+        );
       }
     }
   };
@@ -79,8 +106,35 @@ export const RightSide = () => {
     exit: { opacity: 0, y: -20 },
   };
 
+  const handleLogout = async () => {
+    await axiosInstance.post("/auth/logout");
+  };
+
   const handleGithub = async () => {
-    await githubAuth();
+    try {
+      handleLogout();
+      await githubAuth();
+    } catch (error) {
+      console.error("GitHub auth initiation error:", error);
+
+      if (error?.response?.data?.errors) {
+        if (Array.isArray(error.response.data.errors)) {
+          error.response.data.errors.forEach((err) => {
+            toast.error(err.message || err);
+          });
+        } else {
+          toast.error(
+            error.response.data.errors.message || error.response.data.errors
+          );
+        }
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(
+          "Failed to initiate GitHub authentication. Please try again."
+        );
+      }
+    }
   };
   useEffect(() => {
     (async () => {
@@ -99,6 +153,20 @@ export const RightSide = () => {
                 )
                 .then((d) => d.data);
 
+              // Check for errors in the response
+              if (axres?.errors) {
+                // Display all errors as toast notifications
+                if (Array.isArray(axres.errors)) {
+                  axres.errors.forEach((error) => {
+                    toast.error(error.message || error);
+                  });
+                } else {
+                  toast.error(axres.errors.message || axres.errors);
+                }
+                setIsProcessingGitHubCallback(false);
+                return;
+              }
+
               var check = await checkAuth();
               if (axres?.data?.is_signedup) {
                 if (check.status) {
@@ -111,6 +179,27 @@ export const RightSide = () => {
               }
             } catch (error) {
               console.error("GitHub auth error:", error);
+
+              // Show toast error for network or other errors
+              if (error.response?.data?.errors) {
+                if (Array.isArray(error.response.data.errors)) {
+                  error.response.data.errors.forEach((err) => {
+                    toast.error(err.message || err);
+                  });
+                } else {
+                  toast.error(
+                    error.response.data.errors.message ||
+                      error.response.data.errors
+                  );
+                }
+              } else if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+              } else {
+                toast.error(
+                  "Failed to authenticate with GitHub. Please try again."
+                );
+              }
+
               setIsProcessingGitHubCallback(false);
             }
           }

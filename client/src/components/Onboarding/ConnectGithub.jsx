@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Button from "../ui/Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
+import { axiosInstance } from "../../utils/axios";
 
 export default function ConnectGithub() {
   const navigate = useNavigate();
@@ -11,6 +12,10 @@ export default function ConnectGithub() {
   const handleGithub = async () => {
     // Redirect to GitHub OAuth or your auth logic
     await githubAuth();
+  };
+  const handleLogout = async () => {
+    await axiosInstance.post("/auth/logout");
+    navigate("/auth");
   };
 
   return (
@@ -75,13 +80,20 @@ export default function ConnectGithub() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
+        className="flex gap-5"
       >
-          <Button
-            className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
-            onClick={handleGithub}
-          >
-            Connect with GitHub
-          </Button>
+        <Button
+          className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+          onClick={handleGithub}
+        >
+          Connect with GitHub
+        </Button>
+        <Button
+          className="rounded-xl border-none bg-gray-800 hover:bg-gray-700 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </motion.div>
     </motion.div>
   );

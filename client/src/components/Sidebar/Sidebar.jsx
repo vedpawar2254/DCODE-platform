@@ -10,7 +10,9 @@ import {
   FiX,
   FiChevronLeft,
   FiChevronRight,
+  FiLogOut,
 } from "react-icons/fi";
+import { axiosInstance } from "../../utils/axios";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -49,6 +51,10 @@ const Sidebar = () => {
   if (!authUser) {
     return null; // Don't render sidebar if user is not logged in
   }
+  const handleLogout = async () => {
+    await axiosInstance.post("/auth/logout");
+    navigate("/auth");
+  };
 
   return (
     <>
@@ -163,7 +169,7 @@ const Sidebar = () => {
           onClick={() => navigate("/profile")}
         >
           <div
-            className={`flex items-center ${isCollapsed && !isHovered ? "justify-center" : "space-x-3"}`}
+            className={`flex items-center group relative ${isCollapsed && !isHovered ? "justify-center" : "space-x-3"}`}
           >
             <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
               {authUser?.profilePicture ? (
@@ -191,6 +197,16 @@ const Sidebar = () => {
                 <p className="text-xs text-gray-400 truncate">
                   {authUser?.data?.email}
                 </p>
+              </div>
+            )}
+            {!(isCollapsed && !isHovered) && (
+              <div
+                onClick={() => handleLogout()}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center"
+              >
+                <button className="bg-gray-700 text-gray-300 hover:text-white rounded-md p-2 group-hover:opacity-100 opacity-30 transition-opacity duration-300">
+                  <FiLogOut size={16} />
+                </button>
               </div>
             )}
           </div>

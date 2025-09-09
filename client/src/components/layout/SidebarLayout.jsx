@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useSidebar } from "../../context/SidebarContext";
@@ -7,7 +7,14 @@ import { useSidebar } from "../../context/SidebarContext";
 const SidebarLayout = () => {
   const { authUser } = useAuthStore();
   const { isCollapsed } = useSidebar();
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (authUser) {
+      if (!authUser.data.github_username) {
+        navigate("/onboarding/connect-github");
+      }
+    }
+  }, [authUser]);
   return (
     <div className="min-h-screen bg-[#121212]">
       {authUser && <Sidebar />}
