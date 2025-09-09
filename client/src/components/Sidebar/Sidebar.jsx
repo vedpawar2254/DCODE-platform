@@ -172,9 +172,9 @@ const Sidebar = () => {
             className={`flex items-center group relative ${isCollapsed && !isHovered ? "justify-center" : "space-x-3"}`}
           >
             <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
-              {authUser?.profilePicture ? (
+              {authUser?.data?.avatar ? (
                 <img
-                  src={authUser.profilePicture}
+                  src={authUser.data.avatar}
                   alt="Profile"
                   className="w-full h-full rounded-full object-cover"
                 />
