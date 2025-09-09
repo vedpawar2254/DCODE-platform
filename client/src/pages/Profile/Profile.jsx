@@ -29,13 +29,13 @@ export default function Profile() {
       fiverr: "",
     },
   });
-  const [user, setuser] = useState(null);
+  const [user, setUser] = useState(null);
   const [ProfileStats, setProfileStats] = useState(null);
   const [badges, setBadges] = useState([]);
   const [badgesLoading, setBadgesLoading] = useState(false);
   const { authUser, isLoggedIn } = useAuthStore();
   useEffect(() => {
-    setuser(authUser?.data);
+    setUser(authUser?.data);
   }, [isLoggedIn]);
 
   const getLanguageColor = (language) => {
@@ -258,7 +258,7 @@ export default function Profile() {
 
       if (response.data) {
         // Update local user state with the new data
-        setuser((prev) => ({
+        setUser((prev) => ({
           ...prev,
           ...updateData,
           ...(updateData.college_info && {
