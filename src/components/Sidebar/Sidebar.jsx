@@ -13,7 +13,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { axiosInstance } from "../../utils/axios";
-import { User } from "lucide-react";
+import { Globe2, User } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -40,6 +40,12 @@ const Sidebar = () => {
       label: "Repositories",
       path: "/repositories",
       isActive: location.pathname === "/repositories",
+    },
+    {
+      icon: <Globe2 size={20} />,
+      label: "Community",
+      path: "/users",
+      isActive: location.pathname === "/users",
     },
     {
       icon: <User size={20} />,
@@ -137,7 +143,7 @@ const Sidebar = () => {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="flex-1 px-4 py-6">
+        <nav className="flex-1 px-4 py-6 justify-between flex flex-col">
           <div className="space-y-2">
             {menuItems.map((item, index) => (
               <button
@@ -161,6 +167,17 @@ const Sidebar = () => {
               </button>
             ))}
           </div>
+            {!isCollapsed && (
+              <div
+                onClick={() => handleLogout()}
+                className="flex items-center mt-4 cursor-pointer"
+              >
+                <button className="flex items-center w-full text-gray-300 hover:bg-gray-800 hover:text-red-500 px-4 py-3 rounded-lg transition-all duration-200">
+                  <FiLogOut size={16} />
+                  <span className="ml-2">Logout</span>
+                </button>
+              </div>
+            )}
         </nav>
 
         {/* User Profile Section */}
@@ -199,7 +216,7 @@ const Sidebar = () => {
                 </p>
               </div>
             )}
-            {!isCollapsed && (
+            {/* {!isCollapsed && (
               <div
                 onClick={() => handleLogout()}
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center"
@@ -208,7 +225,7 @@ const Sidebar = () => {
                   <FiLogOut size={16} />
                 </button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
