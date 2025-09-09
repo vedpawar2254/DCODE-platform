@@ -13,6 +13,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { axiosInstance } from "../../utils/axios";
+import { User } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -20,7 +21,6 @@ const Sidebar = () => {
   const { authUser } = useAuthStore();
   const { isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMenuOpen } =
     useSidebar();
-  const [isHovered, setIsHovered] = useState(false);
 
   const menuItems = [
     {
@@ -40,6 +40,12 @@ const Sidebar = () => {
       label: "Repositories",
       path: "/repositories",
       isActive: location.pathname === "/repositories",
+    },
+    {
+      icon: <User size={20} />,
+      label: "My profile",
+      path: "/profile",
+      isActive: location.pathname === "/profile",
     },
   ];
 
@@ -76,34 +82,28 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 h-full ${isCollapsed && !isHovered ? "w-[5rem]" : "w-64"} bg-[#161616] text-white z-50 flex flex-col transform transition-all duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 h-full ${isCollapsed ? "w-[5rem]" : "w-64"} bg-[#161616] text-white z-50 flex flex-col transform transition-all duration-300 ease-in-out ${
           isMobileMenuOpen
             ? "translate-x-0"
             : "-translate-x-full lg:translate-x-0"
         }`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Logo Section */}
         <div
-          className={`${isCollapsed && !isHovered ? "p-6" : "p-6"} border-b border-gray-800 relative`}
+          className={`${isCollapsed ? "p-6" : "p-6"} border-b border-gray-800 relative`}
         >
           {
             <div
-              className={`flex flex-col ${!(isCollapsed && !isHovered) ? "items-start" : "items-center justify-center"} `}
+              className={`flex flex-col ${!isCollapsed ? "items-start" : "items-center justify-center"} `}
             >
               <img
-                src={
-                  !(isCollapsed && !isHovered)
-                    ? "/images/d.png"
-                    : "/images/d-favicon.png"
-                }
-                className={`h-[2rem] /object-contain ${!(isCollapsed && !isHovered) ? "translate-x-[-0.3rem]" : ""} transition-all duration-300`}
+                src={!isCollapsed ? "/images/d.png" : "/images/d-favicon.png"}
+                className={`h-[2rem] /object-contain ${!isCollapsed ? "translate-x-[-0.3rem]" : ""} transition-all duration-300`}
                 style={{ mixBlendMode: "lighten" }}
                 alt=""
               />
               <p
-                className={`text-gray-400 text-sm mt-2 ${!(isCollapsed && !isHovered) ? "opacity-100" : "opacity-0"} transition-all duration-300`}
+                className={`text-gray-400 text-sm mt-2 ${!isCollapsed ? "opacity-100" : "opacity-0"} transition-all duration-300`}
               >
                 PLATFORM
               </p>
@@ -143,19 +143,19 @@ const Sidebar = () => {
               <button
                 key={index}
                 onClick={() => handleNavigation(item.path)}
-                className={`w-full flex cursor-pointer items-center ${isCollapsed && !isHovered ? "justify-center px-4" : "space-x-3 px-4"} py-3 rounded-lg text-left transition-all duration-200 ${
+                className={`w-full flex cursor-pointer items-center ${isCollapsed ? "justify-center px-4" : "space-x-3 px-4"} py-3 rounded-lg text-left transition-all duration-200 ${
                   item.isActive
                     ? "bg-green-600 text-white"
                     : "text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
-                title={isCollapsed && !isHovered ? item.label : ""}
+                title={isCollapsed ? item.label : ""}
               >
                 <span
                   className={`${item.isActive ? "text-white" : "text-gray-400"} h-[24px] pt-[0.1rem]`}
                 >
                   {item.icon}
                 </span>
-                {!(isCollapsed && !isHovered) && (
+                {!isCollapsed && (
                   <span className="font-medium">{item.label}</span>
                 )}
               </button>
@@ -165,11 +165,11 @@ const Sidebar = () => {
 
         {/* User Profile Section */}
         <div
-          className={`${isCollapsed && !isHovered ? "p-4" : "p-4"} border-t border-gray-800 hover:bg-white/3 cursor-pointer`}
+          className={`${isCollapsed ? "p-4" : "p-4"} border-t border-gray-800 hover:bg-white/3 cursor-pointer`}
           onClick={() => navigate("/profile")}
         >
           <div
-            className={`flex items-center group relative ${isCollapsed && !isHovered ? "justify-center" : "space-x-3"}`}
+            className={`flex items-center group relative ${isCollapsed ? "justify-center" : "space-x-3"}`}
           >
             <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
               {authUser?.data?.avatar ? (
@@ -189,7 +189,7 @@ const Sidebar = () => {
                 </span>
               )}
             </div>
-            {!(isCollapsed && !isHovered) && (
+            {!isCollapsed && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white truncate">
                   {authUser?.data?.name}
@@ -199,7 +199,7 @@ const Sidebar = () => {
                 </p>
               </div>
             )}
-            {!(isCollapsed && !isHovered) && (
+            {!isCollapsed && (
               <div
                 onClick={() => handleLogout()}
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center"
