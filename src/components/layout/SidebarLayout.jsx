@@ -10,7 +10,7 @@ const SidebarLayout = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (authUser) {
-      if (!authUser.data.github_username) {
+      if (!authUser.data?.github_username) {
         navigate("/onboarding/connect-github");
       }
     }
