@@ -131,7 +131,7 @@ const RepositoryDetails = () => {
         //   headers["Authorization"] = `Bearer ${user.token}`;
         // }
 
-        const response = await axiosInstance.get(`/api/v1/project/get/${id}`);
+        const response = await axiosInstance.get(`/project/get/${id}`);
         
 
         const repositoryData = response.data.data;
