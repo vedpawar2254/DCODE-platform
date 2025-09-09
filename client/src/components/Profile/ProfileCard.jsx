@@ -129,47 +129,58 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
           <div className="flex justify-between w-full mt-4">
             <div className="text-center">
               <div className="text-[#C6FF3D] text-xl font-semibold">
-                {contributions || 10}
+                {contributions || 0}
               </div>
               <div className="text-white text-xs">Contributions</div>
             </div>
             <div className="text-center">
               <div className="text-[#FACC15] text-xl font-semibold">
-                {(linesOfCode && linesOfCode.toLocaleString()) || 110}
+                {(linesOfCode && linesOfCode.toLocaleString()) || 0}
               </div>
               <div className="text-white text-xs">Lines of code</div>
             </div>
           </div>
         </div>
       </div>
-      {user.collegeInfo.name &&
-        user.collegeInfo.degree &&
-        user.collegeInfo.currentYear && (
+      {(user.collegeInfo?.name || 
+        user.collegeInfo?.degree || 
+        user.collegeInfo?.currentYear || 
+        user.college_info?.name || 
+        user.college_info?.degree || 
+        user.college_info?.current_year) && (
           <div className="w-full /mt-2 bg-[#FFFFFF05] border border-[#23252B] p-6 backdrop-blur-sm rounded-md">
             <div className="flex items-center mb-2 gap-2">
               <GraduationCap color="#C6FF3D" />
               <h3 className="text-white font-semibold text-lg">Education</h3>
             </div>
             <div>
-              <p className="text-white text-lg">{user.collegeInfo.name}</p>
-              <p className="text-[#A1A1AA] text-sm mt-1">
-                {user.collegeInfo.degree}
-              </p>
-              <div className="mt-3 inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs px-2.5 py-0.5 rounded-full">
-                <span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"></span>
-                {user.collegeInfo.currentYear}
-                {user.collegeInfo.currentYear === 1
-                  ? "st"
-                  : user.collegeInfo.currentYear === 2
-                    ? "nd"
-                    : user.collegeInfo.currentYear === 3
-                      ? "rd"
-                      : user.collegeInfo.currentYear >= 4 &&
-                          user.collegeInfo.currentYear <= 8
-                        ? "th"
-                        : ""}{" "}
-                Year
-              </div>
+              {(user.collegeInfo?.name || user.college_info?.name) && (
+                <p className="text-white text-lg">
+                  {user.collegeInfo?.name || user.college_info?.name}
+                </p>
+              )}
+              {(user.collegeInfo?.degree || user.college_info?.degree) && (
+                <p className="text-[#A1A1AA] text-sm mt-1">
+                  {user.collegeInfo?.degree || user.college_info?.degree}
+                </p>
+              )}
+              {(user.collegeInfo?.currentYear || user.college_info?.current_year) && (
+                <div className="mt-3 inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs px-2.5 py-0.5 rounded-full">
+                  <span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"></span>
+                  {(() => {
+                    const year = user.collegeInfo?.currentYear || user.college_info?.current_year;
+                    const yearNum = parseInt(year);
+                    let suffix = "";
+                    
+                    if (yearNum === 1) suffix = "st";
+                    else if (yearNum === 2) suffix = "nd";
+                    else if (yearNum === 3) suffix = "rd";
+                    else if (yearNum === 4) suffix = "th";
+                    
+                    return `${year}${suffix} Year`;
+                  })()}
+                </div>
+              )}
             </div>
           </div>
         )}
