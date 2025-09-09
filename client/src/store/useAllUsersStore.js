@@ -202,7 +202,7 @@ const useAllUsersStore = create((set, get) => ({
       
       if (response.data.success) {
         const users = response.data.data.users || [];
-        const totalUsers = response.data.data.total || 0;
+        const totalUsers = response.data.data.pagination.totalCount || 0;
         const totalPages = Math.ceil(totalUsers / state.itemsPerPage);
 
         // Cache the result
