@@ -1,23 +1,18 @@
-import React, { useState } from "react";
 import {
   Calendar,
-  CalendarDays,
   Github,
   GitPullRequest,
+  Globe,
   GraduationCap,
   Linkedin,
-  Locate,
   Mail,
   MapPin,
-  Pencil,
-  TrendingUp,
   Twitter,
-  X,
 } from "lucide-react";
 
 const ProfileCard = ({ user, linesOfCode, contributions }) => {
-  console.log(contributions);
-  const completionPercentage = user?.completionPercentage || 70; // Default to 85% if not provided
+  // console.log(contributions);
+  const completionPercentage = user?.completionPercentage || 69; // Default to 69% if not provided
 
   return (
     <>
@@ -60,9 +55,11 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
           <h2 className="text-lg font-semibold text-white text-center">
             {user.name}
           </h2>
-          <div className="text-[#A1A1AA] text-xs mb-6 text-center">
-            @{user.github_username}
-          </div>
+          {user.github_username && (
+            <div className="text-[#A1A1AA] text-xs mb-6 text-center">
+              @{user.github_username}
+            </div>
+          )}
           {user.bio && (
             <p className="text-[#A1A1AA] text-center text-xs mb-8 font-light">
               {user.bio}
@@ -92,30 +89,41 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
               },
               {
                 icon: Twitter,
-                link: user.socialLinks?.x || "#",
+                link: user.socialLinks?.x || null,
               },
               {
                 icon: Linkedin,
-                link: user.socialLinks?.linkedin || "#",
+                link: user.socialLinks?.linkedin || null,
               },
               {
                 icon: Github,
-                link: user.socialLinks?.github || "#",
+                link: user.socialLinks?.github || null,
               },
-            ].map(({ icon: Icon, link }, index) => (
-              <a
-                key={index}
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full p-2 /border group border-[#A1A1AA] bg-[#23252B] transition"
-              >
-                <Icon
-                  size={16}
-                  className="text-[#A1A1AA] group-hover:text-[#C6FF3D] transition-all duration-300"
-                />
-              </a>
-            ))}
+              {
+                icon: Globe,
+                link: user.socialLinks?.upwork || null,
+              },
+              {
+                icon: Globe,
+                link: user.socialLinks?.fiverr || null,
+              },
+            ].map(
+              ({ icon: Icon, link }, index) =>
+                link && (
+                  <a
+                    key={index}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full p-2 /border group border-[#A1A1AA] bg-[#23252B] transition"
+                  >
+                    <Icon
+                      size={16}
+                      className="text-[#A1A1AA] group-hover:text-[#C6FF3D] transition-all duration-300"
+                    />
+                  </a>
+                )
+            )}
           </div>
 
           <div className="flex justify-between w-full mt-4">
