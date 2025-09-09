@@ -20,6 +20,8 @@ import Profile from "../pages/Profile/Profile";
 import RepositoriesListing from "../pages/Repositories/repositoriesListing";
 import RepositoryDetails from "../pages/Repositories/RepositoryDetails";
 import ConnectGithub from "../components/Onboarding/ConnectGithub";
+import UserProfile from "../pages/Profile/UserProfile";
+import UsersListing from "../pages/Users/UsersListing";
 
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
@@ -56,7 +58,6 @@ export const routes = createBrowserRouter([
       { path: "connect-github", element: <ConnectGithub /> },
     ],
   },
-
   // Authenticated routes (with sidebar when logged in)
   {
     path: "/",
@@ -102,6 +103,14 @@ export const routes = createBrowserRouter([
           {
             path: "repositories/:id",
             element: <RepositoryDetails />,
+          },
+          {
+            path: "users",
+            element: <UsersListing />,
+          },
+          {
+            path: "user/:username",
+            element: <UserProfile />,
           },
         ],
       },
