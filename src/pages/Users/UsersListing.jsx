@@ -345,8 +345,7 @@ export default function UsersListing() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                {users.map((user) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">{users.map((user) => (
                   <UserCard
                     key={user.id}
                     user={user}
@@ -415,74 +414,71 @@ const UserCard = ({ user, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 hover:border-[#C6FF3D] transition-all duration-200 cursor-pointer hover:shadow-lg hover:shadow-[#C6FF3D]/10"
+      className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02] group flex flex-col justify-between"
     >
-      {/* Avatar and Basic Info */}
-      <div className="flex items-center gap-4 mb-4">
-        <img
-          src={
-            user.avatar ||
-            `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
-          }
-          alt={user.name}
-          className="w-12 h-12 rounded-full object-cover border-2 border-[#C6FF3D]"
-        />
+      {/* Header with Avatar and Name */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="relative">
+          <img
+            src={
+              user.avatar ||
+              `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
+            }
+            alt={user.name}
+            className="w-14 h-14 rounded-full object-cover border-2 border-[#2A2A2A] transition-colors"
+          />
+          {user.github_username && (
+            <div className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1">
+              <Github className="text-black" size={12} />
+            </div>
+          )}
+        </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-white font-semibold truncate">{user.name}</h3>
+          <h3 className="text-white font-semibold text-lg truncate group-hover:text-[#C6FF3D] transition-colors">
+            {user.name}
+          </h3>
           <p className="text-[#A1A1AA] text-sm truncate">
             @{user.github_username || "no-github"}
           </p>
         </div>
-        {user.github_username && (
-          <Github className="text-[#A1A1AA]" size={16} />
-        )}
       </div>
 
-      {/* Bio */}
+      {/* Bio - Clean and minimal */}
       {user.bio && (
-        <p className="text-[#A1A1AA] text-sm mb-4 line-clamp-2">{user.bio}</p>
+        <p className="text-[#A1A1AA] text-sm mb-4 line-clamp-2 leading-relaxed">
+          {user.bio}
+        </p>
       )}
 
-      {/* User Info */}
-      <div className="space-y-3 mb-4">
-        {/* Experience Level */}
-        {user.experience_level && (
-          <div className="flex items-center gap-2">
-            <GraduationCap className="text-[#C6FF3D]" size={14} />
-            <span className="text-white text-sm">{user.experience_level}</span>
+      {/* Key Info - Simplified layout */}
+      <div className="space-y-2 mb-4">
+        {user.location && (
+          <div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
+            <MapPin size={14} className="flex-shrink-0" />
+            <span className="truncate">{user.location}</span>
           </div>
         )}
 
-        {/* Location */}
-        {user.location && (
-          <div className="flex items-center gap-2">
-            <MapPin className="text-[#A1A1AA]" size={14} />
-            <span className="text-[#A1A1AA] text-sm truncate">
-              {user.location}
+        {user.collegeInfo?.name && (
+          <div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
+            <GraduationCap size={14} className="flex-shrink-0" />
+            <span className="truncate">
+              {user.collegeInfo.name}
+              {user.collegeInfo.currentYear && ` • Year ${user.collegeInfo.currentYear}`}
             </span>
           </div>
         )}
-
-        {/* College Info */}
-        {user.collegeInfo?.name && (
-          <div>
-            <div className="text-[#A1A1AA] text-xs mb-1">Education</div>
-            <div className="text-white text-sm truncate">
-              {user.collegeInfo.name}
-            </div>
-            {user.collegeInfo.currentYear && (
-              <div className="text-[#A1A1AA] text-xs">
-                {user.collegeInfo.currentYear}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* Join Date */}
-      <div className="flex items-center gap-1 text-[#A1A1AA] text-xs">
-        <Calendar size={12} />
-        <span>Joined {joinedDate}</span>
+      {/* Footer with join date - Minimal */}
+      <div className="flex items-center justify-between pt-3 border-t border-[#23252B]">
+        <div className="flex items-center gap-1 text-[#666] text-xs">
+          <Calendar size={12} />
+          <span>Joined {joinedDate}</span>
+        </div>
+        <div className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+          View Profile →
+        </div>
       </div>
     </div>
   );

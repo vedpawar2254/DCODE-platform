@@ -187,20 +187,20 @@ export default function UserProfile() {
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div>
-                <h1 className="text-2xl md:text-3xl text-white font-semibold">
-                  {user.name}'s Profile
-                </h1>
-                <p className="text-[#D5D5D5] text-sm md:text-base mt-2">
-                  View <span className="text-[#C6FF3D]">{user.name}</span>'s{" "}
-                  <span className="text-[#C6FF3D]">contributions</span> and{" "}
-                  <span className="text-[#C6FF3D]">achievements</span>.
-                </p>
-              </div>
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center justify-center p-2 bg-[#23252B] hover:bg-[#2A2A2A] rounded-lg transition-colors"
+                title="Go back"
+              >
+                <ArrowLeft size={20} className="text-white" />
+              </button>
+              <h1 className="text-2xl md:text-3xl text-white font-semibold">
+                {user.name}'s <span className="text-[#C6FF3D]">Profile</span>
+              </h1>
             </div>
-            
             {/* Social Links */}
-            <div className="flex items-center gap-3">
+
+            {/* <div className="flex items-center gap-3">
               {user.social_links?.github && (
                 <a
                   href={user.social_links.github}
@@ -231,7 +231,7 @@ export default function UserProfile() {
                   <Twitter size={20} className="text-white" />
                 </a>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
 

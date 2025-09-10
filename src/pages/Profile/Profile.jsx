@@ -27,6 +27,7 @@ export default function Profile() {
       github: "",
       upwork: "",
       fiverr: "",
+      portfolio: "",
     },
   });
   const [user, setUser] = useState(null);
@@ -161,6 +162,8 @@ export default function Profile() {
           userData.socialLinks?.upwork || userData.social_links?.upwork || "",
         fiverr:
           userData.socialLinks?.fiverr || userData.social_links?.fiverr || "",
+        portfolio:
+          userData.socialLinks?.portfolio || userData.social_links?.portfolio || "",
       },
     });
     setIsEditingProfile(true);
@@ -235,6 +238,9 @@ export default function Profile() {
       }
       if (isValidValue(editFormData.socialLinks.fiverr)) {
         socialLinks.fiverr = editFormData.socialLinks.fiverr;
+      }
+      if (isValidValue(editFormData.socialLinks.portfolio)) {
+        socialLinks.portfolio = editFormData.socialLinks.portfolio;
       }
 
       // Add socialLinks only if it has valid values
@@ -572,6 +578,19 @@ export default function Profile() {
                       onChange={handleInputChange("socialLinks.fiverr")}
                       className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
                       placeholder="https://fiverr.com/username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#A1A1AA] text-sm mb-2">
+                      Portfolio Website
+                    </label>
+                    <input
+                      type="url"
+                      value={editFormData.socialLinks.portfolio}
+                      onChange={handleInputChange("socialLinks.portfolio")}
+                      className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                      placeholder="https://yourportfolio.com"
                     />
                   </div>
                 </div>
