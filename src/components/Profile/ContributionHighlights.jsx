@@ -197,15 +197,19 @@ const ContributionHighlights = ({ highlights, topProjects }) => (
     </div>
     {/* Top Contributing Repositories */}
     <div className="mt-8">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2 text-white font-semibold">
-          <Star color="#C6FF3D" size={20} />
-          Top Contributing Repositories
-        </div>
-        {/* <a href="#" className="text-[#C6FF3D] text-xs underline">
+      {topProjects.length > 0 ? (
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2 text-white font-semibold">
+            <Star color="#C6FF3D" size={20} />
+            Top Contributing Repositories
+          </div>
+          {/* <a href="#" className="text-[#C6FF3D] text-xs underline">
           View All
         </a> */}
-      </div>
+        </div>
+      ) : 
+      null
+      }
       <div className="flex flex-row gap-6">
         {/* Repo 1 */}
         {topProjects.map((el, idx) => {
