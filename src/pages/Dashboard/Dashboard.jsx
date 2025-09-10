@@ -550,6 +550,7 @@ export default () => {
                 variants={scrollAnimations.fadeInLeft}
               >
                 <DailyStreakCard stats={transformedStats} />
+                {/* {console.log(transformedStats)} */}
               </motion.div>
               <motion.div
                 className="lg:col-span-2"
