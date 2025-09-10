@@ -13,7 +13,7 @@ import {
 
 const ProfileCard = ({ user, linesOfCode, contributions, isPublicView = false }) => {
   // console.log(contributions);
-  const completionPercentage = user?.completionPercentage || 69; // Default to 69% if not provided
+  const completionPercentage = user?.profileCompleteness || 69; // Default to 69% if not provided
 
   return (
     <>

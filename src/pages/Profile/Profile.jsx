@@ -163,7 +163,9 @@ export default function Profile() {
         fiverr:
           userData.socialLinks?.fiverr || userData.social_links?.fiverr || "",
         portfolio:
-          userData.socialLinks?.portfolio || userData.social_links?.portfolio || "",
+          userData.socialLinks?.portfolio ||
+          userData.social_links?.portfolio ||
+          "",
       },
     });
     setIsEditingProfile(true);
@@ -370,6 +372,7 @@ export default function Profile() {
             {/* <SkillsOverview /> */}
           </div>
           <div className="flex flex-col gap-5 w-full col-span-2">
+            {console.log("ProfileStats", ProfileStats)}
             {ProfileStats?.stats && (
               <ContributionHighlights
                 highlights={ProfileStats.stats}

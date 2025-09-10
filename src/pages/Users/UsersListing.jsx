@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import useAllUsersStore from "../../store/useAllUsersStore";
+import DashboardFooter from "../../components/Dashboard/DashboardFooter";
 
 export default function UsersListing() {
   const navigate = useNavigate();
@@ -132,8 +133,9 @@ export default function UsersListing() {
   ], []);
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4">
+    <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 flex flex-col justify-between">
       {/* Header */}
+      <div>
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
@@ -400,6 +402,8 @@ export default function UsersListing() {
           )}
         </>
       )}
+      </div >
+    <DashboardFooter />
     </div>
   );
 }
