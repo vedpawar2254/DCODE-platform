@@ -145,12 +145,12 @@ const SkillsSummaryCard = ({ skills }) => {
       </div>
 
       {/* Radar Chart Placeholder */}
-      <div className="flex justify-between h-full">
-        <div className="relative /mx-auto ml-20 /mb-4 /sm:mb-6 flex-shrink-0">
-          <RadarChart data={skills} />
-        </div>
+        <div className="flex justify-between h-full">
+          <div className="relative /mx-auto ml-20 /mb-4 /sm:mb-6 flex-shrink-0">
+            <RadarChart data={skills.slice(0, 5)} />
+          </div>
 
-        {/* Language percentages */}
+          {/* Language percentages */}
         <div className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3">
           {skills.map((lang) => (
             <div
