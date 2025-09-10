@@ -212,7 +212,7 @@ const ContributionHighlights = ({ highlights, topProjects }) => (
           return (
             <div className="border border-[#23252B] rounded-lg p-4 flex-1 min-w-[180px]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-white font-semibold">
+                <span className="text-white font-semibold line-clamp-1">
                   {el.repositoryName}
                 </span>
                 {/* <span className="text-[#FFD923] text-xs">JavaScript</span> */}

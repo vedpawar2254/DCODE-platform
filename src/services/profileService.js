@@ -4,7 +4,7 @@ export const profileService = {
   // Get user aggregate stats
   getTopProjects: async (userId) => {
     try {
-      const response = await axiosInstance.get(userId ? `/prs/user/${userId}/top-repositories` : `/prs/my/top-repositories`);
+      const response = await axiosInstance.get(userId ? `/prs/user/${userId}/top-repositories?limit=2` : `/prs/my/top-repositories?limit=2`);
       if (response.data.success) {
         return response.data.message.repositories;
       }
