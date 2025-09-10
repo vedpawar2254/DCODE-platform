@@ -207,6 +207,7 @@ export default () => {
         repositories: dashboardData.stats.avgReposContributed || 0,
         linesOfCode: dashboardData.stats.totalLOC || 0,
         dailyStreak: dashboardData.profile?.streak?.current || 0,
+        longest: dashboardData.profile?.streak?.longest || 0,
         projectCount: dashboardData.stats.projectCount || 0,
         todayContributions:
           dashboardData.profile?.streak?.currentStreakData

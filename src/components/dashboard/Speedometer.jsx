@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Speedometer = ({ value, maxValue = 100, size = 300 }) => {
+const Speedometer = ({ value, maxValue = 100, size = 300,longest }) => {
   const [animatedValue, setAnimatedValue] = useState(0);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ const Speedometer = ({ value, maxValue = 100, size = 300 }) => {
         </div>
         <span className="text-xs text-gray-500 mt-1">Longest Streak</span>
         <span className="text-sm font-medium text-[#BCDD19]">
-          {animatedValue} days of continuity
+          {longest} days of continuity
         </span>
       </div>
     </div>

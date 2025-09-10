@@ -15,6 +15,7 @@ const DailyStreakCard = ({ stats }) => {
       <div className="flex items-center justify-center mb-4 sm:mb-0">
         <Speedometer
           value={stats.dailyStreak}
+          longest={stats.longest}
           maxValue={100}
           size={window.innerWidth >= 768 ? 300 : 250}
         />
