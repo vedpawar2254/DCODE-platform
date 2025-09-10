@@ -145,13 +145,13 @@ export default () => {
           [
             dashboardService.getUserStats(authUser.data.id),
             dashboardService.getUserProfile(),
-            dashboardService.getLatestPRs(authUser.data.id, 8),
+            dashboardService.getLatestPRs(8),
           ]
         );
         setDashboardData({
           stats: statsResponse.message,
           profile: profileResponse.data,
-          recentPRs: prsResponse.message,
+          recentPRs: prsResponse.message.recentPR,
           loading: false,
           error: null,
         });
@@ -178,13 +178,13 @@ export default () => {
       const [statsResponse, profileResponse, prsResponse] = await Promise.all([
         dashboardService.getUserStats(authUser.data.id),
         dashboardService.getUserProfile(),
-        dashboardService.getLatestPRs(authUser.data.id, 8),
+        dashboardService.getLatestPRs(8),
       ]);
 
       setDashboardData({
         stats: statsResponse.message,
         profile: profileResponse.data,
-        recentPRs: prsResponse.message,
+        recentPRs: prsResponse.message.recentPR,
         loading: false,
         error: null,
       });
@@ -207,6 +207,7 @@ export default () => {
         repositories: dashboardData.stats.avgReposContributed || 0,
         linesOfCode: dashboardData.stats.totalLOC || 0,
         dailyStreak: dashboardData.profile?.streak?.current || 0,
+        projectCount: dashboardData.stats.projectCount || 0,
         todayContributions:
           dashboardData.profile?.streak?.currentStreakData
             ?.totalContributions ||
@@ -526,7 +527,7 @@ export default () => {
               <StatCard
                 icon={<FiFolder className="w-5 h-5" />}
                 title="Repositories"
-                value={transformedStats.repositories}
+                value={transformedStats.projectCount}
                 subtitle="Contributing to"
                 bgColor="bg-[#EA580C]/20 border-orange-500/30"
                 textColor="text-orange-400"

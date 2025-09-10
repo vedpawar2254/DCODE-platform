@@ -90,7 +90,7 @@ export default function Profile() {
           const [statsResponse, prsResponse, topProjects, badgesResponse] =
             await Promise.all([
               dashboardService.getUserStats(authUser.data.id),
-              dashboardService.getLatestPRs(authUser.data.id, 8),
+              dashboardService.getLatestPRs(8),
               profileService.getTopProjects(),
               axiosInstance.get("/badges/my"),
             ]);
@@ -112,7 +112,7 @@ export default function Profile() {
           statsResponse.message.languagesWithPercentage = transformedLanguages;
           setProfileStats({
             stats: statsResponse.message,
-            recentPRs: prsResponse.message,
+            recentPRs: prsResponse.message.recentPR,
             topProjects,
             loading: false,
             error: null,

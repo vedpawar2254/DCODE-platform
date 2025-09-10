@@ -91,7 +91,7 @@ export default function AchievementsRecognition({ badges = [] }) {
               className="flex flex-col items-center justify-center bg-[#23252B]/40 rounded-lg p-6 flex-1 min-w-[180px]"
             >
               {a.icon.startsWith("http") ? (
-                <img src={a.icon} alt={a.title} className="w-8 h-8 mb-2" />
+                <img src={a.icon} alt={a.title} className="w-[3.5rem] h-[3.5rem] mb-2 object-contain" />
               ) : (
                 <span role="img" aria-label={a.title} className="text-3xl">
                   {a.icon}

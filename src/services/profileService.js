@@ -2,9 +2,9 @@ import { axiosInstance } from "../utils/axios";
 
 export const profileService = {
   // Get user aggregate stats
-  getTopProjects: async () => {
+  getTopProjects: async (userId) => {
     try {
-      const response = await axiosInstance.get(`/prs/my/top-repositories`);
+      const response = await axiosInstance.get(userId ? `/prs/user/${userId}/top-repositories` : `/prs/my/top-repositories`);
       if (response.data.success) {
         return response.data.message.repositories;
       }

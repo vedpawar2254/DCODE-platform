@@ -26,10 +26,10 @@ export const dashboardService = {
   },
 
   // Get latest PRs
-  getLatestPRs: async (userId, limit = 5) => {
+  getLatestPRs: async (limit = 5) => {
     try {
       const response = await axiosInstance.get(
-        `/prs/latest?limit=${limit}&userId=${userId}`
+        `/prs/my/latest?limit=${limit}`
       );
       return response.data;
     } catch (error) {

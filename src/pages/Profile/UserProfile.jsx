@@ -82,7 +82,7 @@ export default function UserProfile() {
         // Fetch user stats, projects, and badges
         const [statsResponse, prsResponse, topProjects, badgesResponse] = await Promise.all([
           dashboardService.getUserStats(userData._id),
-          dashboardService.getLatestPRs(userData._id, 8),
+          dashboardService.getLatestPRs(8),
           profileService.getTopProjects(userData._id),
           axiosInstance.get(`/badges/user/${userData._id}`),
         ]);
@@ -108,7 +108,7 @@ export default function UserProfile() {
 
         setProfileStats({
           stats: statsResponse.message,
-          recentPRs: prsResponse.message,
+          recentPRs: prsResponse.message.recentPR,
           topProjects,
           loading: false,
           error: null,
