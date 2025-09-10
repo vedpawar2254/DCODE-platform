@@ -456,7 +456,7 @@ export default () => {
             }}
             // className="flex-1"
           >
-            <DashboardHeader stats={transformedStats} />
+            <DashboardHeader stats={transformedStats} user={authUser?.data} />
           </motion.div>
           {/* Stats Cards */}
           <motion.div

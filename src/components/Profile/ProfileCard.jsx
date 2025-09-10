@@ -1,4 +1,5 @@
 import {
+  BriefcaseBusiness,
   Calendar,
   Github,
   GitPullRequest,
@@ -10,41 +11,44 @@ import {
   Twitter,
 } from "lucide-react";
 
-const ProfileCard = ({ user, linesOfCode, contributions }) => {
+const ProfileCard = ({ user, linesOfCode, contributions, isPublicView = false }) => {
   // console.log(contributions);
-  const completionPercentage = user?.completionPercentage || 69; // Default to 69% if not provided
+  const completionPercentage = user?.profileCompleteness || 69; // Default to 69% if not provided
 
   return (
     <>
       <div className="bg-[#FFFFFF05] rounded-md px-2 flex flex-col items-center shadow border border-[#23252B] w-full backdrop-blur-sm">
         <div className="py-10 px-14 flex flex-col items-center w-full">
-          <div className="absolute right-4 top-4 w-12 h-12 flex items-center justify-center">
-            <svg className="w-12 h-12 transform -rotate-0" viewBox="0 0 36 36">
-              <path
-                className="text-[#23252B]"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="none"
-                d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              <path
-                className="text-[#C6FF3D]"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="none"
-                strokeDasharray={`${completionPercentage}, 100`}
-                strokeLinecap="round"
-                d="M18 2.0845
-              a 15.9155 15.9155 0 0 1 0 31.831
-              a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-            </svg>
-            <span className="absolute text-white font-medium text-xs">
-              {completionPercentage}%
-            </span>
-          </div>
+          {/* Only show completion percentage on own profile, not on public view */}
+          {!isPublicView && (
+            <div className="absolute right-4 top-4 w-12 h-12 flex items-center justify-center">
+              <svg className="w-12 h-12 transform -rotate-0" viewBox="0 0 36 36">
+                <path
+                  className="text-[#23252B]"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  className="text-[#C6FF3D]"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeDasharray={`${completionPercentage}, 100`}
+                  strokeLinecap="round"
+                  d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <span className="absolute text-white font-medium text-xs">
+                {completionPercentage}%
+              </span>
+            </div>
+          )}
           <div className="relative mb-4">
             <img
               src={user.avatar}
@@ -84,8 +88,8 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
           <div className="flex items-center justify-center gap-2 mt-3 mb-6">
             {[
               {
-                icon: Mail,
-                link: `mailto:${user.email}`,
+                icon: Globe,
+                link: user.socialLinks?.portfolio || null,
               },
               {
                 icon: Twitter,
@@ -100,11 +104,11 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
                 link: user.socialLinks?.github || null,
               },
               {
-                icon: Globe,
+                icon: BriefcaseBusiness,
                 link: user.socialLinks?.upwork || null,
               },
               {
-                icon: Globe,
+                icon: BriefcaseBusiness,
                 link: user.socialLinks?.fiverr || null,
               },
             ].map(
@@ -142,48 +146,53 @@ const ProfileCard = ({ user, linesOfCode, contributions }) => {
           </div>
         </div>
       </div>
-      {(user.collegeInfo?.name || 
-        user.collegeInfo?.degree || 
-        user.collegeInfo?.currentYear || 
-        user.college_info?.name || 
-        user.college_info?.degree || 
+      {(user.collegeInfo?.name ||
+        user.collegeInfo?.degree ||
+        user.collegeInfo?.currentYear ||
+        user.college_info?.name ||
+        user.college_info?.degree ||
         user.college_info?.current_year) && (
-          <div className="w-full /mt-2 bg-[#FFFFFF05] border border-[#23252B] p-6 backdrop-blur-sm rounded-md">
-            <div className="flex items-center mb-2 gap-2">
+        <div className="w-full /mt-2 bg-[#FFFFFF05] border border-[#23252B] p-6 backdrop-blur-sm rounded-md">
+          <div className="flex items-center mb-2 gap-2 justify-between">
+            <div className="flex items-center gap-2">
               <GraduationCap color="#C6FF3D" />
               <h3 className="text-white font-semibold text-lg">Education</h3>
             </div>
-            <div>
-              {(user.collegeInfo?.name || user.college_info?.name) && (
-                <p className="text-white text-lg">
-                  {user.collegeInfo?.name || user.college_info?.name}
-                </p>
-              )}
-              {(user.collegeInfo?.degree || user.college_info?.degree) && (
-                <p className="text-[#A1A1AA] text-sm mt-1">
-                  {user.collegeInfo?.degree || user.college_info?.degree}
-                </p>
-              )}
-              {(user.collegeInfo?.currentYear || user.college_info?.current_year) && (
-                <div className="mt-3 inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs px-2.5 py-0.5 rounded-full">
-                  <span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"></span>
-                  {(() => {
-                    const year = user.collegeInfo?.currentYear || user.college_info?.current_year;
-                    const yearNum = parseInt(year);
-                    let suffix = "";
-                    
-                    if (yearNum === 1) suffix = "st";
-                    else if (yearNum === 2) suffix = "nd";
-                    else if (yearNum === 3) suffix = "rd";
-                    else if (yearNum === 4) suffix = "th";
-                    
-                    return `${year}${suffix} Year`;
-                  })()}
-                </div>
-              )}
-            </div>
+            {(user.collegeInfo?.currentYear ||
+              user.college_info?.current_year) && (
+              <div className="inline-flex items-center bg-[#1C2A1E] text-[#7CFF79] text-xs px-2.5 py-0.5 rounded-full">
+                <span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"></span>
+                {(() => {
+                  const year =
+                    user.collegeInfo?.currentYear ||
+                    user.college_info?.current_year;
+                  const yearNum = parseInt(year);
+                  let suffix = "";
+
+                  if (yearNum === 1) suffix = "st";
+                  else if (yearNum === 2) suffix = "nd";
+                  else if (yearNum === 3) suffix = "rd";
+                  else if (yearNum === 4) suffix = "th";
+
+                  return `${year}${suffix} Year`;
+                })()}
+              </div>
+            )}
           </div>
-        )}
+          <div>
+            {(user.collegeInfo?.name || user.college_info?.name) && (
+              <p className="text-white text-lg">
+                {user.collegeInfo?.name || user.college_info?.name}
+              </p>
+            )}
+            {(user.collegeInfo?.degree || user.college_info?.degree) && (
+              <p className="text-[#A1A1AA] text-sm mt-1">
+                {user.collegeInfo?.degree || user.college_info?.degree}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
       {user.email && (
         <div className="w-full /mt-2 bg-[#FFFFFF05] border border-[#23252B] p-6 backdrop-blur-sm rounded-md">
           <div className="flex items-center mb-2 gap-2">
