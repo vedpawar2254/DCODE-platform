@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import axios from 'axios';
-
-const API_URL = "http://localhost:3008/api/v1/contact";
+import { axiosInstance } from '../../utils/axios';
 
 const ContactFormPanel = () => {
   const [formData, setFormData] = useState({
@@ -72,8 +70,8 @@ const ContactFormPanel = () => {
 
     setIsSubmitting(true);
     try {
-      
-      await axios.post(API_URL, formData);
+      const API_URL = '/contact';
+      await axiosInstance.post(API_URL, formData);
 
       setToast({ show: true, message: 'Message sent successfully!', isError: false });
       setFormData({
