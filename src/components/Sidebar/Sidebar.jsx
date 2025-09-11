@@ -36,12 +36,12 @@ const Sidebar = () => {
       path: "/dashboard",
       isActive: location.pathname === "/dashboard",
     },
-    {
-      icon: <FiBell size={20} />,
-      label: "Notifications",
-      path: "/notifications",
-      isActive: location.pathname === "/notifications",
-    },
+    // {
+    //   icon: <FiBell size={20} />,
+    //   label: "Notifications",
+    //   path: "/notifications",
+    //   isActive: location.pathname === "/notifications",
+    // },
     {
       icon: <FiGitBranch size={20} />,
       label: "Repositories",
@@ -184,17 +184,17 @@ const Sidebar = () => {
               </button>
             ))}
           </div>
-            {!isCollapsed && (
-              <div
-                onClick={() => handleLogoutClick()}
-                className="flex items-center mt-4 cursor-pointer"
-              >
-                <button className="flex items-center w-full text-gray-300 hover:bg-gray-800 hover:text-red-500 px-4 py-3 rounded-lg transition-all duration-200">
-                  <FiLogOut size={16} />
-                  <span className="ml-2">Logout</span>
-                </button>
-              </div>
-            )}
+          {!isCollapsed && (
+            <div
+              onClick={() => handleLogoutClick()}
+              className="flex items-center mt-4 cursor-pointer"
+            >
+              <button className="flex items-center w-full text-gray-300 hover:bg-gray-800 hover:text-red-500 px-4 py-3 rounded-lg transition-all duration-200">
+                <FiLogOut size={16} />
+                <span className="ml-2">Logout</span>
+              </button>
+            </div>
+          )}
         </nav>
 
         {/* User Profile Section */}
@@ -256,15 +256,16 @@ const Sidebar = () => {
                 <FiLogOut className="text-red-500" size={24} />
               </div>
             </div>
-            
+
             <h3 className="text-white font-semibold text-xl text-center mb-2">
               Confirm Logout
             </h3>
-            
+
             <p className="text-[#A1A1AA] text-center mb-6">
-              Are you sure you want to logout? You'll need to sign in again to access your account.
+              Are you sure you want to logout? You'll need to sign in again to
+              access your account.
             </p>
-            
+
             <div className="flex gap-3">
               <button
                 onClick={handleCancelLogout}

@@ -99,11 +99,13 @@ export default function Profile() {
 
           const transformedLanguages =
             statsResponse.message?.languagesWithPercentage?.length > 0
-              ? statsResponse.message.languagesWithPercentage.map((lang) => ({
-                  name: sanitizeLangName(lang.language),
-                  percentage: lang.percentage,
-                  color: getLanguageColor(lang.language),
-                }))
+              ? statsResponse.message.languagesWithPercentage
+                  .map((lang) => ({
+                    name: sanitizeLangName(lang.language),
+                    percentage: lang.percentage,
+                    color: getLanguageColor(lang.language),
+                  }))
+                  .sort((a, b) => b.percentage - a.percentage)
               : [
                   {
                     name: "No data available",

@@ -286,11 +286,13 @@ export default () => {
 
   const transformedLanguages =
     dashboardData.stats?.languagesWithPercentage?.length > 0
-      ? dashboardData.stats.languagesWithPercentage.map((lang) => ({
-          name: lang.language,
-          percentage: lang.percentage,
-          color: getLanguageColor(lang.language),
-        }))
+      ? dashboardData.stats.languagesWithPercentage
+          .map((lang) => ({
+            name: lang.language,
+            percentage: lang.percentage,
+            color: getLanguageColor(lang.language),
+          }))
+          .sort((a, b) => b.percentage - a.percentage)
       : [{ name: "No data available", percentage: 100, color: "#6B7280" }];
 
   // Transform recent PRs data
