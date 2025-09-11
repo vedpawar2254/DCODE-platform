@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Star, Code, Users } from 'lucide-react';
 import { MdOutlineRocket } from 'react-icons/md';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
