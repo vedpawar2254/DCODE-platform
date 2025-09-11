@@ -23,15 +23,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const data = [
-  { day: "Mon", prs: 150 },
-  { day: "Tue", prs: 380 },
-  { day: "Wed", prs: 200 },
-  { day: "Thu", prs: 460 },
-  { day: "Fri", prs: 150 },
-  { day: "Sat", prs: 300 },
-  { day: "Sun", prs: 120 },
-];
 
 export default function DailyPrActivityChart({ className, activityData }) {
   console.log(activityData);
@@ -46,7 +37,7 @@ export default function DailyPrActivityChart({ className, activityData }) {
               Daily <span className="text-[#BCDD19]">PR</span> Activity
             </span>
             <span className="text-[#D5D5D5]/70 font-light text-sm">
-              6 Jul - 12 Jul
+              {`Last ${activityData.length} days`}
             </span>
           </div>
         </CardTitle>
