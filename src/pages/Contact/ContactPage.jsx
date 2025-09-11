@@ -9,7 +9,7 @@ const ContactPage = () => {
       {/* Back Button */}
             <button
               onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group absolute top-10 left-10"
+              className="inline-flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group absolute top-10 left-10 z-100"
             >
               <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
               <span>Go Back</span>

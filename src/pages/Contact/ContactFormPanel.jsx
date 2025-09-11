@@ -482,9 +482,7 @@ const ContactFormPanel = () => {
               type="checkbox"
               checked={agreedToTerms}
               onChange={e => setAgreedToTerms(e.target.checked)}
-              className="w-4 h-4 text-[#7A900F] bg-gray-800 border-gray-600 rounded focus:ring-2 focus:ring-[#7A900F] accent-[#7A900F]"
-              variants={checkboxVariants}
-              animate={agreedToTerms ? "checked" : "unchecked"}
+              className="w-4 h-4 text-[#7A900F] bg-gray-800 border-gray-600 rounded accent-[#7A900F]"
             />
             <label htmlFor="terms" className="text-xs text-gray-400 leading-4">
               I agree to DCODE's{' '}
