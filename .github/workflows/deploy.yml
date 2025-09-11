@@ -20,9 +20,15 @@ jobs:
       - name: Deploy on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
             cd /home/ubuntu/DevClub/DCODE-CURRENT/DCODE-platform
-            git pull origin main
-            yarn
+            git fetch origin main
+            git reset --hard origin/main
+
+            yarn install --frozen-lockfile
             yarn build
             pm2 restart DCODE_BETA_FRONTEND
           EOF
