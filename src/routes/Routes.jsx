@@ -6,9 +6,9 @@ import ContactPage from "../pages/Contact/ContactPage";
 import AuthPage from "../pages/auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
-import AuthenticatedLayout from "../components/Layout/AuthenticatedLayout";
-import SidebarLayout from "../components/Layout/SidebarLayout";
-import NoSidebarLayout from "../components/Layout/NoSidebarLayout";
+import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
+import SidebarLayout from "../components/layout/SidebarLayout";
+import NoSidebarLayout from "../components/layout/NoSidebarLayout";
 import Notifications from "../pages/Notifications/Notifications";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
