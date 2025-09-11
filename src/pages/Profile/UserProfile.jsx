@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Github, Twitter, Linkedin, Mail, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  MapPin,
+} from "lucide-react";
 import ContributionHighlights from "../../components/Profile/ContributionHighlights";
 import ProfileCard from "../../components/Profile/ProfileCard";
 import AchievementsRecognition from "../../components/Profile/AchievementsRecognition";
@@ -8,6 +15,7 @@ import SkillsSummaryCard from "@/components/Profile/SkillSummaryCard";
 import { dashboardService } from "../../services/dashboardService";
 import { profileService } from "../../services/profileService";
 import { axiosInstance } from "../../utils/axios";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function UserProfile() {
   const { username } = useParams();
@@ -69,7 +77,7 @@ export default function UserProfile() {
   useEffect(() => {
     if (authUser?.data?.github_username && username) {
       if (authUser.data.github_username === username) {
-        navigate('/profile', { replace: true });
+        navigate("/profile", { replace: true });
       }
     }
   }, [authUser, username, navigate]);
@@ -90,12 +98,13 @@ export default function UserProfile() {
 
         setUser(userData);
         // Fetch user stats, projects, and badges
-        const [statsResponse, prsResponse, topProjects, badgesResponse] = await Promise.all([
-          dashboardService.getUserStats(userData._id),
-          dashboardService.getLatestPRs(8),
-          profileService.getTopProjects(userData._id),
-          axiosInstance.get(`/badges/user/${userData._id}`),
-        ]);
+        const [statsResponse, prsResponse, topProjects, badgesResponse] =
+          await Promise.all([
+            dashboardService.getUserStats(userData._id),
+            dashboardService.getLatestPRs(8),
+            profileService.getTopProjects(userData._id),
+            axiosInstance.get(`/badges/user/${userData._id}`),
+          ]);
 
         const transformedLanguages =
           statsResponse.message?.languagesWithPercentage?.length > 0
@@ -198,13 +207,17 @@ export default function UserProfile() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 justify-center i">
               {/* Back Button */}
-                    te<button
-                      onClick={() => navigate(-1)}
-                      className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
-                    >
-                      <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                      <span>Go Back</span>
-                    </button>
+              te
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+              >
+                <ArrowLeft
+                  size={20}
+                  className="group-hover:-translate-x-1 transition-transform"
+                />
+                <span>Go Back</span>
+              </button>
               <h1 className="text-2xl md:text-3xl text-white font-semibold">
                 {user.name}'s <span className="text-[#C6FF3D]">Profile</span>
               </h1>
