@@ -242,7 +242,7 @@ const ProjectCardList = ({ project, onClick, formatDate }) => (
         </div>
         <div className="flex gap-2">
           {project.repositoryUrl && (<a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A]"><Github size={16} /></a>)}
-          {/* {project.liveDemoUrl && (<a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#C6FF3D] text-black rounded-lg hover:bg-[#B8E835]"><Eye size={16} /></a>)} */}
+          {project.liveDemoUrl && (<a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#C6FF3D] text-black rounded-lg hover:bg-[#B8E835]"><Eye size={16} /></a>)}
         </div>
       </div>
     </div>
