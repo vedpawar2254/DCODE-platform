@@ -382,16 +382,11 @@ const ContactFormPanel = () => {
                 onClick={() => setIsSubjectOpen(!isSubjectOpen)}
                 aria-expanded={isSubjectOpen}
                 className={`${inputClasses(errors.subject)} flex items-center justify-between`}
-                variants={inputVariants}
-                initial="rest"
-                whileFocus="focus"
-                animate={errors.subject ? "error" : "rest"}
               >
                 <span className={formData.subject === 'Select one' ? 'text-gray-500' : 'text-white'}>
                   {formData.subject}
                 </span>
                 <motion.div
-                  animate={{ rotate: isSubjectOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -415,10 +410,6 @@ const ContactFormPanel = () => {
                 {isSubjectOpen && (
                   <motion.div 
                     className="absolute top-full left-0 right-0 mt-1 border border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto bg-black"
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
                   >
                     {subjectOptions.map((option, index) => (
                       <motion.button
@@ -427,7 +418,6 @@ const ContactFormPanel = () => {
                         onClick={() => handleSubjectSelect(option)}
                         className="w-full px-3 py-2 text-left bg-black hover:bg-gray-900 transition-colors text-sm text-white"
                         whileHover={{ backgroundColor: "#1f2937", x: 5 }}
-                        whileTap={{ scale: 0.98 }}
                       >
                         {option}
                       </motion.button>

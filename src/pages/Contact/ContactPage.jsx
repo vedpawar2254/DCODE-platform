@@ -1,9 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import ContactFormPanel from "./ContactFormPanel";
 import ContactInfoPanel from "./ContactInfoPanel";
-import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 const ContactPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Back Button */}
