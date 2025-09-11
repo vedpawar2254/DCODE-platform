@@ -30,13 +30,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import markdownToHtml from "../../utils/markdowntohtml";
 import DOMPurify from "dompurify";
 import { axiosInstance } from "@/utils/axios";
+import { toast } from "sonner";
 
 // Default fallback image as base64 or use a placeholder service
 const DEFAULT_REPO_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23BCDD19'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23000' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
 
 // const API_BASE_URL = "http://localhost:8080";
-
 
 const RepositoryDetails = () => {
   const { id } = useParams();
@@ -132,7 +132,6 @@ const RepositoryDetails = () => {
         // }
 
         const response = await axiosInstance.get(`/project/get/${id}`);
-        
 
         const repositoryData = response.data.data;
         console.log(repositoryData);
@@ -366,8 +365,14 @@ const RepositoryDetails = () => {
   };
 
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    // Could add a subtle toast notification here
+    navigator.clipboard.writeText(text).then(
+      () => {
+        toast.success("Copied to clipboard!");
+      },
+      () => {
+        toast.error("Failed to copy to clipboard");
+      }
+    );
   };
 
   // Loading state

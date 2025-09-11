@@ -8,6 +8,7 @@ import SkillsSummaryCard from "@/components/Profile/SkillSummaryCard";
 import { dashboardService } from "../../services/dashboardService";
 import { profileService } from "../../services/profileService";
 import { axiosInstance } from "../../utils/axios";
+import { toast } from "sonner";
 
 export default function Profile() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -280,8 +281,8 @@ export default function Profile() {
         console.log("Profile updated successfully:", response.data);
         setIsEditingProfile(false);
 
-        // Optional: Show success toast/notification
-        // toast.success("Profile updated successfully!");
+        // Show success toast notification
+        toast.success("Profile updated successfully!");
       }
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -289,15 +290,14 @@ export default function Profile() {
       // Handle different error scenarios
       if (error.response?.status === 401) {
         console.error("Unauthorized: Please log in again");
-        // Optional: Redirect to login or refresh token
+        toast.error("Please log in again to continue");
       } else if (error.response?.status === 400) {
         console.error("Bad request: Invalid data provided");
+        toast.error("Invalid data provided. Please check your input.");
       } else {
         console.error("Network error or server issue");
+        toast.error("Failed to update profile. Please try again.");
       }
-
-      // Optional: Show error toast/notification
-      // toast.error("Failed to update profile. Please try again.");
     } finally {
       setIsSaving(false);
     }
