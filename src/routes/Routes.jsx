@@ -30,10 +30,6 @@ export const routes = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/waitlist",
-    element: <WaitList />,
-  },
-  {
     path: "/auth",
     element: <AuthPage />,
   },
@@ -48,15 +44,6 @@ export const routes = createBrowserRouter([
   {
     path: "/privacy",
     element: <PrivacyPolicy />,
-  },
-  {
-    path: "onboarding",
-    element: <Onboarding />,
-    children: [
-      { path: "", element: <AskExperience /> },
-      { path: "fork", element: <CreateFork /> },
-      { path: "connect-github", element: <ConnectGithub /> },
-    ],
   },
   // Authenticated routes (with sidebar when logged in)
   {
@@ -85,17 +72,17 @@ export const routes = createBrowserRouter([
         element: <SidebarLayout />,
         children: [
           {
-            path: "/profile",
+            path: "profile",
             element: <Profile />,
           },
           {
             path: "dashboard",
             element: <Dashboard />,
           },
-          {
-            path: "notifications",
-            element: <Notifications />,
-          },
+          // {
+          //   path: "notifications",
+          //   element: <Notifications />,
+          // },
           {
             path: "repositories",
             element: <RepositoriesListing />,

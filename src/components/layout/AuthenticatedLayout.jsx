@@ -6,16 +6,19 @@ import { useEffect } from "react";
 
 const AuthenticatedLayoutContent = () => {
   const navigate = useNavigate();
-  const { checkAuth } = useAuthStore();
+  const { checkAuth, isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     (async () => {
-      var loggedin = await checkAuth();
-      if (!loggedin.status) {
-        navigate("/auth");
+      // var loggedin = await checkAuth();
+      if (isLoggedIn === false) {
+        console.log("login------", isLoggedIn);
+        if (!isLoggedIn) {
+          navigate("/auth");
+        }
       }
     })();
-  }, []);
+  }, [checkAuth, isLoggedIn]);
 
   return <Outlet />;
 };
