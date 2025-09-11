@@ -145,12 +145,10 @@ export const RightSide = () => {
           if (code) {
             setIsProcessingGitHubCallback(true);
             try {
-              var axres = await axios
-                .get(
-                  "http://localhost:8080/api/v1/auth/github/callback?code=" +
-                    code,
-                  { withCredentials: true }
-                )
+              var axres = await axiosInstance
+                .get("/auth/github/callback?code=" + code, {
+                  withCredentials: true,
+                })
                 .then((d) => d.data);
 
               // Check for errors in the response
