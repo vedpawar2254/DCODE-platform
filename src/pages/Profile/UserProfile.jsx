@@ -205,12 +205,11 @@ export default function UserProfile() {
         {/* Header with back button */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 justify-center i">
+            <div className="flex gap-4 justify-center items-center">
               {/* Back Button */}
-              te
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+                className="flex items-center gap-2 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
               >
                 <ArrowLeft
                   size={20}
