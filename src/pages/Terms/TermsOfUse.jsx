@@ -1,8 +1,23 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const TermsOfUse = () => {
+  const navigate = useNavigate();
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+      >
+        <ArrowLeft
+          size={20}
+          className="group-hover:-translate-x-1 transition-transform"
+        />
+        <span>Go Back</span>
+      </button>
+
       <h1 className="text-3xl font-bold text-white mb-6">Terms of Use</h1>
       <p className="text-white mb-4">
         <strong>Effective Date:</strong> August 21, 2025
@@ -128,10 +143,10 @@ const TermsOfUse = () => {
         8. Privacy
       </h2>
       <p className="text-white mb-6">
-        We value your privacy. Please review our{' '}
+        We value your privacy. Please review our{" "}
         <a href="/privacy" className="text-blue-600 hover:underline">
           Privacy Policy
-        </a>{' '}
+        </a>{" "}
         to understand how we collect, use, and protect your personal
         information.
       </p>
@@ -161,7 +176,7 @@ const TermsOfUse = () => {
       <p className="text-white mb-6">
         Have questions or concerns about these Terms? Reach out to us at:
         <br />
-        📧{' '}
+        📧{" "}
         <a
           href="mailto:dcode.codes@gmail.com"
           className="text-blue-600 hover:underline"

@@ -12,6 +12,7 @@ import { axiosInstance } from "../../utils/axios";
 export default function UserProfile() {
   const { username } = useParams();
   const navigate = useNavigate();
+  const { authUser } = useAuthStore();
   const [user, setUser] = useState(null);
   const [profileStats, setProfileStats] = useState(null);
   const [badges, setBadges] = useState([]);
@@ -63,6 +64,15 @@ export default function UserProfile() {
     }
     return lang;
   };
+
+  // Check if user is viewing their own profile and redirect to /profile
+  useEffect(() => {
+    if (authUser?.data?.github_username && username) {
+      if (authUser.data.github_username === username) {
+        navigate('/profile', { replace: true });
+      }
+    }
+  }, [authUser, username, navigate]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -186,14 +196,15 @@ export default function UserProfile() {
         {/* Header with back button */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate(-1)}
-                className="flex items-center justify-center p-2 bg-[#23252B] hover:bg-[#2A2A2A] rounded-lg transition-colors"
-                title="Go back"
-              >
-                <ArrowLeft size={20} className="text-white" />
-              </button>
+            <div className="flex items-center gap-4 justify-center i">
+              {/* Back Button */}
+                    te<button
+                      onClick={() => navigate(-1)}
+                      className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+                    >
+                      <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                      <span>Go Back</span>
+                    </button>
               <h1 className="text-2xl md:text-3xl text-white font-semibold">
                 {user.name}'s <span className="text-[#C6FF3D]">Profile</span>
               </h1>

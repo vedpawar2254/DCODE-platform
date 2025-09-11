@@ -53,7 +53,6 @@ export default function UsersListing() {
   } = useAllUsersStore();
 
   // Local UI state
-  const [showFilters, setShowFilters] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState("");
 
   // Sync localSearchQuery with store searchQuery
@@ -213,23 +212,10 @@ export default function UsersListing() {
             >
               Search
             </button>
-            <button
-              type="button"
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 bg-[#23252B] text-white px-4 py-3 rounded-lg hover:bg-[#2A2A2A] transition-colors relative"
-            >
-              <Filter size={20} />
-              Filters
-              {activeFiltersCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#C6FF3D] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
           </form>
 
-          {/* Sort Controls */}
-          <div className="flex flex-wrap items-center gap-4">
+          {/* Sort Controls and Filters */}
+          <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2">
               <label className="text-[#A1A1AA] text-sm">Sort by:</label>
               <select
@@ -255,92 +241,50 @@ export default function UsersListing() {
               )}
               {sortOrder === "asc" ? "Ascending" : "Descending"}
             </button>
-          </div>
 
-          {/* Advanced Filters */}
-          {showFilters && (
-            <div className="mt-6 pt-6 border-t border-[#23252B]">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-medium">Filters</h3>
-                <button
-                  onClick={clearFilters}
-                  className="text-[#A1A1AA] hover:text-white transition-colors text-sm"
-                >
-                  Clear All
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <label className="block text-[#A1A1AA] text-sm mb-2">
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    value={filters.location}
-                    onChange={(e) =>
-                      handleFilterChange("location", e.target.value)
-                    }
-                    placeholder="City, Country"
-                    className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[#A1A1AA] text-sm mb-2">
-                    College
-                  </label>
-                  <input
-                    type="text"
-                    value={filters.college}
-                    onChange={(e) =>
-                      handleFilterChange("college", e.target.value)
-                    }
-                    placeholder="University name"
-                    className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[#A1A1AA] text-sm mb-2">
-                    Experience Level
-                  </label>
-                  <select
-                    value={filters.experience_level}
-                    onChange={(e) =>
-                      handleFilterChange("experience_level", e.target.value)
-                    }
-                    className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
-                  >
-                    <option value="">Any Level</option>
-                    {experienceLevelOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={filters.hasGithub}
-                      onChange={(e) =>
-                        handleFilterChange("hasGithub", e.target.checked)
-                      }
-                      className="rounded border-[#3A3A3A] bg-[#23252B] text-[#C6FF3D] focus:ring-[#C6FF3D] focus:ring-offset-0"
-                    />
-                    <span className="text-[#A1A1AA] text-sm">
-                      Has GitHub Profile
-                    </span>
-                  </label>
-                </div>
-              </div>
+            {/* Experience Level Filter */}
+            <div className="flex items-center gap-2">
+              <label className="text-[#A1A1AA] text-sm">Experience:</label>
+              <select
+                value={filters.experience_level}
+                onChange={(e) =>
+                  handleFilterChange("experience_level", e.target.value)
+                }
+                className="bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
+              >
+                <option value="">Any Level</option>
+                {experienceLevelOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+
+            {/* Has GitHub Filter */}
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={filters.hasGithub}
+                onChange={(e) =>
+                  handleFilterChange("hasGithub", e.target.checked)
+                }
+                className="rounded border-[#3A3A3A] bg-[#23252B] text-[#C6FF3D] focus:ring-[#C6FF3D] focus:ring-offset-0"
+              />
+              <span className="text-[#A1A1AA] text-sm">Has GitHub Profile</span>
+            </label>
+
+            {/* Clear All Filters Button */}
+            {activeFiltersCount > 0 && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center gap-2 bg-[#23252B] text-white px-4 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors text-sm"
+              >
+                <X size={16} />
+                Clear All Filters
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Loading State */}

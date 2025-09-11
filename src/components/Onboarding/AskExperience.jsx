@@ -68,7 +68,7 @@ export default function AskExperience() {
               Beginner
             </span>
             <p className="mt-4 text-gray-200 text-sm">
-              I have done fewer than two PRs
+              I haven't done any PR yet
             </p>
           </div>
         </div>
