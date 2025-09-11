@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Send, Check, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { axiosInstance } from '../../utils/axios';
 
 const ContactFormPanel = () => {
@@ -20,6 +21,135 @@ const ContactFormPanel = () => {
     message: '',
     isError: false
   });
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const formItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const inputVariants = {
+    rest: { scale: 1, borderColor: "#374151" },
+    focus: { 
+      scale: 1.02, 
+      borderColor: "#7A900F",
+      transition: {
+        duration: 0.2,
+        ease: "easeInOut"
+      }
+    },
+    error: {
+      scale: 1.01,
+      borderColor: "#ef4444",
+      x: [-2, 2, -2, 2, 0],
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
+
+  const buttonVariants = {
+    rest: { scale: 1 },
+    hover: { 
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+        ease: "easeInOut"
+      }
+    },
+    tap: { scale: 0.95 },
+    loading: {
+      scale: [1, 1.02, 1],
+      transition: {
+        duration: 1,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  const dropdownVariants = {
+    hidden: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.15,
+        ease: "easeIn"
+      }
+    }
+  };
+
+  const toastVariants = {
+    hidden: {
+      opacity: 0,
+      x: 100,
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      x: 100,
+      scale: 0.8,
+      transition: {
+        duration: 0.2,
+        ease: "easeIn"
+      }
+    }
+  };
+
+  const checkboxVariants = {
+    unchecked: { scale: 1, rotate: 0 },
+    checked: { 
+      scale: 1.1, 
+      rotate: 360,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    }
+  };
 
   const subjectOptions = [
     'Select one',
@@ -100,29 +230,82 @@ const ContactFormPanel = () => {
     }`;
 
   return (
-    <div className="text-white flex flex-col justify-center h-full w-full md:w-1/2 p-6 sm:p-8 overflow-y-auto max-h-[calc(100vh-80px)]">
-      <div className="relative z-10 max-w-lg w-full mx-auto md:max-w-md">
-        {toast.show && (
-          <div
-            role="alert"
-            aria-live="polite"
-            className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg transition-opacity duration-300 text-sm sm:text-base z-50 ${
-              toast.isError ? 'bg-red-500/90 text-white' : 'bg-[#7A900F] text-white'
-            }`}
-          >
-            {toast.message}
-          </div>
-        )}
+    <motion.div 
+      className="text-white flex flex-col justify-center h-full w-full md:w-1/2 p-6 sm:p-8 overflow-y-auto max-h-[calc(100vh-80px)] relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* Background decoration */}
+      <motion.div
+        className="absolute top-20 right-5 w-16 h-16 border border-[#7A900F]/20 rounded-full"
+        animate={{
+          rotate: [0, 360],
+          scale: [1, 1.1, 1]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
+      <motion.div
+        className="absolute bottom-32 left-5 w-10 h-10 border border-[#7A900F]/20 rounded-full"
+        animate={{
+          y: [-5, 5, -5],
+          rotate: [0, -180, 0]
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="relative z-10 max-w-lg w-full mx-auto md:max-w-md">
+        <AnimatePresence>
+          {toast.show && (
+            <motion.div
+              role="alert"
+              aria-live="polite"
+              className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg text-sm sm:text-base z-50 flex items-center gap-2 ${
+                toast.isError ? 'bg-red-500/90 text-white' : 'bg-[#7A900F] text-white'
+              }`}
+              variants={toastVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {toast.isError ? (
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              ) : (
+                <Check className="w-5 h-5 flex-shrink-0" />
+              )}
+              {toast.message}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <motion.form 
+          onSubmit={handleSubmit} 
+          className="space-y-6"
+          variants={containerVariants}
+        >
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {['firstName', 'lastName'].map(field => (
-              <div key={field}>
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            variants={formItemVariants}
+          >
+            {['firstName', 'lastName'].map((field, index) => (
+              <motion.div 
+                key={field}
+                variants={formItemVariants}
+                custom={index}
+              >
                 <label htmlFor={field} className="block text-sm font-medium text-gray-300 mb-2 capitalize">
                   {field.replace(/([A-Z])/g, ' $1')}
                 </label>
-                <input
+                <motion.input
                   id={field}
                   type="text"
                   name={field}
@@ -130,18 +313,35 @@ const ContactFormPanel = () => {
                   onChange={handleInputChange}
                   placeholder={field.replace(/([A-Z])/g, ' $1').toLowerCase()}
                   className={inputClasses(errors[field])}
+                  variants={inputVariants}
+                  initial="rest"
+                  whileFocus="focus"
+                  animate={errors[field] ? "error" : "rest"}
                 />
-                {errors[field] && <p className="text-red-500 text-xs mt-1">{errors[field]}</p>}
-              </div>
+                <AnimatePresence>
+                  {errors[field] && (
+                    <motion.p 
+                      className="text-red-500 text-xs mt-1 flex items-center gap-1"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <AlertCircle className="w-3 h-3" />
+                      {errors[field]}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           
-          <div>
+          <motion.div variants={formItemVariants}>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
-            <input
+            <motion.input
               id="email"
               type="email"
               name="email"
@@ -149,56 +349,101 @@ const ContactFormPanel = () => {
               onChange={handleInputChange}
               placeholder="email"
               className={inputClasses(errors.email)}
+              variants={inputVariants}
+              initial="rest"
+              whileFocus="focus"
+              animate={errors.email ? "error" : "rest"}
             />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-          </div>
+            <AnimatePresence>
+              {errors.email && (
+                <motion.p 
+                  className="text-red-500 text-xs mt-1 flex items-center gap-1"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.email}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           
-          <div>
+          <motion.div variants={formItemVariants}>
             <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
               Which best describes you?
             </label>
             <div className="relative">
-              <button
+              <motion.button
                 id="subject"
                 type="button"
                 onClick={() => setIsSubjectOpen(!isSubjectOpen)}
                 aria-expanded={isSubjectOpen}
                 className={`${inputClasses(errors.subject)} flex items-center justify-between`}
+                variants={inputVariants}
+                initial="rest"
+                whileFocus="focus"
+                animate={errors.subject ? "error" : "rest"}
               >
                 <span className={formData.subject === 'Select one' ? 'text-gray-500' : 'text-white'}>
                   {formData.subject}
                 </span>
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-400 transition-transform ${
-                    isSubjectOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-              {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
-              {isSubjectOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 border border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto bg-black">
-                  {subjectOptions.map((option, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => handleSubjectSelect(option)}
-                      className="w-full px-3 py-2 text-left bg-black hover:bg-gray-900 transition-colors text-sm text-white"
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
+                <motion.div
+                  animate={{ rotate: isSubjectOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                </motion.div>
+              </motion.button>
+              <AnimatePresence>
+                {errors.subject && (
+                  <motion.p 
+                    className="text-red-500 text-xs mt-1 flex items-center gap-1"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.subject}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+              <AnimatePresence>
+                {isSubjectOpen && (
+                  <motion.div 
+                    className="absolute top-full left-0 right-0 mt-1 border border-gray-700 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto bg-black"
+                    variants={dropdownVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {subjectOptions.map((option, index) => (
+                      <motion.button
+                        key={index}
+                        type="button"
+                        onClick={() => handleSubjectSelect(option)}
+                        className="w-full px-3 py-2 text-left bg-black hover:bg-gray-900 transition-colors text-sm text-white"
+                        whileHover={{ backgroundColor: "#1f2937", x: 5 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        {option}
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
 
           
-          <div>
+          <motion.div variants={formItemVariants}>
             <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
               Message
             </label>
-            <textarea
+            <motion.textarea
               id="message"
               name="message"
               value={formData.message}
@@ -206,18 +451,40 @@ const ContactFormPanel = () => {
               placeholder="Write your message"
               rows={4}
               className={`${inputClasses(errors.message)} resize-none`}
+              variants={inputVariants}
+              initial="rest"
+              whileFocus="focus"
+              animate={errors.message ? "error" : "rest"}
             />
-            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
-          </div>
+            <AnimatePresence>
+              {errors.message && (
+                <motion.p 
+                  className="text-red-500 text-xs mt-1 flex items-center gap-1"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.message}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           
-          <div className="flex items-start space-x-3">
-            <input
+          <motion.div 
+            className="flex items-start space-x-3"
+            variants={formItemVariants}
+          >
+            <motion.input
               id="terms"
               type="checkbox"
               checked={agreedToTerms}
               onChange={e => setAgreedToTerms(e.target.checked)}
               className="w-4 h-4 text-[#7A900F] bg-gray-800 border-gray-600 rounded focus:ring-2 focus:ring-[#7A900F] accent-[#7A900F]"
+              variants={checkboxVariants}
+              animate={agreedToTerms ? "checked" : "unchecked"}
             />
             <label htmlFor="terms" className="text-xs text-gray-400 leading-4">
               I agree to DCODE's{' '}
@@ -229,21 +496,40 @@ const ContactFormPanel = () => {
                 Privacy Policy
               </a>
             </label>
-          </div>
+          </motion.div>
 
           
-          <button
+          <motion.button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full bg-[#7A900F] hover:bg-[#7A900F] text-white font-semibold py-2.5 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#7A900F] focus:ring-offset-2 focus:ring-offset-gray-900 text-sm ${
+            className={`w-full bg-[#7A900F] hover:bg-[#7A900F] text-white font-semibold py-2.5 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#7A900F] focus:ring-offset-2 focus:ring-offset-gray-900 text-sm flex items-center justify-center gap-2 ${
               isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
+            variants={buttonVariants}
+            initial="rest"
+            whileHover={!isSubmitting ? "hover" : undefined}
+            whileTap={!isSubmitting ? "tap" : undefined}
+            animate={isSubmitting ? "loading" : "rest"}
           >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </button>
-        </form>
+            {isSubmitting ? (
+              <>
+                <motion.div
+                  className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                Send Message
+              </>
+            )}
+          </motion.button>
+        </motion.form>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
