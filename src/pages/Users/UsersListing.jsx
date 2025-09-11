@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Filter,
@@ -148,6 +149,42 @@ export default function UsersListing() {
   );
   const searchSummary = useMemo(() => getSearchSummary(), [getSearchSummary]);
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
+  };
+
   // Memoized filter options to prevent unnecessary re-renders
   const sortOptions = useMemo(
     () => [
@@ -169,28 +206,44 @@ export default function UsersListing() {
   );
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 flex flex-col justify-between">
+    <motion.div 
+      className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 flex flex-col justify-between"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       {/* Header */}
       <div>
-        <div className="mb-6">
+        <motion.div className="mb-6" variants={itemVariants}>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl text-white font-semibold flex items-center gap-3">
-                <Users className="text-[#C6FF3D]" size={32} />
+              <motion.h1 
+                className="text-2xl md:text-3xl text-white font-semibold flex items-center gap-3"
+                variants={itemVariants}
+              >
                 Discover Developers
-              </h1>
-              <p className="text-[#D5D5D5] text-sm md:text-base mt-2">
-                Find and connect with talented developers from around the world
-              </p>
+              </motion.h1>
+              <motion.p 
+                className="text-[#D5D5D5] text-sm md:text-base mt-2"
+                variants={itemVariants}
+              >
+                Find and <span className="text-[#C6FF3D]">connect</span> with talented<span className="text-[#C6FF3D]"> developers</span> from around the world
+              </motion.p>
             </div>
-            <div className="text-[#A1A1AA] text-sm">
+            <motion.div 
+              className="text-[#A1A1AA] text-sm"
+              variants={itemVariants}
+            >
               {totalUsers} developer{totalUsers !== 1 ? "s" : ""} found
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Search and Filters */}
-        <div className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 mb-6">
+        <motion.div 
+          className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 mb-6"
+          variants={itemVariants}
+        >
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="flex gap-4 mb-4">
             <div className="flex-1 relative">
@@ -285,111 +338,165 @@ export default function UsersListing() {
               </button>
             )}
           </div>
-        </div>
+
+          </motion.div>
 
         {/* Loading State */}
-        {loading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C6FF3D]"></div>
-          </div>
-        )}
+        <AnimatePresence>
+          {loading && (
+            <motion.div 
+              className="flex items-center justify-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C6FF3D]"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Error State */}
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-6 text-center">
-            <p className="text-red-400">{error}</p>
-            <button
-              onClick={fetchUsers}
-              className="mt-4 bg-[#C6FF3D] text-black px-6 py-2 rounded-lg hover:bg-[#B8E835] transition-colors"
+        <AnimatePresence>
+          {error && (
+            <motion.div 
+              className="bg-red-500/10 border border-red-500/20 rounded-lg p-6 text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
             >
-              Try Again
-            </button>
-          </div>
-        )}
+              <p className="text-red-400">{error}</p>
+              <motion.button
+                onClick={fetchUsers}
+                className="mt-4 bg-[#C6FF3D] text-black px-6 py-2 rounded-lg hover:bg-[#B8E835] transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Try Again
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Users Grid */}
-        {!loading && !error && (
-          <>
-            {users.length === 0 ? (
-              <div className="text-center py-12">
-                <Users className="mx-auto text-[#A1A1AA] mb-4" size={48} />
-                <h3 className="text-white text-xl font-semibold mb-2">
-                  No developers found
-                </h3>
-                <p className="text-[#A1A1AA] mb-6">
-                  Try adjusting your search criteria or filters
-                </p>
-                <button
-                  onClick={clearFilters}
-                  className="bg-[#C6FF3D] text-black px-6 py-3 rounded-lg hover:bg-[#B8E835] transition-colors"
+        <AnimatePresence mode="wait">
+          {!loading && !error && (
+            <>
+              {users.length === 0 ? (
+                <motion.div 
+                  className="text-center py-12"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  Clear Filters
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8">
-                  {users.map((user) => (
-                    <UserCard
-                      key={user.id}
-                      user={user}
-                      onClick={() => navigate(`/user/${user.github_username}`)}
-                    />
-                  ))}
-                </div>
+                  <Users className="mx-auto text-[#A1A1AA] mb-4" size={48} />
+                  <h3 className="text-white text-xl font-semibold mb-2">
+                    No developers found
+                  </h3>
+                  <p className="text-[#A1A1AA] mb-6">
+                    Try adjusting your search criteria or filters
+                  </p>
+                  <motion.button
+                    onClick={clearFilters}
+                    className="bg-[#C6FF3D] text-black px-6 py-3 rounded-lg hover:bg-[#B8E835] transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Clear Filters
+                  </motion.button>
+                </motion.div>
+              ) : (
+                <>
+                  <motion.div 
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    {users.map((user, index) => (
+                      <motion.div
+                        key={user.id}
+                        variants={cardVariants}
+                        custom={index}
+                        layout
+                      >
+                        <UserCard
+                          user={user}
+                          onClick={() => navigate(`/user/${user.github_username}`)}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
 
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => prevPage()}
-                      disabled={!stats.hasPrevPage}
-                      className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <motion.div 
+                      className="flex items-center justify-center gap-2"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5, duration: 0.5 }}
                     >
-                      Previous
-                    </button>
+                      <motion.button
+                        onClick={() => prevPage()}
+                        disabled={!stats.hasPrevPage}
+                        className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        whileHover={stats.hasPrevPage ? { scale: 1.05 } : {}}
+                        whileTap={stats.hasPrevPage ? { scale: 0.95 } : {}}
+                      >
+                        Previous
+                      </motion.button>
 
-                    <div className="flex items-center gap-1">
-                      {Array.from(
-                        { length: Math.min(totalPages, 5) },
-                        (_, i) => {
-                          const pageNum =
-                            currentPage > 3 ? currentPage - 2 + i : i + 1;
-                          if (pageNum > totalPages) return null;
+                      <div className="flex items-center gap-1">
+                        {Array.from(
+                          { length: Math.min(totalPages, 5) },
+                          (_, i) => {
+                            const pageNum =
+                              currentPage > 3 ? currentPage - 2 + i : i + 1;
+                            if (pageNum > totalPages) return null;
 
-                          return (
-                            <button
-                              key={pageNum}
-                              onClick={() => goToPage(pageNum)}
-                              className={`px-3 py-2 rounded-lg transition-colors ${
-                                currentPage === pageNum
-                                  ? "bg-[#C6FF3D] text-black"
-                                  : "bg-[#23252B] text-white hover:bg-[#2A2A2A]"
-                              }`}
-                            >
-                              {pageNum}
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
+                            return (
+                              <motion.button
+                                key={pageNum}
+                                onClick={() => goToPage(pageNum)}
+                                className={`px-3 py-2 rounded-lg transition-colors ${
+                                  currentPage === pageNum
+                                    ? "bg-[#C6FF3D] text-black"
+                                    : "bg-[#23252B] text-white hover:bg-[#2A2A2A]"
+                                }`}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                              >
+                                {pageNum}
+                              </motion.button>
+                            );
+                          }
+                        )}
+                      </div>
 
-                    <button
-                      onClick={() => nextPage()}
-                      disabled={!stats.hasNextPage}
-                      className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      Next
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </>
-        )}
+                      <motion.button
+                        onClick={() => nextPage()}
+                        disabled={!stats.hasNextPage}
+                        className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        whileHover={stats.hasNextPage ? { scale: 1.05 } : {}}
+                        whileTap={stats.hasNextPage ? { scale: 0.95 } : {}}
+                      >
+                        Next
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </AnimatePresence>
       </div>
       <DashboardFooter />
-    </div>
+    </motion.div>
   );
 }
 
@@ -401,31 +508,50 @@ const UserCard = ({ user, onClick }) => {
   });
 
   return (
-    <div
+    <motion.div
       onClick={onClick}
-      className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:transform hover:scale-[1.02] group flex flex-col justify-between"
+      className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 cursor-pointer group flex flex-col justify-between min-h-full"
+      whileHover={{ 
+        scale: 1.02,
+        borderColor: "#C6FF3D",
+        transition: { duration: 0.2 }
+      }}
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
     >
       {/* Header with Avatar and Name */}
       <div className="flex items-center gap-3 mb-4">
         <div className="relative">
-          <img
+          <motion.img
             src={
               user.avatar ||
               `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`
             }
             alt={user.name}
             className="w-14 h-14 rounded-full object-cover border-2 border-[#2A2A2A] transition-colors"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.2 }}
           />
           {user.github_username && (
-            <div className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1">
+            <motion.div 
+              className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1"
+              whileHover={{ scale: 1.2, rotate: 10 }}
+              transition={{ duration: 0.2 }}
+            >
               <Github className="text-black" size={12} />
-            </div>
+            </motion.div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-white font-semibold text-lg truncate group-hover:text-[#C6FF3D] transition-colors">
+          <motion.h3 
+            className="text-white font-semibold text-lg truncate group-hover:text-[#C6FF3D] transition-colors"
+            whileHover={{ x: 5 }}
+            transition={{ duration: 0.2 }}
+          >
             {user.name}
-          </h3>
+          </motion.h3>
           <p className="text-[#A1A1AA] text-sm truncate">
             @{user.github_username || "no-github"}
           </p>
@@ -442,21 +568,29 @@ const UserCard = ({ user, onClick }) => {
       {/* Key Info - Simplified layout */}
       <div className="space-y-2 mb-4">
         {user.location && (
-          <div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
+          <motion.div 
+            className="flex items-center gap-2 text-[#A1A1AA] text-sm"
+            whileHover={{ x: 5 }}
+            transition={{ duration: 0.2 }}
+          >
             <MapPin size={14} className="flex-shrink-0" />
             <span className="truncate">{user.location}</span>
-          </div>
+          </motion.div>
         )}
 
         {user.collegeInfo?.name && (
-          <div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
+          <motion.div 
+            className="flex items-center gap-2 text-[#A1A1AA] text-sm"
+            whileHover={{ x: 5 }}
+            transition={{ duration: 0.2 }}
+          >
             <GraduationCap size={14} className="flex-shrink-0" />
             <span className="truncate">
               {user.collegeInfo.name}
               {user.collegeInfo.currentYear &&
                 ` • Year ${user.collegeInfo.currentYear}`}
             </span>
-          </div>
+          </motion.div>
         )}
       </div>
 
@@ -466,10 +600,15 @@ const UserCard = ({ user, onClick }) => {
           <Calendar size={12} />
           <span>Joined {joinedDate}</span>
         </div>
-        <div className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+        <motion.div 
+          className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+          initial={{ x: -10 }}
+          whileHover={{ x: 0 }}
+          transition={{ duration: 0.2 }}
+        >
           View Profile →
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
