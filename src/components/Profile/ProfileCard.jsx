@@ -126,13 +126,11 @@ const ProfileCard = ({
   ].filter(({ link }) => link);
 
   return (
-    <>
+    <div className="flex flex-col gap-5">
       <motion.div
         className="bg-[#FFFFFF05] rounded-md px-2 flex flex-col items-center shadow border border-[#23252B] w-full backdrop-blur-sm"
-        variants={scaleVariants}
         initial="hidden"
         animate="visible"
-        whileHover={{ y: -4, transition: { duration: 0.3 } }}
       >
         <motion.div
           className="py-10 px-14 flex flex-col items-center w-full"
@@ -176,7 +174,7 @@ const ProfileCard = ({
                 a 15.9155 15.9155 0 0 1 0 -31.831"
                   initial={{ strokeDasharray: "0, 100" }}
                   animate={{ strokeDasharray: `${animatedPercentage}, 100` }}
-                  transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
+                  transition={{ ease: "easeOut" }}
                 />
               </svg>
               <motion.span
@@ -195,14 +193,13 @@ const ProfileCard = ({
               src={user.avatar}
               alt={user.name}
               className="w-28 h-28 rounded-full object-cover border-2 border-[#C6FF3D]"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
               transition={{
-                delay: 0.2,
+                delay: 1,
                 duration: 0.6,
                 ease: [0.6, -0.05, 0.01, 0.99],
               }}
-              whileHover={{ scale: 1.05 }}
             />
           </motion.div>
 
@@ -242,18 +239,7 @@ const ProfileCard = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <motion.div
-                animate={{
-                  y: [0, -2, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 3,
-                }}
-              >
-                <MapPin color="#A1A1AA" className="w-4 h-4" />
-              </motion.div>
+              <MapPin color="#A1A1AA" className="w-4 h-4" />
               {user.location}
             </motion.div>
           )}
@@ -319,26 +305,8 @@ const ProfileCard = ({
             initial="hidden"
             animate="visible"
           >
-            <motion.div
-              className="text-center"
-              variants={fadeLeftVariants}
-              whileHover={{ scale: 1.05 }}
-            >
-              <motion.div
-                className="text-[#C6FF3D] text-xl font-semibold"
-                animate={{
-                  textShadow: [
-                    "0 0 0px #C6FF3D",
-                    "0 0 10px #C6FF3D40",
-                    "0 0 0px #C6FF3D",
-                  ],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 4,
-                }}
-              >
+            <motion.div className="text-center" variants={fadeLeftVariants}>
+              <motion.div className="text-[#C6FF3D] text-xl font-semibold">
                 {animatedContributions.toLocaleString()}
               </motion.div>
               <motion.div
@@ -351,26 +319,8 @@ const ProfileCard = ({
               </motion.div>
             </motion.div>
 
-            <motion.div
-              className="text-center"
-              variants={fadeRightVariants}
-              whileHover={{ scale: 1.05 }}
-            >
-              <motion.div
-                className="text-[#FACC15] text-xl font-semibold"
-                animate={{
-                  textShadow: [
-                    "0 0 0px #FACC15",
-                    "0 0 10px #FACC1540",
-                    "0 0 0px #FACC15",
-                  ],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 5,
-                }}
-              >
+            <motion.div className="text-center" variants={fadeRightVariants}>
+              <motion.div className="text-[#FACC15] text-xl font-semibold">
                 {animatedLinesOfCode.toLocaleString()}
               </motion.div>
               <motion.div
@@ -397,7 +347,6 @@ const ProfileCard = ({
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 1.2, duration: 0.5 }}
-            whileHover={{ y: -2, transition: { duration: 0.2 } }}
           >
             <motion.div
               className="flex items-center mb-2 gap-2 justify-between"
@@ -405,22 +354,8 @@ const ProfileCard = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.4 }}
             >
-              <motion.div
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.02 }}
-              >
-                <motion.div
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    delay: 2,
-                  }}
-                >
-                  <GraduationCap color="#C6FF3D" />
-                </motion.div>
+              <motion.div className="flex items-center gap-2">
+                <GraduationCap color="#C6FF3D" />
                 <h3 className="text-white font-semibold text-lg">Education</h3>
               </motion.div>
               {(user.collegeInfo?.currentYear ||
@@ -434,21 +369,8 @@ const ProfileCard = ({
                     duration: 0.6,
                     ease: [0.6, -0.05, 0.01, 0.99],
                   }}
-                  whileHover={{ scale: 1.05 }}
                 >
-                  <motion.span
-                    className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full"
-                    animate={{
-                      scale: 1.2,
-                      opacity: 0.7,
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      delay: 3,
-                    }}
-                  />
+                  <motion.span className="w-2 h-2 mr-1.5 bg-[#7CFF79] rounded-full" />
                   {(() => {
                     const year =
                       user.collegeInfo?.currentYear ||
@@ -503,49 +425,21 @@ const ProfileCard = ({
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 1.8, duration: 0.5 }}
-            whileHover={{ y: -2, transition: { duration: 0.2 } }}
           >
             <motion.div
-              className="flex items-center mb-2 gap-2"
+              className="flex items-center gap-2"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 2 }}
             >
-              <motion.div
-                animate={{
-                  y: [0, -2, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: 4,
-                }}
-              >
-                <Mail color="#C6FF3D" className="w-6 h-6" />
-              </motion.div>
-              <h3 className="text-white font-semibold text-lg">Email</h3>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.1 }}
-            >
-              <motion.div
-                className="flex gap-2 items-center mt-[1rem] bg-white/3 rounded-lg border-white/10 border p-4"
-                whileHover={{
-                  backgroundColor: "rgba(255, 255, 255, 0.08)",
-                  borderColor: "#C6FF3D40",
-                  transition: { duration: 0.2 },
-                }}
-              >
-                <Mail color="#99a1af" className="w-4 h-4" />
-                <p className="text-gray-400 text-sm">{user.email}</p>
-              </motion.div>
+              <Mail color="#C6FF3D" className="w-6 h-6" />
+              {/* <h3 className="text-white font-semibold text-lg">Email</h3> */}
+              <p className="text-gray-400 text-sm">{user.email}</p>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };
 

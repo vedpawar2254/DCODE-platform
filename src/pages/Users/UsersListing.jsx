@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import useAllUsersStore from "../../store/useAllUsersStore";
 import DashboardFooter from "../../components/dashboard/DashboardFooter";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 export default function UsersListing() {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export default function UsersListing() {
 
   // Local UI state
   const [localSearchQuery, setLocalSearchQuery] = useState("");
+  const [headerRef, headerControls] = useScrollAnimation(0.1);
 
   // Sync localSearchQuery with store searchQuery
   useEffect(() => {
@@ -150,15 +152,34 @@ export default function UsersListing() {
   const searchSummary = useMemo(() => getSearchSummary(), [getSearchSummary]);
 
   // Animation variants
+  const heroVariants = {
+    hidden: {
+      opacity: 0,
+      y: -50,
+      scale: 0.9,
+      filter: "blur(20px)",
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -168,9 +189,9 @@ export default function UsersListing() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const cardVariants = {
@@ -180,9 +201,9 @@ export default function UsersListing() {
       scale: 1,
       transition: {
         duration: 0.4,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   // Memoized filter options to prevent unnecessary re-renders
@@ -206,8 +227,8 @@ export default function UsersListing() {
   );
 
   return (
-    <motion.div 
-      className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 flex flex-col justify-between"
+    <motion.div
+      className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 sm:p-6 flex flex-col justify-between"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -216,21 +237,32 @@ export default function UsersListing() {
       <div>
         <motion.div className="mb-6" variants={itemVariants}>
           <div className="flex items-center justify-between">
-            <div>
-              <motion.h1 
-                className="text-2xl md:text-3xl text-white font-semibold flex items-center gap-3"
+            <motion.div
+              ref={headerRef}
+              initial="hidden"
+              animate={headerControls}
+              variants={heroVariants}
+              whileHover={{
+                rotateX: 2,
+              }}
+              // className="flex-1"
+            >
+              <motion.h1
+                className="text-xl sm:text-2xl font-bold text-white"
                 variants={itemVariants}
               >
                 Discover Developers
               </motion.h1>
-              <motion.p 
-                className="text-[#D5D5D5] text-sm md:text-base mt-2"
+              <motion.p
+                className="text-gray-400 text-sm sm:text-base"
                 variants={itemVariants}
               >
-                Find and <span className="text-[#C6FF3D]">connect</span> with talented<span className="text-[#C6FF3D]"> developers</span> from around the world
+                Find and <span className="text-[#BCDD19]">connect</span> with
+                talented<span className="text-[#BCDD19]"> developers</span> from
+                around the world
               </motion.p>
-            </div>
-            <motion.div 
+            </motion.div>
+            <motion.div
               className="text-[#A1A1AA] text-sm"
               variants={itemVariants}
             >
@@ -240,7 +272,7 @@ export default function UsersListing() {
         </motion.div>
 
         {/* Search and Filters */}
-        <motion.div 
+        <motion.div
           className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 mb-6"
           variants={itemVariants}
         >
@@ -338,20 +370,19 @@ export default function UsersListing() {
               </button>
             )}
           </div>
-
-          </motion.div>
+        </motion.div>
 
         {/* Loading State */}
         <AnimatePresence>
           {loading && (
-            <motion.div 
+            <motion.div
               className="flex items-center justify-center py-12"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <motion.div 
+              <motion.div
                 className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C6FF3D]"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -363,7 +394,7 @@ export default function UsersListing() {
         {/* Error State */}
         <AnimatePresence>
           {error && (
-            <motion.div 
+            <motion.div
               className="bg-red-500/10 border border-red-500/20 rounded-lg p-6 text-center"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -388,7 +419,7 @@ export default function UsersListing() {
           {!loading && !error && (
             <>
               {users.length === 0 ? (
-                <motion.div 
+                <motion.div
                   className="text-center py-12"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -412,7 +443,7 @@ export default function UsersListing() {
                 </motion.div>
               ) : (
                 <>
-                  <motion.div 
+                  <motion.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8"
                     variants={containerVariants}
                     initial="hidden"
@@ -427,7 +458,9 @@ export default function UsersListing() {
                       >
                         <UserCard
                           user={user}
-                          onClick={() => navigate(`/user/${user.github_username}`)}
+                          onClick={() =>
+                            navigate(`/user/${user.github_username}`)
+                          }
                         />
                       </motion.div>
                     ))}
@@ -435,7 +468,7 @@ export default function UsersListing() {
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <motion.div 
+                    <motion.div
                       className="flex items-center justify-center gap-2"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -511,15 +544,12 @@ const UserCard = ({ user, onClick }) => {
     <motion.div
       onClick={onClick}
       className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 cursor-pointer group flex flex-col justify-between min-h-full"
-      whileHover={{ 
+      whileHover={{
         scale: 1.02,
-        borderColor: "#C6FF3D",
-        transition: { duration: 0.2 }
       }}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
     >
       {/* Header with Avatar and Name */}
       <div className="flex items-center gap-3 mb-4">
@@ -531,24 +561,18 @@ const UserCard = ({ user, onClick }) => {
             }
             alt={user.name}
             className="w-14 h-14 rounded-full object-cover border-2 border-[#2A2A2A] transition-colors"
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.2 }}
           />
           {user.github_username && (
-            <motion.div 
+            <motion.div
               className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1"
-              whileHover={{ scale: 1.2, rotate: 10 }}
-              transition={{ duration: 0.2 }}
             >
               <Github className="text-black" size={12} />
             </motion.div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <motion.h3 
-            className="text-white font-semibold text-lg truncate group-hover:text-[#C6FF3D] transition-colors"
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.2 }}
+          <motion.h3
+            className="text-white font-semibold text-lg truncate transition-colors"
           >
             {user.name}
           </motion.h3>
@@ -568,10 +592,8 @@ const UserCard = ({ user, onClick }) => {
       {/* Key Info - Simplified layout */}
       <div className="space-y-2 mb-4">
         {user.location && (
-          <motion.div 
+          <motion.div
             className="flex items-center gap-2 text-[#A1A1AA] text-sm"
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.2 }}
           >
             <MapPin size={14} className="flex-shrink-0" />
             <span className="truncate">{user.location}</span>
@@ -579,10 +601,8 @@ const UserCard = ({ user, onClick }) => {
         )}
 
         {user.collegeInfo?.name && (
-          <motion.div 
+          <motion.div
             className="flex items-center gap-2 text-[#A1A1AA] text-sm"
-            whileHover={{ x: 5 }}
-            transition={{ duration: 0.2 }}
           >
             <GraduationCap size={14} className="flex-shrink-0" />
             <span className="truncate">
@@ -600,11 +620,8 @@ const UserCard = ({ user, onClick }) => {
           <Calendar size={12} />
           <span>Joined {joinedDate}</span>
         </div>
-        <motion.div 
+        <motion.div
           className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-          initial={{ x: -10 }}
-          whileHover={{ x: 0 }}
-          transition={{ duration: 0.2 }}
         >
           View Profile →
         </motion.div>

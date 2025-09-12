@@ -406,13 +406,11 @@ export default function Profile() {
 
   return (
     <motion.div
-      className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 relative"
+      className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 sm:p-6 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Floating background particles */}
-      <FloatingParticles count={15} />
 
       {/* Floating scroll to top button */}
       <FloatingScrollToTop />
@@ -449,7 +447,7 @@ export default function Profile() {
               transition={{ delay: 0.2, duration: 0.6 }}
             >
               <motion.h1
-                className="text-2xl md:text-3xl text-white font-semibold"
+                className="text-xl sm:text-2xl font-bold text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
@@ -457,7 +455,7 @@ export default function Profile() {
                 My Profile
               </motion.h1>
               <motion.p
-                className="text-[#D5D5D5] text-sm md:text-base mt-2"
+                className="text-gray-400 text-sm md:text-base"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
@@ -490,20 +488,8 @@ export default function Profile() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
-              <motion.div
-                animate={{ rotate: 5 }}
-                transition={{
-                  delay: 1,
-                  duration: 0.6,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-              >
                 <Pencil size={16} />
-              </motion.div>
               Edit Profile
             </motion.button>
           </motion.div>
@@ -536,14 +522,12 @@ export default function Profile() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.0, duration: 0.6 }}
             >
-              <AnimatedCard hover={true}>
                 <ProfileCard
                   contributions={ProfileStats?.stats?.totalCommits}
                   linesOfCode={ProfileStats?.stats?.totalLOC}
                   user={user}
                 />
-              </AnimatedCard>
-            </motion.div>
+            </motion.div> 
           </motion.div>
 
           {/* Right Column */}
@@ -553,24 +537,20 @@ export default function Profile() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            {/* Remove this console.log in production */}
             {/* {console.log("ProfileStats", ProfileStats)} */}
 
             <AnimatePresence mode="wait">
               {ProfileStats?.stats && (
                 <motion.div
                   key="contribution-highlights"
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0,}}
+                  animate={{ opacity: 1, }}
                   transition={{ delay: 1.1, duration: 0.6 }}
                 >
-                  <AnimatedCard>
                     <ContributionHighlights
                       highlights={ProfileStats.stats}
                       topProjects={ProfileStats.topProjects}
                     />
-                  </AnimatedCard>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -580,9 +560,7 @@ export default function Profile() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.6 }}
             >
-              <AnimatedCard>
                 <AchievementsRecognition badges={badges} />
-              </AnimatedCard>
             </motion.div>
 
             <AnimatePresence mode="wait">
@@ -591,14 +569,11 @@ export default function Profile() {
                   key="skills-summary"
                   initial={{ opacity: 0, y: 30, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: 1.3, duration: 0.6 }}
                 >
-                  <AnimatedCard>
                     <SkillsSummaryCard
                       skills={ProfileStats?.stats?.languagesWithPercentage}
                     />
-                  </AnimatedCard>
                 </motion.div>
               )}
             </AnimatePresence>

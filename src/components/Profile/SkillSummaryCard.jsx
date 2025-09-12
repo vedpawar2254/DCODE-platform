@@ -198,7 +198,6 @@ const SkillsSummaryCard = ({ skills }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      whileHover={{ y: -4, transition: { duration: 0.3 } }}
     >
       <motion.div
         className="flex justify-between items-center mb-4 sm:mb-6"
@@ -213,18 +212,6 @@ const SkillsSummaryCard = ({ skills }) => {
           Skills{" "}
           <motion.span
             className="text-[#BCDD19]"
-            animate={{
-              textShadow: [
-                "0 0 0px #BCDD19",
-                "0 0 8px #BCDD1940",
-                "0 0 0px #BCDD19",
-              ],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: 2,
-            }}
           >
             Summary
           </motion.span>
@@ -245,13 +232,13 @@ const SkillsSummaryCard = ({ skills }) => {
 
       {/* Radar Chart and Skills Grid */}
       <motion.div
-        className="flex justify-between h-full"
+        className="flex  h-full"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.div
-          className="relative ml-20 flex-shrink-0"
+          className="relative flex-shrink-0"
           variants={fadeLeftVariants}
         >
           <RadarChart data={skills.slice(0, 5)} />
@@ -259,7 +246,7 @@ const SkillsSummaryCard = ({ skills }) => {
 
         {/* Language percentages */}
         <motion.div
-          className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3"
+          className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3 w-fit"
           variants={fadeRightVariants}
         >
           <AnimatePresence>
@@ -274,12 +261,6 @@ const SkillsSummaryCard = ({ skills }) => {
                   duration: 0.6,
                   ease: [0.6, -0.05, 0.01, 0.99],
                 }}
-                whileHover={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  scale: 1.02,
-                  transition: { duration: 0.2 },
-                }}
-                whileTap={{ scale: 0.98 }}
               >
                 <motion.div
                   className="flex items-center gap-2"
