@@ -286,11 +286,13 @@ export default () => {
 
   const transformedLanguages =
     dashboardData.stats?.languagesWithPercentage?.length > 0
-      ? dashboardData.stats.languagesWithPercentage.map((lang) => ({
-          name: lang.language,
-          percentage: lang.percentage,
-          color: getLanguageColor(lang.language),
-        }))
+      ? dashboardData.stats.languagesWithPercentage
+          .map((lang) => ({
+            name: lang.language,
+            percentage: lang.percentage,
+            color: getLanguageColor(lang.language),
+          }))
+          .sort((a, b) => b.percentage - a.percentage)
       : [{ name: "No data available", percentage: 100, color: "#6B7280" }];
 
   // Transform recent PRs data
@@ -317,15 +319,15 @@ export default () => {
     return [
       {
         icon: <FiGitMerge className="w-5 h-5 text-[#BCDD19]" />,
-        title: "100 PRs Merged",
-        progress: `${stats.totalMergedPRs} / 100`,
-        percentage: Math.min((stats.totalMergedPRs / 100) * 100, 100),
-        status: `${Math.min((stats.totalMergedPRs / 100) * 100, 100).toFixed(2)}%`,
+        title: "30 PRs Merged",
+        progress: `${stats.totalMergedPRs} / 30`,
+        percentage: Math.min((stats.totalMergedPRs / 30) * 100, 100),
+        status: `${Math.min((stats.totalMergedPRs / 30) * 100, 100).toFixed(2)}%`,
         color: "[#BCDD19]",
         remaining:
-          stats.totalMergedPRs >= 100
+          stats.totalMergedPRs >= 30
             ? "Achieved"
-            : `${100 - stats.totalMergedPRs} remaining to achieve`,
+            : `${30 - stats.totalMergedPRs} remaining to achieve`,
       },
       {
         icon: <FiCode className="w-5 h-5 text-orange-400" />,
@@ -550,6 +552,7 @@ export default () => {
                 variants={scrollAnimations.fadeInLeft}
               >
                 <DailyStreakCard stats={transformedStats} />
+                {/* {console.log(transformedStats)} */}
               </motion.div>
               <motion.div
                 className="lg:col-span-2"

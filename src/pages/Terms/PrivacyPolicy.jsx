@@ -1,8 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const PrivacyPolicy = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 mb-6 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+      >
+        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+        <span>Go Back</span>
+      </button>
+      
       <h1 className="text-3xl font-bold text-white mb-6">Privacy Policy</h1>
       <p className="text-white mb-4">
         <strong>Effective Date:</strong> August 21, 2025

@@ -18,12 +18,16 @@ async function expHandler(func, level) {
 }
 
 export default function AskExperience() {
+  var { authUser } = useAuthStore();
   const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center gap-10 justify-center">
       <div className="text-center flex flex-col gap-4 ">
         <h1 className="text-white text-4xl font-bold">
-          Welcome <span className="text-[#BCDD19]">Aditya</span>
+          Welcome{" "}
+          <span className="text-[#BCDD19]">
+            {authUser?.data?.name || "USER"}
+          </span>
         </h1>
         <p className="text-lg text-white/80 font-light">
           Let's get you started on your contribution journey
@@ -64,7 +68,7 @@ export default function AskExperience() {
               Beginner
             </span>
             <p className="mt-4 text-gray-200 text-sm">
-              I have done fewer than two PRs
+              I haven't done any PR yet
             </p>
           </div>
         </div>

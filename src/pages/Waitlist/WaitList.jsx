@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { CheckCircle, Star, Code, Users } from 'lucide-react';
-import { MdOutlineRocket } from 'react-icons/md';
-import toast from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { CheckCircle, Star, Code, Users } from "lucide-react";
+import { MdOutlineRocket } from "react-icons/md";
+import { toast } from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,10 +11,10 @@ export default function WaitList() {
   const [joinedCount, setJoinedCount] = useState(0);
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    email: '',
-    college: ''
+    email: "",
+    college: "",
   });
-  const [userToken, setUserToken] = useState('');
+  const [userToken, setUserToken] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function WaitList() {
         const roundedCount = Math.floor(response.data.count / 10) * 10;
         setJoinedCount(roundedCount);
       } catch (err) {
-        console.error('Failed to fetch waitlist count:', err);
+        console.error("Failed to fetch waitlist count:", err);
       }
     };
     fetchWaitlistCount();
@@ -38,69 +38,68 @@ export default function WaitList() {
   }, [showSuccess]);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  try {
-    if (step === 0) {
-      const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
-        email: formData.email
-      });
+    try {
+      if (step === 0) {
+        const { data } = await axios.post(`${API_URL}/api/waitlist/join`, {
+          email: formData.email,
+        });
 
-      if (data.token) {
-        setUserToken(data.token);
-        setStep(1);
-        toast[data.type || 'success'](data.message || 'Step 1 complete');
-      } else {
-        toast.error(data.message || 'No token received!');
+        if (data.token) {
+          setUserToken(data.token);
+          setStep(1);
+          toast[data.type || "success"](data.message || "Step 1 complete");
+        } else {
+          toast.error(data.message || "No token received!");
+        }
+      } else if (step === 1) {
+        if (!formData.college) {
+          toast.error("Please enter your college name!");
+          return;
+        }
+        const { data } = await axios.patch(`${API_URL}/api/waitlist/update`, {
+          token: userToken,
+          college: formData.college,
+        });
+
+        toast[data.type || "success"](data.message || "Step 2 complete");
+        setShowSuccess(true);
+        setFormData({ email: "", college: "" });
+        setStep(0);
+        setUserToken("");
       }
-
-    } else if (step === 1) {
-      if (!formData.college) {
-        toast.error('Please enter your college name!');
-        return;
-      }
-      const { data } = await axios.patch(`${API_URL}/api/waitlist/update`, {
-        token: userToken,
-        college: formData.college
-      });
-
-      toast[data.type || 'success'](data.message || 'Step 2 complete');
-      setShowSuccess(true);
-      setFormData({ email: '', college: '' });
-      setStep(0);
-      setUserToken('');
+    } catch (err) {
+      console.error(err);
+      const message = err?.response?.data?.message || "Please try again later";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
     }
-
-  } catch (err) {
-    console.error(err);
-    const message = err?.response?.data?.message || "Please try again later";
-    toast.error(message);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
+  };
 
   const ellipsePositions = [
-    { top: '33%', left: '68%', scale: 0.8 },
-    { top: '90%', left: '16%', scale: 0.8 },
-    { top: '70%', left: '35%', scale: 0.5 },
-    { top: '60%', left: '60%', scale: 0.7 },
-    { top: '40%', left: '20%', scale: 1 },
-    { top: '70%', left: '80%', scale: 0.5 }
+    { top: "33%", left: "68%", scale: 0.8 },
+    { top: "90%", left: "16%", scale: 0.8 },
+    { top: "70%", left: "35%", scale: 0.5 },
+    { top: "60%", left: "60%", scale: 0.7 },
+    { top: "40%", left: "20%", scale: 1 },
+    { top: "70%", left: "80%", scale: 0.5 },
   ];
 
   return (
-    <div className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white select-none font-inter bg-[#121212]/20" style={{ fontFamily: 'Inter, sans-serif' }}>
-
+    <div
+      className="relative flex flex-col justify-start min-h-screen overflow-hidden text-white select-none font-inter bg-[#121212]/20"
+      style={{ fontFamily: "Inter, sans-serif" }}
+    >
       <div
         className="absolute inset-0 z-0 opacity-20"
         style={{
-          backgroundImage: 'url(/images/Pattern.svg)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center'
+          backgroundImage: "url(/images/Pattern.svg)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
         }}
       />
 
@@ -108,7 +107,8 @@ export default function WaitList() {
         <div
           className="absolute top-1/2 left-1/2 w-[100vw] h-[100vh] sm:w-[100vw] sm:h-[100vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15 blur-[120px]"
           style={{
-            background: 'radial-gradient(circle, hsla(70, 80%, 48%, 55%) 0%, hsla(0, 0%, 7%, 0%) 100%)'
+            background:
+              "radial-gradient(circle, hsla(70, 80%, 48%, 55%) 0%, hsla(0, 0%, 7%, 0%) 100%)",
           }}
         />
       </div>
@@ -123,7 +123,7 @@ export default function WaitList() {
             top: ellipse.top,
             left: ellipse.left,
             transform: `scale(${ellipse.scale})`,
-            filter: 'blur(6px) drop-shadow(0 0 8px #37CD5A)'
+            filter: "blur(6px) drop-shadow(0 0 8px #37CD5A)",
           }}
         />
       ))}
@@ -134,10 +134,10 @@ export default function WaitList() {
         </div>
 
         <h2 className="mb-4 text-3xl sm:text-4xl font-bold tracking-tight text-center md:text-5xl">
-          Join the{' '}
+          Join the{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BCDD19] to-[#65770D]">
             DCODE
-          </span>{' '}
+          </span>{" "}
           waitlist now
         </h2>
         <p className="text-md sm:text-lg font-medium text-[#D5D5D5]/70 text-center mb-8">
@@ -154,15 +154,15 @@ export default function WaitList() {
         <form
           onSubmit={handleSubmit}
           className="relative w-full max-w-xl border-3 py-8 border-[#7A900F] rounded-full overflow-hidden bg-[#121212]/50"
-          style={{ height: '56px' }}
+          style={{ height: "56px" }}
         >
           <div className="relative w-full h-full">
-
             <div
-              className={`absolute inset-0 flex items-center transition-all duration-500 ${step === 0
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-full pointer-events-none'
-                }`}
+              className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                step === 0
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-full pointer-events-none"
+              }`}
             >
               <input
                 type="email"
@@ -176,20 +176,22 @@ export default function WaitList() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
-                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                  : 'bg-[#7A900F] hover:bg-[#60720c]'
-                  }`}
+                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${
+                  isSubmitting
+                    ? "bg-[#7A900F]/50 cursor-not-allowed"
+                    : "bg-[#7A900F] hover:bg-[#60720c]"
+                }`}
               >
-                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
+                {isSubmitting ? "Please wait..." : "Join Waitlist"}
               </button>
             </div>
 
             <div
-              className={`absolute inset-0 flex items-center transition-all duration-500 ${step === 1
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 translate-x-full pointer-events-none'
-                }`}
+              className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                step === 1
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-full pointer-events-none"
+              }`}
             >
               <input
                 type="text"
@@ -203,12 +205,13 @@ export default function WaitList() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${isSubmitting
-                  ? 'bg-[#7A900F]/50 cursor-not-allowed'
-                  : 'bg-[#7A900F] hover:bg-[#60720c]'
-                  }`}
+                className={`h-full sm:p-8 px-4 py-8 font-medium cursor-pointer flex items-center justify-center text-white transition-colors sm:text-normal text-sm ${
+                  isSubmitting
+                    ? "bg-[#7A900F]/50 cursor-not-allowed"
+                    : "bg-[#7A900F] hover:bg-[#60720c]"
+                }`}
               >
-                {isSubmitting ? 'Please wait...' : 'Join Waitlist'}
+                {isSubmitting ? "Please wait..." : "Join Waitlist"}
               </button>
             </div>
           </div>
@@ -216,12 +219,13 @@ export default function WaitList() {
 
         <div className="flex items-center justify-center w-full mt-4 text-base md:text-xs">
           <div className="flex items-center mr-3 space-x-1">
-            {[1, 2, 3, 4, 5].map(i => {
-              const fillPercent = i <= Math.floor(4.4)
-                ? 100
-                : i === Math.ceil(4.6)
-                  ? (4.6 % 1) * 100
-                  : 0;
+            {[1, 2, 3, 4, 5].map((i) => {
+              const fillPercent =
+                i <= Math.floor(4.4)
+                  ? 100
+                  : i === Math.ceil(4.6)
+                    ? (4.6 % 1) * 100
+                    : 0;
 
               return (
                 <div key={i} className="relative w-4 h-4">
@@ -243,17 +247,21 @@ export default function WaitList() {
 
         <div className="flex sm:flex-row flex-col justify-between sm:gap-20 gap-10 w-full max-w-xl p-4 sm:mt-24 mt-16">
           {[
-            { Icon: Code, label: 'Contributors', value: '500+' },
-            { Icon: Users, label: 'Colleges', value: '10+' },
-            { Icon: MdOutlineRocket, label: 'Projects', value: '50+' },
+            { Icon: Code, label: "Contributors", value: "500+" },
+            { Icon: Users, label: "Colleges", value: "10+" },
+            { Icon: MdOutlineRocket, label: "Projects", value: "50+" },
           ].map(({ Icon, label, value }, i) => (
             <div key={i} className="flex items-center space-x-2">
               <div className="w-14 h-14 flex items-center justify-center bg-[#37CD5A]/20 rounded-lg">
                 <Icon className="w-7 h-7 text-[#37CD5A]" />
               </div>
               <div>
-                <p className="sm:text-xl font-bold text-[#d5d5d5] text-lg">{value}</p>
-                <p className="sm:text-lg text-sm text-[#d5d5d5] font-semibold">{label}</p>
+                <p className="sm:text-xl font-bold text-[#d5d5d5] text-lg">
+                  {value}
+                </p>
+                <p className="sm:text-lg text-sm text-[#d5d5d5] font-semibold">
+                  {label}
+                </p>
               </div>
             </div>
           ))}

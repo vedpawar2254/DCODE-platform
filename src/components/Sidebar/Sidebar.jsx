@@ -13,7 +13,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { axiosInstance } from "../../utils/axios";
-import { Globe2, User } from "lucide-react";
+import { Globe2, House, User } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -21,20 +21,27 @@ const Sidebar = () => {
   const { authUser } = useAuthStore();
   const { isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMenuOpen } =
     useSidebar();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const menuItems = [
+    {
+      icon: <House size={20} />,
+      label: "Home",
+      path: "/",
+      isActive: location.pathname === "/",
+    },
     {
       icon: <FiBarChart2 size={20} />,
       label: "Dashboard",
       path: "/dashboard",
       isActive: location.pathname === "/dashboard",
     },
-    {
-      icon: <FiBell size={20} />,
-      label: "Notifications",
-      path: "/notifications",
-      isActive: location.pathname === "/notifications",
-    },
+    // {
+    //   icon: <FiBell size={20} />,
+    //   label: "Notifications",
+    //   path: "/notifications",
+    //   isActive: location.pathname === "/notifications",
+    // },
     {
       icon: <FiGitBranch size={20} />,
       label: "Repositories",
@@ -63,9 +70,19 @@ const Sidebar = () => {
   if (!authUser) {
     return null; // Don't render sidebar if user is not logged in
   }
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
   const handleLogout = async () => {
     await axiosInstance.post("/auth/logout");
+    setShowLogoutModal(false);
     navigate("/auth");
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -167,17 +184,17 @@ const Sidebar = () => {
               </button>
             ))}
           </div>
-            {!isCollapsed && (
-              <div
-                onClick={() => handleLogout()}
-                className="flex items-center mt-4 cursor-pointer"
-              >
-                <button className="flex items-center w-full text-gray-300 hover:bg-gray-800 hover:text-red-500 px-4 py-3 rounded-lg transition-all duration-200">
-                  <FiLogOut size={16} />
-                  <span className="ml-2">Logout</span>
-                </button>
-              </div>
-            )}
+          {!isCollapsed && (
+            <div
+              onClick={() => handleLogoutClick()}
+              className="flex items-center mt-4 cursor-pointer"
+            >
+              <button className="flex items-center w-full text-gray-300 hover:bg-gray-800 hover:text-red-500 px-4 py-3 rounded-lg transition-all duration-200">
+                <FiLogOut size={16} />
+                <span className="ml-2">Logout</span>
+              </button>
+            </div>
+          )}
         </nav>
 
         {/* User Profile Section */}
@@ -229,6 +246,43 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[70]">
+          <div className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                <FiLogOut className="text-red-500" size={24} />
+              </div>
+            </div>
+
+            <h3 className="text-white font-semibold text-xl text-center mb-2">
+              Confirm Logout
+            </h3>
+
+            <p className="text-[#A1A1AA] text-center mb-6">
+              Are you sure you want to logout? You'll need to sign in again to
+              access your account.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelLogout}
+                className="flex-1 bg-[#23252B] text-white px-4 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

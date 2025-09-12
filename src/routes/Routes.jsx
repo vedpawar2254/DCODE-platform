@@ -1,15 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import WaitList from "../pages/Waitlist/WaitList";
 import Home from "../pages/Home/Home";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ContactPage from "../pages/Contact/ContactPage";
 import AuthPage from "../pages/auth/AuthPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
-import AuthenticatedLayout from "../components/Layout/AuthenticatedLayout";
-import SidebarLayout from "../components/Layout/SidebarLayout";
-import NoSidebarLayout from "../components/Layout/NoSidebarLayout";
-import Notifications from "../pages/Notifications/Notifications";
+import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
+import SidebarLayout from "../components/layout/SidebarLayout";
+import NoSidebarLayout from "../components/layout/NoSidebarLayout";
 
 import TermsOfUse from "../pages/Terms/TermsOfUse";
 import PrivacyPolicy from "../pages/Terms/PrivacyPolicy";
@@ -23,45 +21,49 @@ import ConnectGithub from "../components/Onboarding/ConnectGithub";
 import UserProfile from "../pages/Profile/UserProfile";
 import UsersListing from "../pages/Users/UsersListing";
 
+import { ErrorPage, NotFound } from "../pages/Error";
+
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/waitlist",
-    element: <WaitList />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/auth",
     element: <AuthPage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/contact",
     element: <ContactPage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/terms",
     element: <TermsOfUse />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/privacy",
     element: <PrivacyPolicy />,
+    errorElement: <ErrorPage />,
+  },
+  // Error pages
+  {
+    path: "/error",
+    element: <ErrorPage />,
   },
   {
-    path: "onboarding",
-    element: <Onboarding />,
-    children: [
-      { path: "", element: <AskExperience /> },
-      { path: "fork", element: <CreateFork /> },
-      { path: "connect-github", element: <ConnectGithub /> },
-    ],
+    path: "/404", 
+    element: <NotFound />,
   },
   // Authenticated routes (with sidebar when logged in)
   {
     path: "/",
     element: <AuthenticatedLayout />,
+    errorElement: <ErrorPage />,
     children: [
       // Routes without sidebar
       {
@@ -85,17 +87,17 @@ export const routes = createBrowserRouter([
         element: <SidebarLayout />,
         children: [
           {
-            path: "/profile",
+            path: "profile",
             element: <Profile />,
           },
           {
             path: "dashboard",
             element: <Dashboard />,
           },
-          {
-            path: "notifications",
-            element: <Notifications />,
-          },
+          // {
+          //   path: "notifications",
+          //   element: <Notifications />,
+          // },
           {
             path: "repositories",
             element: <RepositoriesListing />,
@@ -115,5 +117,10 @@ export const routes = createBrowserRouter([
         ],
       },
     ],
+  },
+  // 404 catch-all route
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);

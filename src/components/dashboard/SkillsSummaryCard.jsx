@@ -147,7 +147,7 @@ const SkillsSummaryCard = ({ languages }) => {
       {/* Radar Chart Placeholder */}
       <div className="flex flex-col justify-between h-[86%]">
         <div className="relative mx-auto mb-4 sm:mb-6 flex-shrink-0">
-          <RadarChart data={languages} />
+          <RadarChart data={languages.slice(0, 5)} />
         </div>
 
         {/* Language percentages */}

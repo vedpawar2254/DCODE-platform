@@ -23,7 +23,7 @@ export const AuthLayout = () => {
     })();
   }, []);
   return (
-    <div className="relative flex flex-row h-screen w-screen overflow-hidden">
+    <div className="relative flex flex-col lg:flex-row h-screen w-screen overflow-hidden">
       {/* Background Gradient Circles */}
       <img
         src="/images/Group97.png"
@@ -32,21 +32,38 @@ export const AuthLayout = () => {
       />
 
       {/* Content on top of background */}
-      <div className="relative z-10 flex flex-row w-full h-full bg-[#121212]">
+      <div className="relative z-10 flex flex-col lg:flex-row w-full h-full bg-[#121212]">
+        {/* Left Side - Hidden on mobile, shown on desktop */}
         <motion.div
           initial={{ opacity: 0.1, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex-1 flex justify-between items-center"
+          className="hidden lg:flex lg:flex-1 justify-between items-center"
           style={{ mixBlendMode: "lighten" }}
         >
           <LeftSide />
         </motion.div>
+        
+        {/* Mobile Logo - Only shown on mobile */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="lg:hidden flex justify-center pt-8 pb-4"
+        >
+          <img
+            src="/images/d.png"
+            alt="DCODE Logo"
+            className="h-8"
+          />
+        </motion.div>
+
+        {/* Right Side - Full width on mobile, half width on desktop */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="flex-1"
+          className="flex-1 lg:flex-1"
         >
           <RightSide />
         </motion.div>
