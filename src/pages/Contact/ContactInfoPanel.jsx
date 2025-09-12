@@ -129,28 +129,28 @@ const ContactInfoPanel = () => {
   //         </Link>
   return (
     <motion.div 
-      className="text-white flex flex-col justify-center h-full w-full md:w-1/2 p-6 sm:p-8 overflow-y-auto relative"
+      className="text-white flex flex-col justify-center h-full w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 overflow-y-auto relative"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Background decoration */}
+      {/* Background decoration - Hidden on mobile for cleaner look */}
       <motion.div
-        className="absolute top-10 right-10 w-20 h-20 border border-[#7A900F]/20 rounded-full"
+        className="hidden lg:block absolute top-10 right-10 w-20 h-20 border border-[#7A900F]/20 rounded-full"
         animate={floatingVariants.float}
       />
       <motion.div
-        className="absolute bottom-20 left-10 w-12 h-12 border border-[#7A900F]/20 rounded-full"
+        className="hidden lg:block absolute bottom-20 left-10 w-12 h-12 border border-[#7A900F]/20 rounded-full"
         animate={{
           ...floatingVariants.float,
           transition: { ...floatingVariants.float.transition, delay: 1 }
         }}
       />
 
-      <div className="relative z-10 max-w-lg mx-auto md:max-w-md">
+      <div className="relative z-10 max-w-lg mx-auto lg:max-w-md">
         {/* Header Section */}
         <motion.div 
-          className="space-y-6 mb-10"
+          className="space-y-4 lg:space-y-6 mb-8 lg:mb-10"
           variants={itemVariants}
         >
           <motion.p 
@@ -160,7 +160,7 @@ const ContactInfoPanel = () => {
             CONTACT US
           </motion.p>
           <motion.h1 
-            className="sm:text-3xl md:text-4xl font-bold leading-tight mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mb-4 lg:mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
             variants={titleVariants}
           >
             Get in Touch with Us

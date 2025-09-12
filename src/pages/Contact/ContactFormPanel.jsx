@@ -223,7 +223,7 @@ const ContactFormPanel = () => {
   };
 
   const inputClasses = hasError =>
-    `w-full px-3 py-2 border-2 rounded-lg text-white bg-transparent focus:outline-none text-sm transition-colors ${
+    `w-full px-3 py-2 lg:py-3 border-2 rounded-lg text-white bg-transparent focus:outline-none text-sm lg:text-base transition-colors ${
       hasError
         ? 'border-red-500 focus:border-red-500'
         : 'border-gray-800 focus:border-[#7A900F]'
@@ -231,14 +231,14 @@ const ContactFormPanel = () => {
 
   return (
     <motion.div 
-      className="text-white flex flex-col justify-center h-full w-full md:w-1/2 p-6 sm:p-8 overflow-y-auto max-h-[calc(100vh-80px)] relative"
+      className="text-white flex flex-col justify-center h-full w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[calc(100vh-80px)] lg:max-h-[calc(100vh-80px)] relative"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Background decoration */}
+      {/* Background decoration - Hidden on mobile for cleaner look */}
       <motion.div
-        className="absolute top-20 right-5 w-16 h-16 border border-[#7A900F]/20 rounded-full"
+        className="hidden lg:block absolute top-20 right-5 w-16 h-16 border border-[#7A900F]/20 rounded-full"
         animate={{
           rotate: [0, 360],
           scale: [1, 1.1, 1]
@@ -250,7 +250,7 @@ const ContactFormPanel = () => {
         }}
       />
       <motion.div
-        className="absolute bottom-32 left-5 w-10 h-10 border border-[#7A900F]/20 rounded-full"
+        className="hidden lg:block absolute bottom-32 left-5 w-10 h-10 border border-[#7A900F]/20 rounded-full"
         animate={{
           y: [-5, 5, -5],
           rotate: [0, -180, 0]
@@ -262,7 +262,7 @@ const ContactFormPanel = () => {
         }}
       />
 
-      <div className="relative z-10 max-w-lg w-full mx-auto md:max-w-md">
+      <div className="relative z-10 max-w-lg w-full mx-auto lg:max-w-md">
         <AnimatePresence>
           {toast.show && (
             <motion.div
@@ -288,12 +288,12 @@ const ContactFormPanel = () => {
 
         <motion.form 
           onSubmit={handleSubmit} 
-          className="space-y-6"
+          className="space-y-4 lg:space-y-6"
           variants={containerVariants}
         >
           
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4"
             variants={formItemVariants}
           >
             {['firstName', 'lastName'].map((field, index) => (
@@ -302,7 +302,7 @@ const ContactFormPanel = () => {
                 variants={formItemVariants}
                 custom={index}
               >
-                <label htmlFor={field} className="block text-sm font-medium text-gray-300 mb-2 capitalize">
+                <label htmlFor={field} className="block text-sm font-medium text-gray-300 mb-1 lg:mb-2 capitalize">
                   {field.replace(/([A-Z])/g, ' $1')}
                 </label>
                 <motion.input
@@ -338,7 +338,7 @@ const ContactFormPanel = () => {
 
           
           <motion.div variants={formItemVariants}>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1 lg:mb-2">
               Email Address
             </label>
             <motion.input
@@ -372,7 +372,7 @@ const ContactFormPanel = () => {
 
           
           <motion.div variants={formItemVariants}>
-            <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1 lg:mb-2">
               Which best describes you?
             </label>
             <div className="relative">
@@ -490,7 +490,7 @@ const ContactFormPanel = () => {
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full bg-[#7A900F] hover:bg-[#7A900F] text-white font-semibold py-2.5 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#7A900F] focus:ring-offset-2 focus:ring-offset-gray-900 text-sm flex items-center justify-center gap-2 ${
+            className={`w-full bg-[#7A900F] hover:bg-[#7A900F] text-white font-semibold py-2.5 lg:py-3 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#7A900F] focus:ring-offset-2 focus:ring-offset-gray-900 text-sm lg:text-base flex items-center justify-center gap-2 ${
               isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             variants={buttonVariants}
