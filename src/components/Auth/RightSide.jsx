@@ -138,6 +138,10 @@ export const RightSide = () => {
   };
   useEffect(() => {
     (async () => {
+      var check = await checkAuth();
+          if (check.status) {
+            navigate("/dashboard");
+          }
       window.onload = async () => {
         if (window?.location?.search) {
           const urlParams = new URLSearchParams(window.location.search);
@@ -201,11 +205,6 @@ export const RightSide = () => {
               setIsProcessingGitHubCallback(false);
             }
           }
-        } else {
-          var check = await checkAuth();
-          if (check.status) {
-            navigate("/dashboard");
-          }
         }
       };
     })();
@@ -213,9 +212,8 @@ export const RightSide = () => {
   }, [window]);
 
   return (
-    <div className="flex-1 flex items-center justify-center min-h-screen p-8">
-      <div className="w-full max-w-md">
-        {isProcessingGitHubCallback ? (
+    <div className="flex-1 flex items-center justify-center min-h-screen px-4 py-6 lg:p-8">
+      <div className="w-full max-w-md">{isProcessingGitHubCallback ? (
           /* GitHub Callback Loading State */
           <motion.div
             initial={{ opacity: 0 }}
@@ -224,8 +222,8 @@ export const RightSide = () => {
           >
             <div className="flex flex-col items-center space-y-4">
               <div className="w-12 h-12 border-4 border-[#BCDD19] border-t-transparent rounded-full animate-spin"></div>
-              <h2 className="text-2xl font-bold text-white">Logging in...</h2>
-              <p className="text-gray-400">
+              <h2 className="text-xl lg:text-2xl font-bold text-white">Logging in...</h2>
+              <p className="text-gray-400 text-sm lg:text-base">
                 Please wait while we sign you in with GitHub
               </p>
             </div>
@@ -239,11 +237,11 @@ export const RightSide = () => {
               animate="animate"
               exit="exit"
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="space-y-8"
+              className="space-y-6 lg:space-y-8"
             >
               {/* Header */}
-              <div className="text-center space-y-6">
-                <h1 className="text-3xl font-bold text-white leading-tight">
+              <div className="text-center space-y-4 lg:space-y-6">
+                <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight px-2">
                   {isLogin ? (
                     <>
                       Welcome Back to the{" "}
@@ -262,7 +260,7 @@ export const RightSide = () => {
                 {/* GitHub Button */}
                 <button
                   onClick={handleGithub}
-                  className="w-full max-w-xs mx-auto flex items-center justify-center gap-3 bg-transparent border border-gray-300 text-white py-3 px-6 rounded-full hover:border-gray-500 transition-colors duration-200 mt-15 mb-15 cursor-pointer"
+                  className="w-full max-w-xs mx-auto flex items-center justify-center gap-3 bg-transparent border border-gray-300 text-white py-3 px-4 lg:px-6 rounded-full hover:border-gray-500 transition-colors duration-200 mt-6 lg:mt-15 mb-6 lg:mb-15 cursor-pointer text-sm lg:text-base"
                   disabled={loading}
                 >
                   <svg
@@ -291,7 +289,7 @@ export const RightSide = () => {
               )}
 
               {/* Form */}
-              <div className="space-y-6 mt-8">
+              <div className="space-y-4 lg:space-y-6 mt-6 lg:mt-8">
                 {/* Username Field (Only for Signup) */}
                 {!isLogin && (
                   <motion.div
@@ -310,7 +308,7 @@ export const RightSide = () => {
                       value={formData.username}
                       onChange={handleInputChange}
                       placeholder="johndev"
-                      className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
+                      className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-2 lg:py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                       disabled={loading}
                     />
                   </motion.div>
@@ -325,7 +323,7 @@ export const RightSide = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="email@example.com"
-                    className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
+                    className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-2 lg:py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                     disabled={loading}
                   />
                 </div>
@@ -342,13 +340,13 @@ export const RightSide = () => {
                       value={formData.password}
                       onChange={handleInputChange}
                       placeholder="••••••••••••••••"
-                      className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
+                      className="w-full bg-transparent border-b border-gray-600 text-white placeholder-gray-500 py-2 lg:py-3 px-0 focus:outline-none focus:border-[#918EF4] transition-colors duration-200"
                       disabled={loading}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
+                      className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer p-1"
                       disabled={loading}
                     >
                       {showPassword ? (
@@ -393,7 +391,7 @@ export const RightSide = () => {
                     {/* Inline Submit Button for Signup */}
                     <button
                       onClick={handleSubmit}
-                      className="bg-[#7A900F] text-white font-semibold py-3 px-8 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-sm flex-shrink-0 cursor-pointer"
+                      className="bg-[#7A900F] text-white font-semibold py-3 px-6 lg:px-8 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-sm flex-shrink-0 cursor-pointer"
                       disabled={loading}
                     >
                       {loading ? "Loading..." : "SIGN UP"}
@@ -405,7 +403,7 @@ export const RightSide = () => {
                 {isLogin && (
                   <button
                     onClick={handleSubmit}
-                    className="w-full bg-[#7A900F] text-white font-semibold py-4 px-6 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-lg mt-15 cursor-pointer"
+                    className="w-full bg-[#7A900F] text-white font-semibold py-3 lg:py-4 px-6 rounded-full hover:bg-[#7A900F]/80 transition-colors duration-200 text-base lg:text-lg mt-8 lg:mt-15 cursor-pointer"
                     disabled={loading}
                   >
                     {loading ? "Loading..." : "SIGN IN"}
@@ -414,8 +412,8 @@ export const RightSide = () => {
               </div>
 
               {/* Toggle Mode */}
-              <div className="text-center pt-8 mt-4">
-                <span className="text-gray-400">
+              <div className="text-center pt-6 lg:pt-8 mt-4">
+                <span className="text-gray-400 text-sm lg:text-base">
                   {isLogin ? "Don't have an Account? " : "Own an Account? "}
                   <button
                     onClick={toggleMode}

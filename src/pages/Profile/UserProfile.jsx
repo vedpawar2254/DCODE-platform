@@ -16,6 +16,7 @@ import { dashboardService } from "../../services/dashboardService";
 import { profileService } from "../../services/profileService";
 import { axiosInstance } from "../../utils/axios";
 import { useAuthStore } from "../../store/useAuthStore";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function UserProfile() {
   const { username } = useParams();
@@ -200,16 +201,15 @@ export default function UserProfile() {
   }
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4">
+    <div className="min-h-screen max-w-7xl mx-auto bg-[#121212] p-4 sm:p-6">
       <div className="">
         {/* Header with back button */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
-            <div className="flex gap-4 justify-center items-center">
-              {/* Back Button */}
+            <div className="flex flex-col gap-2 justify-center">
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-[#A1A1AA] hover:text-[#BCDD19] transition-colors group"
+                className="flex items-center gap-1 text-[#A1A1AA] hover:text-[#C6FF3D] text-sm transition-colors group"
               >
                 <ArrowLeft
                   size={20}
@@ -217,9 +217,52 @@ export default function UserProfile() {
                 />
                 <span>Go Back</span>
               </button>
-              <h1 className="text-2xl md:text-3xl text-white font-semibold">
+              {/* Back Button */}
+              {/* <h1 className="text-2xl md:text-3xl text-white font-semibold">
                 {user.name}'s <span className="text-[#C6FF3D]">Profile</span>
-              </h1>
+              </h1> */}
+              <div>
+              <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <motion.h1
+                className="text-xl sm:text-2xl font-bold text-white"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                Contributor Profile
+              </motion.h1>
+              <motion.p
+                className="text-gray-400 text-sm md:text-base"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
+                Welcome back,{" "}
+                <motion.span
+                  className="text-[#C6FF3D]"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.3 }}
+                >
+                  {user.name || "User"}!
+                </motion.span>{" "}
+                Here's your{" "}
+                <motion.span
+                  className="text-[#C6FF3D]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.3 }}
+                >
+                  Profile
+                </motion.span>{" "}
+                overview.
+              </motion.p>
+            </motion.div>
+            </div>
             </div>
             {/* Social Links */}
 
