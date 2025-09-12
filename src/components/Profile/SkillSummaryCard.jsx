@@ -209,12 +209,7 @@ const SkillsSummaryCard = ({ skills }) => {
           as="h3"
           className="text-base text-white sm:text-lg font-semibold"
         >
-          Skills{" "}
-          <motion.span
-            className="text-[#BCDD19]"
-          >
-            Summary
-          </motion.span>
+          Skills <motion.span className="text-[#BCDD19]">Summary</motion.span>
         </AnimatedText>
         <motion.span
           className="text-xs sm:text-sm text-gray-400"
@@ -232,7 +227,7 @@ const SkillsSummaryCard = ({ skills }) => {
 
       {/* Radar Chart and Skills Grid */}
       <motion.div
-        className="flex  h-full"
+        className="flex  h-full justify-between ml-[1rem]"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -253,7 +248,7 @@ const SkillsSummaryCard = ({ skills }) => {
             {skills.map((lang, index) => (
               <motion.div
                 key={lang.name}
-                className="flex items-center justify-between rounded-sm px-3 py-2 h-fit"
+                className="flex items-center justify-between rounded-sm px-3 py-2 h-fit gap-[1rem]"
                 initial={{ opacity: 0, x: 20, scale: 0.8 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 transition={{
@@ -264,7 +259,7 @@ const SkillsSummaryCard = ({ skills }) => {
               >
                 <motion.div
                   className="flex items-center gap-2"
-                  whileHover={{ x: 2 }}
+                  // whileHover={{ x: 2 }}
                 >
                   <motion.img
                     src={`https://cdn.simpleicons.org/${lang.name}`}
@@ -282,11 +277,11 @@ const SkillsSummaryCard = ({ skills }) => {
                       duration: 0.6,
                       ease: [0.6, -0.05, 0.01, 0.99],
                     }}
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: 5,
-                      filter: "brightness(1.2)",
-                    }}
+                    // whileHover={{
+                    //   scale: 1.2,
+                    //   rotate: 5,
+                    //   filter: "brightness(1.2)",
+                    // }}
                   />
                   <motion.span
                     className="text-xs sm:text-sm text-gray-300"

@@ -196,7 +196,7 @@ const ProfileCard = ({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{
-                delay: 1,
+                // delay: 1,
                 duration: 0.6,
                 ease: [0.6, -0.05, 0.01, 0.99],
               }}
@@ -276,7 +276,7 @@ const ProfileCard = ({
                   initial={{ opacity: 0, scale: 0, rotate: -180 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
                   transition={{
-                    delay: 0.8 + index * 0.1,
+                    delay: 0.2 + index * 0.1,
                     duration: 0.6,
                     ease: [0.6, -0.05, 0.01, 0.99],
                   }}
