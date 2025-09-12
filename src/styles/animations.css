@@ -1,0 +1,123 @@
+/* Performance-optimized animations CSS */
+
+/* Enable hardware acceleration for smooth animations */
+.motion-safe {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize repaints for grid layouts */
+.grid-container {
+  contain: layout style paint;
+}
+
+/* Smooth transitions for interactive elements */
+.smooth-hover {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-safe {
+    will-change: auto;
+    transform: none;
+  }
+}
+
+/* Optimize for GPU acceleration */
+.gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Loading optimizations */
+.loading-skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Card optimizations */
+.card-container {
+  contain: layout style;
+  will-change: transform;
+}
+
+.card-container:hover {
+  transform: translateY(-1px) translateZ(0);
+}
+
+/* Stagger animation optimization */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: staggerIn 0.3s ease forwards;
+}
+
+@keyframes staggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply stagger delays via CSS custom properties */
+.stagger-item:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-item:nth-child(2) {
+  animation-delay: 30ms;
+}
+.stagger-item:nth-child(3) {
+  animation-delay: 60ms;
+}
+.stagger-item:nth-child(4) {
+  animation-delay: 90ms;
+}
+.stagger-item:nth-child(5) {
+  animation-delay: 120ms;
+}
+.stagger-item:nth-child(6) {
+  animation-delay: 150ms;
+}
+.stagger-item:nth-child(7) {
+  animation-delay: 180ms;
+}
+.stagger-item:nth-child(8) {
+  animation-delay: 210ms;
+}
+.stagger-item:nth-child(9) {
+  animation-delay: 240ms;
+}
+.stagger-item:nth-child(10) {
+  animation-delay: 270ms;
+}
+.stagger-item:nth-child(11) {
+  animation-delay: 300ms;
+}
+.stagger-item:nth-child(12) {
+  animation-delay: 330ms;
+}
