@@ -8,6 +8,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const RepositoriesListing = () => {
+  // --- STATE FROM ZUSTAND STORE ---
   const {
     projects,
     pagination,
@@ -25,20 +26,16 @@ const RepositoriesListing = () => {
 
   const navigate = useNavigate();
 
-  // --- LOCAL UI STATE ---
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
 
-  // --- INITIAL DATA FETCH ---
+ 
   useEffect(() => {
-    // Fetch projects when the component mounts
     fetchProjects();
   }, []); // Runs only once
 
-  // --- UI HANDLERS ---
   const handleRepoClick = (id, event) => {
-    // Prevents navigation when clicking on a link inside the card
     if (event.target.tagName === 'A' || event.target.closest('a')) {
       return;
     }
@@ -51,9 +48,7 @@ const RepositoriesListing = () => {
     return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
   };
 
-  // --- DERIVED STATE FOR FILTERS ---
-  // Note: These filters are derived from the *current page* of projects.
-  // For a complete list, a dedicated API endpoint (`/api/projects/filters`) would be ideal.
+
   const allTags = useMemo(() => {
     const tagSet = new Set(projects.flatMap(p => p.tags || []));
     return Array.from(tagSet).sort();
@@ -81,11 +76,11 @@ const RepositoriesListing = () => {
         <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                {/* <FolderOpen className="text-[#C6FF3D]" size={32} /> */}
+               
                 Project Repositories
               </h1>
               <p className="text-[#A1A1AA] mt-2">
-                Explore a <span className="text-[#BCDD19]">curated</span> collection of <span className="text-[#BCDD19]">community-driven</span> projects.
+                Explore a curated collection of community-driven projects.
               </p>
             </div>
             <div className="text-[#A1A1AA] text-sm">
@@ -164,13 +159,13 @@ const RepositoriesListing = () => {
           viewMode === 'grid' ? (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               {projects.map((project) => (
-                <ProjectCardGrid key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
+                <ProjectCardGrid key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
               ))}
             </motion.div>
           ) : (
             <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                  {projects.map((project) => (
-                    <ProjectCardList key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
+                    <ProjectCardList key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
                 ))}
             </motion.div>
           )

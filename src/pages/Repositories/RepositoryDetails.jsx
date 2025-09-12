@@ -19,9 +19,9 @@ import markdownToHtml from "../../utils/markdowntohtml";
 import DOMPurify from "dompurify";
 import { axiosInstance } from "../../utils/axios";
 
-// Default fallback image
+// A more neutral default SVG placeholder
 const DEFAULT_REPO_IMAGE =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23BCDD19'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23000' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2323252B'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23A1A1AA' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
 
 const RepositoryDetails = () => {
   const { id } = useParams();
@@ -29,9 +29,15 @@ const RepositoryDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("readme");
+
+  // State for GitHub starring
   const [isStarred, setIsStarred] = useState(false);
+  const [starringInProgress, setStarringInProgress] = useState(false);
+
+  // State for repository image
   const [repoImage, setRepoImage] = useState(DEFAULT_REPO_IMAGE);
   const [imageLoaded, setImageLoaded] = useState(false);
+
   const [githubData, setGithubData] = useState({
     issues: [],
     pullRequests: [],
@@ -39,14 +45,12 @@ const RepositoryDetails = () => {
     error: null,
   });
 
-  // Extract owner/repo from GitHub URL
   const extractGitHubInfo = useCallback((url) => {
     if (!url) return null;
     const match = url.match(/github\.com\/([^/]+)\/([^/]+)(?:\.git)?$/);
     return match ? { owner: match[1], repo: match[2] } : null;
   }, []);
 
-  // Fetch repository details
   useEffect(() => {
     const fetchRepository = async () => {
       try {
@@ -62,7 +66,6 @@ const RepositoryDetails = () => {
     if (id) fetchRepository();
   }, [id]);
 
-  // Fetch GitHub issues & PRs
   const fetchGitHubData = useCallback(async () => {
     if (githubData.loading) return;
     setGithubData(prev => ({ ...prev, loading: true, error: null }));
@@ -75,31 +78,63 @@ const RepositoryDetails = () => {
       setGithubData(prev => ({ ...prev, loading: false, error: errorMessage }));
     }
   }, [id, githubData.loading]);
+  
+  // Check if the user has already starred the repo on GitHub
+  useEffect(() => {
+    if (repository) {
+      const checkStarStatus = async () => {
+        try {
+          const response = await axiosInstance.get(`/project/${id}/star-status`);
+          setIsStarred(response.data.data.isStarred);
+        } catch (err) {
+          console.error("Could not verify star status:", err);
+        }
+      };
+      checkStarStatus();
+    }
+  }, [repository, id]);
 
-  // Try GitHub OpenGraph image
-  const tryGithubImage = useCallback((repository) => {
-    const githubInfo = repository?.repositoryUrl
-      ? extractGitHubInfo(repository.repositoryUrl)
-      : null;
+  const handleToggleStar = async () => {
+    setStarringInProgress(true);
+    const originalStarStatus = isStarred;
+    setIsStarred(!originalStarStatus); // Optimistic update
 
-    if (githubInfo && !imageLoaded) {
+    try {
+      if (originalStarStatus) {
+        // If it was starred, unstar it
+        await axiosInstance.delete(`/project/${id}/unstar`);
+      } else {
+        // If it was not starred, star it
+        await axiosInstance.put(`/project/${id}/star`);
+      }
+    } catch (err) {
+      console.error("Failed to update star status:", err);
+      setIsStarred(originalStarStatus); // Revert on error
+      // You could show a toast notification here
+    } finally {
+      setStarringInProgress(false);
+    }
+  };
+
+
+  // Logic to try fetching GitHub's OpenGraph image
+  const tryGithubImage = useCallback((repoData) => {
+    if (!repoData || imageLoaded) return;
+    
+    const githubInfo = extractGitHubInfo(repoData.repositoryUrl);
+    if (githubInfo) {
       const githubImageUrl = `https://opengraph.githubassets.com/1/${githubInfo.owner}/${githubInfo.repo}`;
       const img = new Image();
-
-      img.onload = () => {
-        setRepoImage(githubImageUrl);
-        setImageLoaded(true);
-      };
-
-      img.onerror = () => setImageLoaded(true);
-
+      img.onload = () => setRepoImage(githubImageUrl);
+      img.onerror = () => setRepoImage(DEFAULT_REPO_IMAGE); // Fallback on error
       img.src = githubImageUrl;
     } else {
-      setImageLoaded(true);
+      setRepoImage(DEFAULT_REPO_IMAGE);
     }
+    setImageLoaded(true);
   }, [extractGitHubInfo, imageLoaded]);
 
-  // Set repo image on load
+  // Set the correct image source when repository data loads
   useEffect(() => {
     if (repository) {
       if (repository.imageUrl) {
@@ -111,21 +146,17 @@ const RepositoryDetails = () => {
     }
   }, [repository, tryGithubImage]);
 
-  // Format date
   const formatDate = (dateString) => {
     if (!dateString) return "some time ago";
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return "today";
+    if (diffDays < 1) return "today";
     if (diffDays === 1) return "yesterday";
     if (diffDays < 30) return `${diffDays} days ago`;
     const diffMonths = Math.floor(diffDays / 30);
-    if (diffMonths === 1) return "1 month ago";
-    if (diffMonths < 12) return `${diffMonths} months ago`;
-    return `${Math.floor(diffDays / 365)} years ago`;
+    return diffMonths <= 1 ? "1 month ago" : `${diffMonths} months ago`;
   };
 
   if (loading) {
@@ -158,7 +189,6 @@ const RepositoryDetails = () => {
   return (
     <div className="min-h-screen bg-[#121212] text-white">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        {/* Back Link */}
         <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
           <Link to="/repositories" className="inline-flex items-center text-[#A1A1AA] hover:text-[#C6FF3D] transition-colors mb-8 group">
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
@@ -167,29 +197,34 @@ const RepositoryDetails = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
           <div className="lg:col-span-2">
-            {/* Header Card */}
             <div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-6 mb-6">
               <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">{repository.name}</h1>
               <p className="text-[#A1A1AA] text-sm mb-6">{repository.description}</p>
-
+              
               <div className="flex flex-wrap gap-x-6 gap-y-3 pt-6 border-t border-[#23252B] text-sm">
                 <StatItem icon={<Star size={16} className="text-yellow-400" />} value={repository.stars || 0} label="Stars" />
                 <StatItem icon={<GitFork size={16} className="text-blue-400" />} value={repository.forks || 0} label="Forks" />
                 <StatItem icon={<Eye size={16} className="text-gray-400" />} value={repository.watchers || 0} label="Watchers" />
               </div>
-
+              
               <div className="flex flex-wrap gap-3 mt-6">
-                <ActionButton href={repository.repositoryUrl} icon={<Github size={16} />} text="Code" primary={false} />
-                {repository.liveDemoUrl && <ActionButton href={repository.liveDemoUrl} icon={<ExternalLink size={16} />} text="Live Demo" primary={true} />}
-                <button onClick={() => setIsStarred(!isStarred)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors ${isStarred ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20" : "bg-[#23252B] hover:bg-[#2A2A2A] text-white"}`}>
-                  <Star size={16} fill={isStarred ? "currentColor" : "none"} /><span>{isStarred ? "Starred" : "Star"}</span>
-                </button>
+                <div className="flex-1 flex gap-3">
+                    <ActionButton href={repository.repositoryUrl} icon={<Github size={16} />} text="Code" primary={false} fullWidth={!repository.liveDemoUrl} />
+                    {repository.liveDemoUrl && <ActionButton href={repository.liveDemoUrl} icon={<ExternalLink size={16} />} text="Live Demo" primary={true} fullWidth={false} />}
+                </div>
+                <motion.button 
+                    onClick={handleToggleStar} 
+                    disabled={starringInProgress}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors w-full sm:w-auto mt-2 sm:mt-0 ${isStarred ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20" : "bg-[#23252B] hover:bg-[#2A2A2A] text-white"} disabled:opacity-50 disabled:cursor-not-allowed`}
+                    whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}
+                >
+                    <Star size={16} fill={isStarred ? "currentColor" : "none"} />
+                    <span>{isStarred ? "Starred" : "Star"}</span>
+                </motion.button>
               </div>
             </div>
 
-            {/* Tabs */}
             <div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl overflow-hidden">
               <div className="flex border-b border-[#23252B]">
                 {["readme", "issues", "pull-requests"].map(tab => (
@@ -199,7 +234,7 @@ const RepositoryDetails = () => {
                   </button>
                 ))}
               </div>
-              <div className="p-6">
+              <div className="p-6 min-h-[300px]">
                 <AnimatePresence mode="wait">
                   {activeTab === 'readme' && (
                     <motion.div key="readme" className="prose prose-invert max-w-none prose-p:text-[#A1A1AA] prose-headings:text-white" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(markdownToHtml(repository.readme || "### No README Provided\n\nThis project does not have a README file yet.")) }}
@@ -208,13 +243,8 @@ const RepositoryDetails = () => {
                   )}
                   {(activeTab === 'issues' || activeTab === 'pull-requests') && (
                     <GitHubContent
-                      key={activeTab}
-                      type={activeTab}
-                      data={activeTab === 'issues' ? githubData.issues : githubData.pullRequests}
-                      loading={githubData.loading}
-                      error={githubData.error}
-                      githubInfo={githubInfo}
-                      formatDate={formatDate}
+                      key={activeTab} type={activeTab} data={activeTab === 'issues' ? githubData.issues : githubData.pullRequests}
+                      loading={githubData.loading} error={githubData.error} githubInfo={githubInfo} formatDate={formatDate}
                     />
                   )}
                 </AnimatePresence>
@@ -222,7 +252,6 @@ const RepositoryDetails = () => {
             </div>
           </div>
 
-          {/* Right Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5">
               <img src={repoImage} alt={`${repository.name} preview`} className="w-full h-40 object-cover rounded-lg mb-4 bg-[#23252B]" onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_REPO_IMAGE; }} />
@@ -258,34 +287,28 @@ const RepositoryDetails = () => {
 };
 
 // --- Helper Components ---
-
 const StatItem = ({ icon, value, label }) => (
-  <div className="flex items-center gap-2">
-    {icon}
-    <span className="font-semibold text-white">{value}</span>
-    <span className="text-[#A1A1AA]">{label}</span>
-  </div>
+  <div className="flex items-center gap-2"> {icon} <span className="font-semibold text-white">{value}</span> <span className="text-[#A1A1AA]">{label}</span> </div>
 );
 
-const ActionButton = ({ href, icon, text, primary }) => (
-  <motion.a href={href} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${primary ? 'bg-[#C6FF3D] text-black hover:bg-[#B8E835]' : 'bg-[#23252B] text-white hover:bg-[#2A2A2A]'}`} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-    {icon}<span>{text}</span>
-  </motion.a>
+const ActionButton = ({ href, icon, text, primary, fullWidth }) => (
+  <motion.a href={href} target="_blank" rel="noopener noreferrer"
+    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${primary ? 'bg-[#C6FF3D] text-black hover:bg-[#B8E835]' : 'bg-[#23252B] text-white hover:bg-[#2A2A2A]'} ${fullWidth ? 'flex-1' : ''}`}
+    whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}
+  > {icon}<span>{text}</span> </motion.a>
 );
 
 const SidebarInfoItem = ({ icon, label, value }) => (
-  <div>
-    <h3 className="text-xs text-[#A1A1AA] mb-1">{label}</h3>
-    <div className="flex items-center gap-2 text-white text-sm">
-      {icon}<span>{value}</span>
-    </div>
-  </div>
+  <div> <h3 className="text-xs text-[#A1A1AA] mb-1">{label}</h3> <div className="flex items-center gap-2 text-white text-sm"> {icon}<span>{value}</span> </div> </div>
 );
 
 const GitHubContent = ({ type, data, loading, error, githubInfo, formatDate }) => {
   const title = type === 'issues' ? 'Open Issues' : 'Pull Requests';
-  const emptyMessage = type === 'issues' ? 'No open issues found.' : 'No open pull requests found.';
-  const viewAllLink = `https://github.com/${githubInfo?.owner}/${githubInfo?.repo}/${type}`;
+  const emptyMessage = type === 'issues' ? 'No open issues.' : 'No open pull requests.';
+  const baseUrl = `https://github.com/${githubInfo?.owner}/${githubInfo?.repo}`;
+  const path = type === 'pull-requests' ? 'pulls' : type;
+  const viewAllLink = path ? `${baseUrl}/${path}` : baseUrl;
+
 
   if (loading) return <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 text-[#C6FF3D] animate-spin" /></div>;
   if (error) return <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl text-sm"><AlertTriangle className="w-4 h-4 inline mr-2" />{error}</div>;
@@ -295,25 +318,21 @@ const GitHubContent = ({ type, data, loading, error, githubInfo, formatDate }) =
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-white">{title}</h2>
         {githubInfo && (
-          <a href={viewAllLink} target="_blank" rel="noopener noreferrer" className="text-sm text-[#A1A1AA] hover:text-[#C6FF3D] transition-colors flex items-center gap-1">
-            View all on GitHub
-            <ExternalLink size={14} />
-          </a>
-        )}
+    <a href={viewAllLink} target="_blank" rel="noopener noreferrer" className="text-sm text-[#A1A1AA] hover:text-[#C6FF3D] transition-colors flex items-center gap-1">
+        View all on GitHub <ExternalLink size={14} />
+    </a>
+)}
       </div>
       {data.length === 0 ? (
         <div className="bg-[#121212] border border-[#23252B] rounded-xl p-6 text-center text-[#A1A1AA]">
-          <CheckCircle className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-          <p>{emptyMessage}</p>
+          <CheckCircle className="w-8 h-8 text-emerald-500 mx-auto mb-2" /> <p>{emptyMessage}</p>
         </div>
       ) : (
         <div className="space-y-3">
           {data.map(item => (
             <a key={item.id} href={item.html_url} target="_blank" rel="noopener noreferrer" className="block bg-[#121212] border border-[#23252B] rounded-lg p-4 hover:border-[#C6FF3D]/50 transition-colors">
               <p className="font-medium text-white text-sm truncate">{item.title}</p>
-              <p className="text-xs text-[#A1A1AA] mt-1">
-                #{item.number} opened {formatDate(item.created_at)} by {item.user?.login}
-              </p>
+              <p className="text-xs text-[#A1A1AA] mt-1"> #{item.number} opened {formatDate(item.created_at)} by {item.user?.login} </p>
             </a>
           ))}
         </div>
