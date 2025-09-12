@@ -80,7 +80,7 @@ const RepositoriesListing = () => {
                 Project Repositories
               </h1>
               <p className="text-[#A1A1AA] mt-2">
-                Explore a curated collection of community-driven projects.
+                Explore a <span className="text-[#BCDD19]">curated</span> collection of <span className="text-[#BCDD19]">community-driven</span> projects.
               </p>
             </div>
             <div className="text-[#A1A1AA] text-sm">
