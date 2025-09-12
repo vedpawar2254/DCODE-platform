@@ -30,9 +30,9 @@ const RepositoryDetails = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("readme");
 
-  // State for GitHub starring
-  const [isStarred, setIsStarred] = useState(false);
-  const [starringInProgress, setStarringInProgress] = useState(false);
+  // // State for GitHub starring
+  // const [isStarred, setIsStarred] = useState(false);
+  // const [starringInProgress, setStarringInProgress] = useState(false);
 
   // State for repository image
   const [repoImage, setRepoImage] = useState(DEFAULT_REPO_IMAGE);
@@ -80,41 +80,41 @@ const RepositoryDetails = () => {
   }, [id, githubData.loading]);
   
   // Check if the user has already starred the repo on GitHub
-  useEffect(() => {
-    if (repository) {
-      const checkStarStatus = async () => {
-        try {
-          const response = await axiosInstance.get(`/project/${id}/star-status`);
-          setIsStarred(response.data.data.isStarred);
-        } catch (err) {
-          console.error("Could not verify star status:", err);
-        }
-      };
-      checkStarStatus();
-    }
-  }, [repository, id]);
+  // useEffect(() => {
+  //   if (repository) {
+  //     const checkStarStatus = async () => {
+  //       try {
+  //         const response = await axiosInstance.get(`/project/${id}/star-status`);
+  //         setIsStarred(response.data.data.isStarred);
+  //       } catch (err) {
+  //         console.error("Could not verify star status:", err);
+  //       }
+  //     };
+  //     checkStarStatus();
+  //   }
+  // }, [repository, id]);
 
-  const handleToggleStar = async () => {
-    setStarringInProgress(true);
-    const originalStarStatus = isStarred;
-    setIsStarred(!originalStarStatus); // Optimistic update
+  // const handleToggleStar = async () => {
+  //   setStarringInProgress(true);
+  //   const originalStarStatus = isStarred;
+  //   setIsStarred(!originalStarStatus); // Optimistic update
 
-    try {
-      if (originalStarStatus) {
-        // If it was starred, unstar it
-        await axiosInstance.delete(`/project/${id}/unstar`);
-      } else {
-        // If it was not starred, star it
-        await axiosInstance.put(`/project/${id}/star`);
-      }
-    } catch (err) {
-      console.error("Failed to update star status:", err);
-      setIsStarred(originalStarStatus); // Revert on error
-      // You could show a toast notification here
-    } finally {
-      setStarringInProgress(false);
-    }
-  };
+  //   try {
+  //     if (originalStarStatus) {
+  //       // If it was starred, unstar it
+  //       await axiosInstance.delete(`/project/${id}/unstar`);
+  //     } else {
+  //       // If it was not starred, star it
+  //       await axiosInstance.put(`/project/${id}/star`);
+  //     }
+  //   } catch (err) {
+  //     console.error("Failed to update star status:", err);
+  //     setIsStarred(originalStarStatus); // Revert on error
+  //     // You could show a toast notification here
+  //   } finally {
+  //     setStarringInProgress(false);
+  //   }
+  // };
 
 
   // Logic to try fetching GitHub's OpenGraph image
@@ -213,7 +213,7 @@ const RepositoryDetails = () => {
                     <ActionButton href={repository.repositoryUrl} icon={<Github size={16} />} text="Code" primary={false} fullWidth={!repository.liveDemoUrl} />
                     {repository.liveDemoUrl && <ActionButton href={repository.liveDemoUrl} icon={<ExternalLink size={16} />} text="Live Demo" primary={true} fullWidth={false} />}
                 </div>
-                <motion.button 
+                {/* <motion.button 
                     onClick={handleToggleStar} 
                     disabled={starringInProgress}
                     className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors w-full sm:w-auto mt-2 sm:mt-0 ${isStarred ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20" : "bg-[#23252B] hover:bg-[#2A2A2A] text-white"} disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -221,7 +221,7 @@ const RepositoryDetails = () => {
                 >
                     <Star size={16} fill={isStarred ? "currentColor" : "none"} />
                     <span>{isStarred ? "Starred" : "Star"}</span>
-                </motion.button>
+                </motion.button> */}
               </div>
             </div>
 
