@@ -241,7 +241,7 @@ const SkillsSummaryCard = ({ skills }) => {
 
         {/* Language percentages */}
         <motion.div
-          className="space-y-1 sm:space-y-2 h-fit w-1/2 grid grid-cols-2 gap-3 w-fit"
+          className="space-y-1 sm:space-y-2 h-fit grid grid-cols-2 gap-3 w-fit"
           variants={fadeRightVariants}
         >
           <AnimatePresence>
