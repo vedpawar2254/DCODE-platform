@@ -8,7 +8,6 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const RepositoriesListing = () => {
-  // --- STATE FROM ZUSTAND STORE ---
   const {
     projects,
     pagination,
@@ -82,11 +81,11 @@ const RepositoriesListing = () => {
         <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                <FolderOpen className="text-[#C6FF3D]" size={32} />
+                {/* <FolderOpen className="text-[#C6FF3D]" size={32} /> */}
                 Project Repositories
               </h1>
               <p className="text-[#A1A1AA] mt-2">
-                Explore a curated collection of community-driven projects.
+                Explore a <span className="text-[#BCDD19]">curated</span> collection of <span className="text-[#BCDD19]">community-driven</span> projects.
               </p>
             </div>
             <div className="text-[#A1A1AA] text-sm">

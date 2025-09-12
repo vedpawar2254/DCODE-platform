@@ -525,7 +525,7 @@ function StepCard({ step, index, total, onPrev, onNext }) {
           // disabled={step.snippet && !isSnippetCompleted}
           aria-label={index + 1 === total ? "Finish" : "Next step"}
         >
-          {index + 1 === total ? "Finish ✨" : "Next →"}
+          {index + 1 === total ? "Finish" : "Next →"}
         </Button>
       </motion.div>
     </motion.div>
@@ -851,7 +851,7 @@ function Completion({ onRestart }) {
             className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
             onClick={() => navigate("/dashboard")}
           >
-            Move to Dashboard ✨
+            Move to Dashboard
           </Button>
         ) : (
           <Button
