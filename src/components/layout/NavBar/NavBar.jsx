@@ -121,9 +121,14 @@ export default function NavBar() {
               </a>
             ))}
             <div className="pt-2">
-              <Button variant="outline" className="w-full">
-                <a href="/auth">Login</a>
-              </Button>
+              <Button variant="outline" className={"w-full"}>
+              <a
+                href={isLoggedIn ? `/dashboard` : `/auth`}
+                className="px-[0.5rem] py-[3rem]"
+              >
+                {isLoggedIn ? "Dashboard" : "Login"}
+              </a>
+            </Button>
             </div>
           </div>
         </div>

@@ -346,21 +346,8 @@ export default function UsersListing() {
               </select>
             </div>
 
-            {/* Has GitHub Filter */}
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={filters.hasGithub}
-                onChange={(e) =>
-                  handleFilterChange("hasGithub", e.target.checked)
-                }
-                className="rounded border-[#3A3A3A] bg-[#23252B] text-[#C6FF3D] focus:ring-[#C6FF3D] focus:ring-offset-0"
-              />
-              <span className="text-[#A1A1AA] text-sm">Has GitHub Profile</span>
-            </label>
-
             {/* Clear All Filters Button */}
-            {activeFiltersCount > 0 && (
+            {/* {activeFiltersCount > 0 && (
               <button
                 onClick={clearFilters}
                 className="flex items-center gap-2 bg-[#23252B] text-white px-4 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors text-sm"
@@ -368,7 +355,7 @@ export default function UsersListing() {
                 <X size={16} />
                 Clear All Filters
               </button>
-            )}
+            )} */}
           </div>
         </motion.div>
 
