@@ -118,14 +118,14 @@ const RepositoriesListing = () => {
               </button>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <label className="text-[#A1A1AA] text-sm">Sort by:</label>
             <select value={sort} onChange={(e) => setSort(e.target.value)} className="bg-[#121212] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]">
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
                 <option value="stars">Most Stars</option>
             </select>
-          </div>
+          </div> */}
 
           <AnimatePresence>
             {showFilters && (

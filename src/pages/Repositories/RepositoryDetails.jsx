@@ -19,9 +19,11 @@ import markdownToHtml from "../../utils/markdowntohtml";
 import DOMPurify from "dompurify";
 import { axiosInstance } from "../../utils/axios";
 
-// A more neutral default SVG placeholder
-const DEFAULT_REPO_IMAGE =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2323252B'/%3E%3Ctext x='50' y='55' font-family='Arial, sans-serif' font-size='14' fill='%23A1A1AA' text-anchor='middle'%3ERepo%3C/text%3E%3C/svg%3E";
+
+const DEFAULT_REPO_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231A1A1A'/%3E%3Cstop offset='100%25' stop-color='%2323252B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23a)'/%3E%3Cpath d='M30 40 L20 50 L30 60' stroke='%23C6FF3D' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M70 40 L80 50 L70 60' stroke='%23C6FF3D' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+
+
+
 
 const RepositoryDetails = () => {
   const { id } = useParams();
