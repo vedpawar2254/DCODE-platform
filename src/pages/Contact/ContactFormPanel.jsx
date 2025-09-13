@@ -476,11 +476,11 @@ const ContactFormPanel = () => {
             />
             <label htmlFor="terms" className="text-xs text-gray-400 leading-4">
               I agree to DCODE's{' '}
-              <a href="#" className="text-[#7A900F] hover:underline">
+              <a href="/terms" className="text-[#7A900F] hover:underline">
                 Terms of Use
               </a>{' '}
               and{' '}
-              <a href="#" className="text-[#7A900F] hover:underline">
+              <a href="/privacy" className="text-[#7A900F] hover:underline">
                 Privacy Policy
               </a>
             </label>

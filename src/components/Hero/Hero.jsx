@@ -107,7 +107,7 @@ const Hero = () => {
         </p>
         <div className="flex flex-col pt-3 space-y-3 sm:pt-4 sm:flex-row sm:space-y-0 sm:space-x-4">
           <Button className="w-full sm:w-auto !py-2 !px-4">
-            <a href="/waitlist">Get Started</a>
+            <a href="/dashboard">Get Started</a>
           </Button>
         </div>
       </div>

@@ -159,13 +159,13 @@ const RepositoriesListing = () => {
           viewMode === 'grid' ? (
             <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               {projects.map((project) => (
-                <ProjectCardGrid key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
+                <ProjectCardGrid key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
               ))}
             </motion.div>
           ) : (
             <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                  {projects.map((project) => (
-                    <ProjectCardList key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
+                    <ProjectCardList key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
                 ))}
             </motion.div>
           )
