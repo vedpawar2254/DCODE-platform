@@ -89,7 +89,6 @@ export default function NavBar() {
             <Button variant="outline">
               <a
                 href={isLoggedIn ? `/dashboard` : `/auth`}
-                className="px-[0.5rem] py-[3rem]"
               >
                 {isLoggedIn ? "Dashboard" : "Login"}
               </a>
