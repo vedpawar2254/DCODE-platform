@@ -14,29 +14,29 @@ export const chartAnimations = {
     animationEasing: "ease-in-out",
     isAnimationActive: true,
   },
-  
+
   // Grid animations
   grid: {
     animationBegin: 0,
     animationDuration: 800,
   },
-  
+
   // Axis animations
   xAxis: {
     animationBegin: 200,
     animationDuration: 600,
   },
-  
+
   yAxis: {
     animationBegin: 400,
     animationDuration: 600,
   },
-  
+
   // Tooltip animations
   tooltip: {
     animationDuration: 300,
   },
-  
+
   // Bar charts
   bar: {
     animationBegin: 400,
@@ -44,7 +44,7 @@ export const chartAnimations = {
     animationEasing: "ease-out",
     isAnimationActive: true,
   },
-  
+
   // Pie charts
   pie: {
     animationBegin: 500,
@@ -80,16 +80,17 @@ export const chartContainerVariants = {
  * @param {string} prefix - Optional prefix for the key
  * @returns {string} Unique key for chart re-animation
  */
-export const generateChartKey = (data, prefix = 'chart') => {
+export const generateChartKey = (data, prefix = "chart") => {
   if (!data || !Array.isArray(data)) {
     return `${prefix}-loading`;
   }
-  
+
   // Create a simple hash of the data for consistent keys
-  const dataHash = data.length > 0 
-    ? data.map(item => Object.values(item).join('')).join('').length
-    : 0;
-    
+  const dataHash =
+    data.length > 0
+      ? data.map((item) => Object.values(item).join("")).join("").length
+      : 0;
+
   return `${prefix}-${data.length}-${dataHash}`;
 };
 
@@ -100,7 +101,7 @@ export const generateChartKey = (data, prefix = 'chart') => {
  */
 export const getChartAnimationProps = (type) => {
   const baseProps = chartAnimations[type] || chartAnimations.area;
-  
+
   return {
     ...baseProps,
     // Ensure animation is always active
@@ -117,11 +118,13 @@ export const getChartAnimationProps = (type) => {
  */
 export const getResponsiveAnimations = (isMobile = false) => {
   const multiplier = isMobile ? 0.7 : 1; // Faster animations on mobile
-  
+
   return Object.keys(chartAnimations).reduce((acc, key) => {
     acc[key] = {
       ...chartAnimations[key],
-      animationDuration: Math.round(chartAnimations[key].animationDuration * multiplier),
+      animationDuration: Math.round(
+        chartAnimations[key].animationDuration * multiplier
+      ),
     };
     return acc;
   }, {});
@@ -134,16 +137,12 @@ export const getResponsiveAnimations = (isMobile = false) => {
  * @returns {object} Animation state and controls
  */
 export const useChartAnimation = (data, options = {}) => {
-  const { 
-    enableReanimation = true, 
-    type = 'area',
-    isMobile = false 
-  } = options;
-  
-  const chartKey = enableReanimation ? generateChartKey(data) : 'static-chart';
+  const { enableReanimation = true, type = "area", isMobile = false } = options;
+
+  const chartKey = enableReanimation ? generateChartKey(data) : "static-chart";
   const animations = isMobile ? getResponsiveAnimations(true) : chartAnimations;
   const animationProps = animations[type] || animations.area;
-  
+
   return {
     key: chartKey,
     animationProps,

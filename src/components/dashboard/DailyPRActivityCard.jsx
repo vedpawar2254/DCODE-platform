@@ -23,18 +23,24 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { motion } from "framer-motion";
-import { useChartAnimation, chartAnimations } from "../../utils/chartAnimations";
-
+import {
+  useChartAnimation,
+  chartAnimations,
+} from "../../utils/chartAnimations";
 
 export default function DailyPrActivityChart({ className, activityData }) {
   console.log(activityData);
-  
+
   // Use the chart animation hook for consistent animations
-  const { key: chartKey, animationProps, containerVariants } = useChartAnimation(
-    activityData, 
-    { type: 'area', enableReanimation: true }
-  );
-  
+  const {
+    key: chartKey,
+    animationProps,
+    containerVariants,
+  } = useChartAnimation(activityData, {
+    type: "area",
+    enableReanimation: true,
+  });
+
   return (
     <Card
       className={`bg-white/[0.02] border border-gray-800 rounded-xl p-4 sm:p-6 h-full ${className} w-full`}
@@ -69,8 +75,8 @@ export default function DailyPrActivityChart({ className, activityData }) {
                 data={activityData}
                 margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
               >
-                <CartesianGrid 
-                  stroke="#1a1f1b" 
+                <CartesianGrid
+                  stroke="#1a1f1b"
                   vertical={false}
                   {...chartAnimations.grid}
                 />
