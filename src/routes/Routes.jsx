@@ -74,7 +74,7 @@ export const routes = createBrowserRouter([
     element: <ErrorPage />,
   },
   {
-    path: "/404", 
+    path: "/404",
     element: <NotFound />,
   },
   // Authenticated routes (with sidebar when logged in)
