@@ -11,12 +11,10 @@ import {
   BookOpen,
   Calendar,
   Tag,
-  SortAsc,
-  SortDesc
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Animation Variants for a consistent look and feel
+
 const heroVariants = {
   hidden: { opacity: 0, y: -50, scale: 0.9, filter: "blur(20px)" },
   visible: {
@@ -71,15 +69,15 @@ const RepositoriesListing = () => {
 
   const navigate = useNavigate();
 
-  // Local UI State
+  
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
 
-  // Initial Data Fetch
+  
   useEffect(() => {
     fetchProjects();
-  }, []); // Runs only once
+  }, []); 
 
   const handleRepoClick = (id, event) => {
     if (event.target.tagName === 'A' || event.target.closest('a')) {
@@ -94,7 +92,7 @@ const RepositoriesListing = () => {
     return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
   };
 
-  // --- DERIVED STATE & HANDLERS FOR ADVANCED SORTING ---
+ 
   const currentSortBy = useMemo(() => (sort === 'stars' ? 'stars' : 'date'), [sort]);
   const currentSortOrder = useMemo(() => (sort === 'oldest' ? 'asc' : 'desc'), [sort]);
 
@@ -135,10 +133,10 @@ const RepositoriesListing = () => {
       variants={containerVariants}
     >
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        {/* Header */}
+        
         <motion.div className="mb-6 flex items-center justify-between" variants={itemVariants}>
           <motion.div
-              // The 'initial' and 'animate' props are now inherited from the parent motion.div
+        
               variants={heroVariants}
               whileHover={{ rotateX: 2 }}
             >
@@ -160,7 +158,7 @@ const RepositoriesListing = () => {
           </div>
         )}
 
-        {/* Search and Filter Controls */}
+       
         <motion.div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-6 mb-6" variants={itemVariants}>
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex-1 relative">
@@ -253,7 +251,7 @@ const RepositoriesListing = () => {
   );
 };
 
-// --- Child Components ---
+
 
 const ProjectCardGrid = ({ project, onClick, formatDate }) => (
     <motion.div 
