@@ -154,7 +154,7 @@ const ForgotPassword = () => {
     try {
       // Call the reset password API
       const result = await resetPassword(email);
-      
+      console.log("-----", result)
       if (result.success) {
         // Update rate limiting state
         setLastSubmitTime(Date.now());

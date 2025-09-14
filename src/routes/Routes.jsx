@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import ContactPage from "../pages/Contact/ContactPage";
 import AuthPage from "../pages/auth/AuthPage";
 import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import AskExperience from "../components/Onboarding/AskExperience";
 import AuthenticatedLayout from "../components/layout/AuthenticatedLayout";
@@ -39,6 +40,11 @@ export const routes = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPassword />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/reset-password/:token",
+    element: <ResetPassword />,
     errorElement: <ErrorPage />,
   },
   {

@@ -219,6 +219,103 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  // === CONFIRM PASSWORD RESET ===
+  confirmPasswordReset: async (token, newPassword) => {
+    if (get().loading) return { success: false, message: "Request already in progress" };
+    
+    set({ loading: true });
+
+    try {
+      // Validate inputs on client side
+      if (!token || !token.trim()) {
+        throw new Error("Reset token is required");
+      }
+
+      if (!newPassword || !newPassword.trim()) {
+        throw new Error("New password is required");
+      }
+
+      // Basic password validation
+      if (newPassword.trim().length < 8) {
+        throw new Error("Password must be at least 8 characters long");
+      }
+
+      // Make API call to confirm password reset
+      const res = await axiosInstance.post("/auth/reset-password", {
+        token: token.trim(),
+        newPassword: newPassword.trim()
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password reset confirmed:", res.data.message);
+        
+        // Clear any existing user session since password has changed
+        set({ authUser: null });
+        
+        return {
+          success: true,
+          message: res.data.message || "Password has been successfully reset"
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage = res.data.message || "Failed to reset password";
+        console.error("❌ Password reset confirmation failed:", errorMessage);
+        return {
+          success: false,
+          message: errorMessage
+        };
+      }
+    } catch (error) {
+      console.error("❌ Password reset confirmation error:", error);
+      
+      // Extract detailed error information
+      let errorMessage = "Failed to reset password. Please try again.";
+      
+      if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const data = error.response.data;
+        
+        switch (status) {
+          case 400:
+            errorMessage = data.message || "Invalid password or token format";
+            break;
+          case 401:
+            errorMessage = "Invalid or expired reset token. Please request a new password reset";
+            break;
+          case 404:
+            errorMessage = "Reset token not found or has been used";
+            break;
+          case 410:
+            errorMessage = "Reset token has expired. Please request a new password reset";
+            break;
+          case 429:
+            errorMessage = "Too many password reset attempts. Please wait before trying again";
+            break;
+          case 500:
+            errorMessage = "Server error. Please try again later";
+            break;
+          default:
+            errorMessage = data.message || extractErrorMessage(error, "Failed to reset password");
+        }
+      } else if (error.request) {
+        // Network error
+        errorMessage = "Network error. Please check your connection and try again";
+      } else if (error.message) {
+        // Client-side validation or other errors
+        errorMessage = error.message;
+      }
+
+      return {
+        success: false,
+        message: errorMessage
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   // === LOADING STATE ===
   loading: false,
 }));
