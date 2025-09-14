@@ -293,7 +293,7 @@ export default () => {
             color: getLanguageColor(lang.language),
           }))
           .sort((a, b) => b.percentage - a.percentage)
-      : [{ name: "No data available", percentage: 100, color: "#6B7280" }];
+      : [{ name: "N/A", percentage: 100, color: "#6B7280" }];
 
   // Transform recent PRs data
   const transformedRecentPRs = dashboardData.recentPRs

@@ -136,4 +136,89 @@ export const useAuthStore = create((set, get) => ({
       set({ isGitHubAuth: false });
     }
   },
+
+  // === PASSWORD RESET ===
+  resetPassword: async (email) => {
+    if (get().loading) return { success: false, message: "Request already in progress" };
+    
+    set({ loading: true });
+
+    try {
+      // Validate email on client side
+      if (!email || !email.trim()) {
+        throw new Error("Email is required");
+      }
+
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      if (!emailRegex.test(email.trim())) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Make API call to reset password
+      const res = await axiosInstance.post("/auth/forgot-password", {
+        email: email.trim().toLowerCase()
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password reset email sent:", res.data.message);
+        return {
+          success: true,
+          message: res.data.message || "Password reset email sent successfully"
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage = res.data.message || "Failed to send reset email";
+        console.error("❌ Password reset failed:", errorMessage);
+        return {
+          success: false,
+          message: errorMessage
+        };
+      }
+    } catch (error) {
+      console.error("❌ Password reset error:", error);
+      
+      // Extract detailed error information
+      let errorMessage = "Failed to send reset email. Please try again.";
+      
+      if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const data = error.response.data;
+        
+        switch (status) {
+          case 400:
+            errorMessage = data.message || "Invalid email address";
+            break;
+          case 404:
+            errorMessage = "No account found with this email address";
+            break;
+          case 429:
+            errorMessage = "Too many requests. Please wait a few minutes before trying again";
+            break;
+          case 500:
+            errorMessage = "Server error. Please try again later";
+            break;
+          default:
+            errorMessage = data.message || extractErrorMessage(error, "Failed to send reset email");
+        }
+      } else if (error.request) {
+        // Network error
+        errorMessage = "Network error. Please check your connection and try again";
+      } else if (error.message) {
+        // Client-side validation or other errors
+        errorMessage = error.message;
+      }
+
+      return {
+        success: false,
+        message: errorMessage
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === LOADING STATE ===
+  loading: false,
 }));

@@ -116,7 +116,7 @@ export default function UserProfile() {
               }))
             : [
                 {
-                  name: "No data available",
+                  name: "N/A",
                   percentage: 100,
                   color: "#6B7280",
                 },

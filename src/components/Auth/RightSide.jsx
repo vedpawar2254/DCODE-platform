@@ -409,6 +409,19 @@ export const RightSide = () => {
                     {loading ? "Loading..." : "SIGN IN"}
                   </button>
                 )}
+
+                {/* Forgot Password Link (Only for Login) */}
+                {isLogin && (
+                  <div className="text-center mt-4">
+                    <button
+                      onClick={() => navigate("/forgot-password")}
+                      className="text-[#918EF4] hover:text-[#7A7BF0] text-sm font-medium transition-colors duration-200 cursor-pointer underline"
+                      disabled={loading}
+                    >
+                      Forgot your password?
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Toggle Mode */}
