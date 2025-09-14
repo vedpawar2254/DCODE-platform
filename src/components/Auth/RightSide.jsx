@@ -243,18 +243,58 @@ export const RightSide = () => {
   );
 
   // === EFFECTS ===
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/dashboard");
-      return;
-    }
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate("/dashboard");
+  //     return;
+  //   }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    if (code) {
-      handleGitHubCallback(code);
-    }
-  }, [isLoggedIn]);
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const code = urlParams.get("code");
+  //   if (code) {
+  //     handleGitHubCallback(code);
+  //   }
+  // }, [isLoggedIn]);
+  useEffect(() => {
+    (async () => {
+      window.onload = async () => {
+        if (window?.location?.search) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const code = urlParams.get("code");
+          if (code) {
+            setIsProcessingGitHubCallback(true);
+            try {
+              var axres = await axiosInstance
+                .get("/auth/github/callback?code=" + code, {
+                  withCredentials: true,
+                })
+                .then((d) => d?.data);
+
+              var check = await checkAuth();
+              if (axres?.data?.is_signedup) {
+                if (check.status) {
+                  navigate("/onboarding");
+                }
+              } else {
+                if (check.status) {
+                  navigate("/dashboard");
+                }
+              }
+            } catch (error) {
+              console.error("GitHub auth error:", error);
+              setIsProcessingGitHubCallback(false);
+            }
+          }
+        } else {
+          var check = await checkAuth();
+          if (check.status) {
+            navigate("/dashboard");
+          }
+        }
+      };
+    })();
+    return () => {};
+  }, [window]);
 
   // === RENDER HELPERS ===
   const renderGitHubLoadingState = () => (
