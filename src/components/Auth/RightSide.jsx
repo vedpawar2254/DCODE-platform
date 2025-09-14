@@ -118,6 +118,7 @@ export const RightSide = () => {
     isRegistering,
     isLoggingIn,
     isGitHubAuth,
+    isLoggedIn,
   } = useAuthStore();
 
   // === COMPUTED VALUES ===
@@ -171,7 +172,10 @@ export const RightSide = () => {
             email: formData.email.trim(),
             password: formData.password,
           });
-          if (response) navigate("/dashboard");
+
+          if (response) {
+            navigate("/dashboard");
+          }
         } else {
           response = await register({
             name: formData.username.trim(),
@@ -217,27 +221,30 @@ export const RightSide = () => {
         const data = response?.data;
         const user = response?.data?.data;
 
-        const authCheck = await checkAuth();
-        if (authCheck.status) {
+        // const authCheck = await checkAuth();
+        if (isLoggedIn) {
           const destination = user?.is_signedup ? "/onboarding" : "/dashboard";
           navigate(destination);
-          toast.success(data?.message || "Successfully authenticated with GitHub");
-        } else {
-          authUser = user;
+          toast.success(
+            data?.message || "Successfully authenticated with GitHub"
+          );
         }
       } catch (error) {
         console.error("GitHub callback error:", error);
-        toast.error(error.response?.data?.errors || "Failed to authenticate with GitHub. Please try again.");
+        toast.error(
+          error.response?.data?.errors ||
+            "Failed to authenticate with GitHub. Please try again."
+        );
       } finally {
         setIsProcessingGitHubCallback(false);
       }
     },
-    [checkAuth, navigate]
+    [checkAuth, isLoggedIn]
   );
 
   // === EFFECTS ===
   useEffect(() => {
-    if (isLoggingIn) {
+    if (isLoggedIn) {
       navigate("/dashboard");
       return;
     }
@@ -247,7 +254,7 @@ export const RightSide = () => {
     if (code) {
       handleGitHubCallback(code);
     }
-  }, [isLoggingIn, navigate, handleGitHubCallback]);
+  }, [isLoggedIn]);
 
   // === RENDER HELPERS ===
   const renderGitHubLoadingState = () => (
