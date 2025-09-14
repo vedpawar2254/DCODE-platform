@@ -1,15 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Mail, Send, CheckCircle, AlertCircle, Eye, Loader2 } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../../store/useAuthStore';
+import React, { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowLeft,
+  Mail,
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Eye,
+  Loader2,
+} from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const { resetPassword, loading } = useAuthStore();
 
   // Form state
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitAttempts, setSubmitAttempts] = useState(0);
@@ -38,7 +46,7 @@ const ForgotPassword = () => {
     let timer;
     if (cooldownRemaining > 0) {
       timer = setInterval(() => {
-        setCooldownRemaining(prev => {
+        setCooldownRemaining((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             return 0;
@@ -55,47 +63,53 @@ const ForgotPassword = () => {
   // Email validation with comprehensive rules
   const validateEmail = useCallback((email) => {
     const errors = {};
-    
+
     if (!email) {
-      errors.email = 'Email address is required';
+      errors.email = "Email address is required";
       return errors;
     }
 
     if (email.length > 254) {
-      errors.email = 'Email address is too long';
+      errors.email = "Email address is too long";
       return errors;
     }
 
     // RFC 5322 compliant email regex (simplified but robust)
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
     if (!emailRegex.test(email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
       return errors;
     }
 
     // Additional business logic validation
-    const domain = email.split('@')[1];
+    const domain = email.split("@")[1];
     if (domain) {
       // Check for common typos in popular domains
       const commonTypos = {
-        'gmail.co': 'gmail.com',
-        'gmail.cm': 'gmail.com',
-        'gmial.com': 'gmail.com',
-        'yahoo.co': 'yahoo.com',
-        'outlok.com': 'outlook.com',
-        'hotmial.com': 'hotmail.com'
+        "gmail.co": "gmail.com",
+        "gmail.cm": "gmail.com",
+        "gmial.com": "gmail.com",
+        "yahoo.co": "yahoo.com",
+        "outlok.com": "outlook.com",
+        "hotmial.com": "hotmail.com",
       };
-      
+
       if (commonTypos[domain]) {
         errors.email = `Did you mean ${email.replace(domain, commonTypos[domain])}?`;
         return errors;
       }
 
       // Block obviously fake domains
-      const suspiciousDomains = ['example.com', 'test.com', 'fake.com', 'invalid.com'];
+      const suspiciousDomains = [
+        "example.com",
+        "test.com",
+        "fake.com",
+        "invalid.com",
+      ];
       if (suspiciousDomains.includes(domain.toLowerCase())) {
-        errors.email = 'Please enter a valid email address';
+        errors.email = "Please enter a valid email address";
         return errors;
       }
     }
@@ -106,15 +120,17 @@ const ForgotPassword = () => {
   // Rate limiting check
   const checkRateLimit = useCallback(() => {
     const now = Date.now();
-    const oneHourAgo = now - (60 * 60 * 1000);
-    
+    const oneHourAgo = now - 60 * 60 * 1000;
+
     // Check if we're still in cooldown
-    if (lastSubmitTime && (now - lastSubmitTime) < (COOLDOWN_SECONDS * 1000)) {
-      const remaining = Math.ceil((COOLDOWN_SECONDS * 1000 - (now - lastSubmitTime)) / 1000);
+    if (lastSubmitTime && now - lastSubmitTime < COOLDOWN_SECONDS * 1000) {
+      const remaining = Math.ceil(
+        (COOLDOWN_SECONDS * 1000 - (now - lastSubmitTime)) / 1000
+      );
       setCooldownRemaining(remaining);
       return {
         allowed: false,
-        reason: `Please wait ${remaining} seconds before requesting another reset email`
+        reason: `Please wait ${remaining} seconds before requesting another reset email`,
       };
     }
 
@@ -123,7 +139,8 @@ const ForgotPassword = () => {
     if (attempts >= MAX_ATTEMPTS_PER_HOUR) {
       return {
         allowed: false,
-        reason: 'Too many reset attempts. Please try again later or contact support.'
+        reason:
+          "Too many reset attempts. Please try again later or contact support.",
       };
     }
 
@@ -131,87 +148,100 @@ const ForgotPassword = () => {
   }, [lastSubmitTime, submitAttempts]);
 
   // Form submission handler
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    
-    // Reset previous errors
-    setErrors({});
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    // Validate email
-    const emailErrors = validateEmail(email);
-    if (Object.keys(emailErrors).length > 0) {
-      setErrors(emailErrors);
-      return;
-    }
+      // Reset previous errors
+      setErrors({});
 
-    // Check rate limiting
-    const rateLimitCheck = checkRateLimit();
-    if (!rateLimitCheck.allowed) {
-      setErrors({ general: rateLimitCheck.reason });
-      return;
-    }
+      // Validate email
+      const emailErrors = validateEmail(email);
+      if (Object.keys(emailErrors).length > 0) {
+        setErrors(emailErrors);
+        return;
+      }
 
-    try {
-      // Call the reset password API
-      const result = await resetPassword(email);
-      console.log("-----", result)
-      if (result.success) {
-        // Update rate limiting state
-        setLastSubmitTime(Date.now());
-        setSubmitAttempts(prev => prev + 1);
-        setCooldownRemaining(COOLDOWN_SECONDS);
-        
-        // Show success state
-        setIsSubmitted(true);
-        setShowSuccessAnimation(true);
-        
-        // Clear form
-        setEmail('');
-        setErrors({});
-      } else {
-        // Handle API errors
-        const errorMessage = result.message || 'Failed to send reset email. Please try again.';
-        
-        // Handle specific error cases
-        if (errorMessage.toLowerCase().includes('not found') || 
-            errorMessage.toLowerCase().includes('does not exist')) {
-          setErrors({ 
-            email: 'No account found with this email address. Please check your email or sign up for a new account.' 
+      // Check rate limiting
+      const rateLimitCheck = checkRateLimit();
+      if (!rateLimitCheck.allowed) {
+        setErrors({ general: rateLimitCheck.reason });
+        return;
+      }
+
+      try {
+        // Call the reset password API
+        const result = await resetPassword(email);
+        console.log("-----", result);
+        if (result.success) {
+          // Update rate limiting state
+          setLastSubmitTime(Date.now());
+          setSubmitAttempts((prev) => prev + 1);
+          setCooldownRemaining(COOLDOWN_SECONDS);
+
+          // Show success state
+          setIsSubmitted(true);
+          setShowSuccessAnimation(true);
+
+          // Clear form
+          setEmail("");
+          setErrors({});
+        } else {
+          // Handle API errors
+          const errorMessage =
+            result.message || "Failed to send reset email. Please try again.";
+
+          // Handle specific error cases
+          if (
+            errorMessage.toLowerCase().includes("not found") ||
+            errorMessage.toLowerCase().includes("does not exist")
+          ) {
+            setErrors({
+              email:
+                "No account found with this email address. Please check your email or sign up for a new account.",
+            });
+          } else if (
+            errorMessage.toLowerCase().includes("rate limit") ||
+            errorMessage.toLowerCase().includes("too many")
+          ) {
+            setErrors({
+              general:
+                "Too many requests. Please wait a few minutes before trying again.",
+            });
+            setCooldownRemaining(COOLDOWN_SECONDS);
+          } else {
+            setErrors({ general: errorMessage });
+          }
+        }
+      } catch (error) {
+        console.error("Password reset error:", error);
+
+        // Handle network and unexpected errors
+        if (error.code === "NETWORK_ERROR" || !navigator.onLine) {
+          setErrors({
+            general:
+              "Network error. Please check your internet connection and try again.",
           });
-        } else if (errorMessage.toLowerCase().includes('rate limit') || 
-                   errorMessage.toLowerCase().includes('too many')) {
-          setErrors({ 
-            general: 'Too many requests. Please wait a few minutes before trying again.' 
+        } else if (error.response?.status === 429) {
+          setErrors({
+            general:
+              "Too many requests. Please wait a few minutes before trying again.",
           });
           setCooldownRemaining(COOLDOWN_SECONDS);
+        } else if (error.response?.status >= 500) {
+          setErrors({
+            general:
+              "Server error. Please try again later or contact support if the problem persists.",
+          });
         } else {
-          setErrors({ general: errorMessage });
+          setErrors({
+            general: "Something went wrong. Please try again later.",
+          });
         }
       }
-    } catch (error) {
-      console.error('Password reset error:', error);
-      
-      // Handle network and unexpected errors
-      if (error.code === 'NETWORK_ERROR' || !navigator.onLine) {
-        setErrors({ 
-          general: 'Network error. Please check your internet connection and try again.' 
-        });
-      } else if (error.response?.status === 429) {
-        setErrors({ 
-          general: 'Too many requests. Please wait a few minutes before trying again.' 
-        });
-        setCooldownRemaining(COOLDOWN_SECONDS);
-      } else if (error.response?.status >= 500) {
-        setErrors({ 
-          general: 'Server error. Please try again later or contact support if the problem persists.' 
-        });
-      } else {
-        setErrors({ 
-          general: 'Something went wrong. Please try again later.' 
-        });
-      }
-    }
-  }, [email, validateEmail, checkRateLimit, resetPassword]);
+    },
+    [email, validateEmail, checkRateLimit, resetPassword]
+  );
 
   // Animation variants
   const containerVariants = {
@@ -222,9 +252,9 @@ const ForgotPassword = () => {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -232,8 +262,8 @@ const ForgotPassword = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
   };
 
   const successVariants = {
@@ -244,15 +274,15 @@ const ForgotPassword = () => {
       transition: {
         type: "spring",
         stiffness: 300,
-        damping: 20
-      }
-    }
+        damping: 20,
+      },
+    },
   };
 
   // Render success state
   if (isSubmitted && showSuccessAnimation) {
     return (
-      <motion.div 
+      <motion.div
         className="min-h-screen bg-[#121212] flex items-center justify-center p-4"
         initial="hidden"
         animate="visible"
@@ -268,28 +298,35 @@ const ForgotPassword = () => {
               className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 300, damping: 20 }}
+              transition={{
+                delay: 0.2,
+                type: "spring",
+                stiffness: 300,
+                damping: 20,
+              }}
             >
               <CheckCircle className="w-8 h-8 text-green-500" />
             </motion.div>
 
             {/* Success Message */}
-            <motion.h1 
+            <motion.h1
               className="text-2xl font-bold text-white mb-4"
               variants={itemVariants}
             >
               Check Your Email
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               className="text-[#A1A1AA] mb-6 leading-relaxed"
               variants={itemVariants}
             >
-              We've sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
+              We've sent a password reset link to your email address. Please
+              check your inbox and follow the instructions to reset your
+              password.
             </motion.p>
 
             {/* Additional Instructions */}
-            <motion.div 
+            <motion.div
               className="bg-[#0A0A0A] border border-[#2A2A2A] rounded-lg p-4 mb-6 text-left"
               variants={itemVariants}
             >
@@ -306,17 +343,14 @@ const ForgotPassword = () => {
             </motion.div>
 
             {/* Action Buttons */}
-            <motion.div 
-              className="space-y-3"
-              variants={itemVariants}
-            >
+            <motion.div className="space-y-3" variants={itemVariants}>
               <button
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate("/auth")}
                 className="w-full bg-[#C6FF3D] text-black font-semibold py-3 px-6 rounded-lg hover:bg-[#B8E835] transition-colors"
               >
                 Back to Login
               </button>
-              
+
               {cooldownRemaining === 0 && (
                 <button
                   onClick={() => {
@@ -328,7 +362,7 @@ const ForgotPassword = () => {
                   Send Another Email
                 </button>
               )}
-              
+
               {cooldownRemaining > 0 && (
                 <div className="text-[#A1A1AA] text-sm">
                   You can request another email in {cooldownRemaining} seconds
@@ -358,11 +392,14 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Back Button */}
         <motion.button
-          onClick={() => navigate('/auth')}
+          onClick={() => navigate("/auth")}
           className="inline-flex items-center gap-2 mb-8 text-[#A1A1AA] hover:text-[#C6FF3D] transition-colors group"
           variants={itemVariants}
         >
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft
+            size={20}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
           <span>Back to Login</span>
         </motion.button>
 
@@ -377,7 +414,8 @@ const ForgotPassword = () => {
               Forgot Password?
             </h1>
             <p className="text-[#A1A1AA] leading-relaxed">
-              No worries! Enter your email address and we'll send you a link to reset your password.
+              No worries! Enter your email address and we'll send you a link to
+              reset your password.
             </p>
           </motion.div>
 
@@ -398,10 +436,17 @@ const ForgotPassword = () => {
           </AnimatePresence>
 
           {/* Form */}
-          <motion.form onSubmit={handleSubmit} className="space-y-6" variants={itemVariants}>
+          <motion.form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            variants={itemVariants}
+          >
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-white font-medium mb-2">
+              <label
+                htmlFor="email"
+                className="block text-white font-medium mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -410,21 +455,21 @@ const ForgotPassword = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => setFocusedField('email')}
+                  onFocus={() => setFocusedField("email")}
                   onBlur={() => setFocusedField(null)}
                   placeholder="Enter your email address"
                   className={`w-full bg-transparent border-2 rounded-lg px-4 py-3 text-white placeholder-[#666] transition-colors focus:outline-none ${
-                    errors.email 
-                      ? 'border-red-500 focus:border-red-400' 
-                      : focusedField === 'email'
-                        ? 'border-[#C6FF3D] focus:border-[#C6FF3D]'
-                        : 'border-[#3A3A3A] focus:border-[#C6FF3D]'
+                    errors.email
+                      ? "border-red-500 focus:border-red-400"
+                      : focusedField === "email"
+                        ? "border-[#C6FF3D] focus:border-[#C6FF3D]"
+                        : "border-[#3A3A3A] focus:border-[#C6FF3D]"
                   }`}
                   disabled={loading}
                   autoComplete="email"
                   required
                 />
-                {focusedField === 'email' && (
+                {focusedField === "email" && (
                   <motion.div
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -434,7 +479,7 @@ const ForgotPassword = () => {
                   </motion.div>
                 )}
               </div>
-              
+
               <AnimatePresence>
                 {errors.email && (
                   <motion.p
@@ -457,17 +502,17 @@ const ForgotPassword = () => {
               disabled={loading || cooldownRemaining > 0 || !email.trim()}
               className={`w-full font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${
                 loading || cooldownRemaining > 0 || !email.trim()
-                  ? 'bg-[#3A3A3A] text-[#666] cursor-not-allowed'
-                  : 'bg-[#C6FF3D] text-black hover:bg-[#B8E835] hover:shadow-lg hover:shadow-[#C6FF3D]/20'
+                  ? "bg-[#3A3A3A] text-[#666] cursor-not-allowed"
+                  : "bg-[#C6FF3D] text-black hover:bg-[#B8E835] hover:shadow-lg hover:shadow-[#C6FF3D]/20"
               }`}
               whileHover={
-                !loading && cooldownRemaining === 0 && email.trim() 
-                  ? { scale: 1.02 } 
+                !loading && cooldownRemaining === 0 && email.trim()
+                  ? { scale: 1.02 }
                   : {}
               }
               whileTap={
-                !loading && cooldownRemaining === 0 && email.trim() 
-                  ? { scale: 0.98 } 
+                !loading && cooldownRemaining === 0 && email.trim()
+                  ? { scale: 0.98 }
                   : {}
               }
             >
@@ -491,23 +536,27 @@ const ForgotPassword = () => {
           </motion.form>
 
           {/* Help Text */}
-          <motion.div 
+          <motion.div
             className="mt-6 pt-6 border-t border-[#2A2A2A] text-center"
             variants={itemVariants}
           >
             <p className="text-[#A1A1AA] text-sm mb-4">
-              Remember your password?{' '}
-              <Link 
-                to="/auth" 
+              Remember your password?{" "}
+              <Link
+                to="/auth"
                 className="text-[#C6FF3D] hover:underline font-medium"
               >
                 Sign in instead
               </Link>
             </p>
-            
+
             <p className="text-[#666] text-xs">
-              If you don't receive an email within a few minutes, check your spam folder or{' '}
-              <a href="mailto:support@dcodehq.com" className="text-[#C6FF3D] hover:underline">
+              If you don't receive an email within a few minutes, check your
+              spam folder or{" "}
+              <a
+                href="mailto:support@dcodehq.com"
+                className="text-[#C6FF3D] hover:underline"
+              >
                 contact support
               </a>
             </p>

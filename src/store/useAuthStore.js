@@ -19,6 +19,7 @@ export const useAuthStore = create((set, get) => ({
   isLoggingOut: false,
   isGitHubAuth: false,
   isLoggedIn: null,
+  loading: false,
   checkIfLoggedIn: () => {
     return new Promise(async (resolve, reject) => {
       if (!get().isCheckingAuth) {
@@ -116,6 +117,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isGitHubAuth: true });
 
     try {
+      console.log("hiii from auth store");
       // backend should handle both login & register internally
       const res = await axiosInstance.get("/auth/github");
       console.log("res", res.data);
@@ -148,17 +150,14 @@ export const useAuthStore = create((set, get) => ({
       if (!email || !email.trim()) {
         throw new Error("Email is required");
       }
-
       const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       if (!emailRegex.test(email.trim())) {
         throw new Error("Please enter a valid email address");
       }
-
       // Make API call to reset password
       const res = await axiosInstance.post("/auth/forgot-password", {
         email: email.trim().toLowerCase()
       });
-
       // Handle successful response
       if (res.data.success) {
         console.log("✅ Password reset email sent:", res.data.message);
@@ -188,7 +187,7 @@ export const useAuthStore = create((set, get) => ({
         
         switch (status) {
           case 400:
-            errorMessage = data.message || "Invalid email address";
+            errorMessage = data.errors || "Invalid email address";
             break;
           case 404:
             errorMessage = "No account found with this email address";
@@ -200,14 +199,14 @@ export const useAuthStore = create((set, get) => ({
             errorMessage = "Server error. Please try again later";
             break;
           default:
-            errorMessage = data.message || extractErrorMessage(error, "Failed to send reset email");
+            errorMessage = data.errors || extractErrorMessage(error, "Failed to send reset email");
         }
       } else if (error.request) {
         // Network error
         errorMessage = "Network error. Please check your connection and try again";
-      } else if (error.message) {
+      } else if (error.errors) {
         // Client-side validation or other errors
-        errorMessage = error.message;
+        errorMessage = error.errors;
       }
 
       return {
@@ -316,6 +315,187 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  // === LOADING STATE ===
-  loading: false,
+  // === EMAIL VERIFICATION ===
+  verifyEmail: async (token) => {
+    if (get().loading) return { success: false, message: "Request already in progress" };
+    
+    set({ loading: true });
+
+    try {
+      // Validate token on client side
+      if (!token || !token.trim()) {
+        throw new Error("Verification token is required");
+      }
+
+      // Make API call to verify email
+      const res = await axiosInstance.post("/auth/verify-email", {
+        token: token.trim()
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Email verified successfully:", res.data.message);
+        
+        // Update user in store to reflect verification status
+        const currentUser = get().authUser;
+        if (currentUser) {
+          set({ 
+            authUser: { 
+              ...currentUser, 
+              is_verified: true,
+              email_verified_at: new Date().toISOString()
+            } 
+          });
+        }
+        
+        return {
+          success: true,
+          message: res.data.message || "Email verified successfully"
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage = res.data.message || "Failed to verify email";
+        console.error("❌ Email verification failed:", errorMessage);
+        return {
+          success: false,
+          message: errorMessage
+        };
+      }
+    } catch (error) {
+      console.error("❌ Email verification error:", error);
+      
+      // Extract detailed error information
+      let errorMessage = "Failed to verify email. Please try again.";
+      
+      if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const data = error.response.data;
+        
+        switch (status) {
+          case 400:
+            errorMessage = data.message || "Invalid verification token format";
+            break;
+          case 401:
+            errorMessage = "Invalid or expired verification token";
+            break;
+          case 404:
+            errorMessage = "Verification token not found or has been used";
+            break;
+          case 410:
+            errorMessage = "Verification token has expired. Please request a new verification email";
+            break;
+          case 422:
+            errorMessage = "Email is already verified";
+            break;
+          case 429:
+            errorMessage = "Too many verification attempts. Please wait before trying again";
+            break;
+          case 500:
+            errorMessage = "Server error. Please try again later";
+            break;
+          default:
+            errorMessage = data.message || extractErrorMessage(error, "Failed to verify email");
+        }
+      } else if (error.request) {
+        // Network error
+        errorMessage = "Network error. Please check your connection and try again";
+      } else if (error.message) {
+        // Client-side validation or other errors
+        errorMessage = error.message;
+      }
+
+      return {
+        success: false,
+        message: errorMessage
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === RESEND VERIFICATION EMAIL ===
+  resendVerificationEmail: async (email) => {
+    if (get().loading) return { success: false, message: "Request already in progress" };
+    
+    set({ loading: true });
+
+    try {
+      // Validate email on client side
+      if (!email || !email.trim()) {
+        throw new Error("Email is required");
+      }
+
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      if (!emailRegex.test(email.trim())) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Make API call to resend verification email
+      const res = await axiosInstance.post("/auth/resend-verification", {
+        email: email.trim().toLowerCase()
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Verification email resent:", res.data.message);
+        return {
+          success: true,
+          message: res.data.message || "Verification email sent successfully"
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage = res.data.message || "Failed to send verification email";
+        console.error("❌ Resend verification failed:", errorMessage);
+        return {
+          success: false,
+          message: errorMessage
+        };
+      }
+    } catch (error) {
+      console.error("❌ Resend verification email error:", error);
+      
+      // Extract detailed error information
+      let errorMessage = "Failed to send verification email. Please try again.";
+      
+      if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        const data = error.response.data;
+        
+        switch (status) {
+          case 400:
+            errorMessage = data.message || "Invalid email address";
+            break;
+          case 404:
+            errorMessage = "No account found with this email address";
+            break;
+          case 422:
+            errorMessage = "Email is already verified";
+            break;
+          case 429:
+            errorMessage = "Too many requests. Please wait a few minutes before trying again";
+            break;
+          case 500:
+            errorMessage = "Server error. Please try again later";
+            break;
+          default:
+            errorMessage = data.message || extractErrorMessage(error, "Failed to send verification email");
+        }
+      } else if (error.request) {
+        // Network error
+        errorMessage = "Network error. Please check your connection and try again";
+      } else if (error.message) {
+        // Client-side validation or other errors
+        errorMessage = error.message;
+      }
+
+      return {
+        success: false,
+        message: errorMessage
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));

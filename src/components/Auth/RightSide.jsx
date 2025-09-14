@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
@@ -138,8 +138,9 @@ export const RightSide = () => {
   };
   useEffect(() => {
     (async () => {
-      var check = await checkAuth();
-          if (check.status) {
+
+      // var check = await checkAuth();
+          if (isLoggingIn) {
             navigate("/dashboard");
           }
       window.onload = async () => {
@@ -209,11 +210,12 @@ export const RightSide = () => {
       };
     })();
     return () => {};
-  }, [window]);
+  }, [window,isLoggingIn]);
 
   return (
     <div className="flex-1 flex items-center justify-center min-h-screen px-4 py-6 lg:p-8">
-      <div className="w-full max-w-md">{isProcessingGitHubCallback ? (
+      <div className="w-full max-w-md">
+        {isProcessingGitHubCallback ? (
           /* GitHub Callback Loading State */
           <motion.div
             initial={{ opacity: 0 }}
@@ -222,7 +224,9 @@ export const RightSide = () => {
           >
             <div className="flex flex-col items-center space-y-4">
               <div className="w-12 h-12 border-4 border-[#BCDD19] border-t-transparent rounded-full animate-spin"></div>
-              <h2 className="text-xl lg:text-2xl font-bold text-white">Logging in...</h2>
+              <h2 className="text-xl lg:text-2xl font-bold text-white">
+                Logging in...
+              </h2>
               <p className="text-gray-400 text-sm lg:text-base">
                 Please wait while we sign you in with GitHub
               </p>
@@ -385,7 +389,20 @@ export const RightSide = () => {
                           }))
                         }
                       >
-                        I accept the terms & Condition
+                        I accept the {" "}
+                        <Link
+                          to={"/terms"}
+                          className="text-[#918EF4] hover:underline"
+                        >
+                          terms
+                        </Link>{" "}
+                        & {""}
+                        <Link
+                          to={"/privacy"}
+                          className="text-[#918EF4] hover:underline"
+                        >
+                          Condition
+                        </Link>
                       </label>
                     </div>
                     {/* Inline Submit Button for Signup */}

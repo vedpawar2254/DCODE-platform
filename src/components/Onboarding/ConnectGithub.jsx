@@ -1,21 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import Button from "../ui/Button/Button";
 import { useAuthStore } from "../../store/useAuthStore";
 import { axiosInstance } from "../../utils/axios";
+import { useState } from "react";
 
 export default function ConnectGithub() {
   const navigate = useNavigate();
-  const { authUser, githubAuth } = useAuthStore();
+  const { authUser, githubAuth, isGitHubAuth } = useAuthStore();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Dummy handleGithub function (replace with your actual logic)
   const handleGithub = async () => {
     // Redirect to GitHub OAuth or your auth logic
     await githubAuth();
   };
+  
   const handleLogout = async () => {
-    await axiosInstance.post("/auth/logout");
-    navigate("/auth");
+    setIsLoggingOut(true);
+    try {
+      await axiosInstance.post("/auth/logout");
+      navigate("/auth");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -83,16 +94,32 @@ export default function ConnectGithub() {
         className="flex gap-5"
       >
         <Button
-          className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+          className="rounded-xl bg-gradient-to-r from-[#C6FF3D] to-[#01FF80] text-black font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           onClick={handleGithub}
+          disabled={isGitHubAuth || isLoggingOut}
         >
-          Connect with GitHub
+          {isGitHubAuth ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              Connecting...
+            </>
+          ) : (
+            "Connect with GitHub"
+          )}
         </Button>
         <Button
-          className="rounded-xl border-none bg-gray-800 hover:bg-gray-700 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg"
+          className="rounded-xl border-none bg-gray-800 hover:bg-gray-700 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           onClick={handleLogout}
+          disabled={isGitHubAuth || isLoggingOut}
         >
-          Logout
+          {isLoggingOut ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              Logging out...
+            </>
+          ) : (
+            "Logout"
+          )}
         </Button>
       </motion.div>
     </motion.div>
