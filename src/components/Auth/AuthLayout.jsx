@@ -7,18 +7,16 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthLayout = () => {
   var navigate = useNavigate();
-  const { checkAuth } = useAuthStore();
+  const { checkAuth, isLoggedIn } = useAuthStore();
   useEffect(() => {
     (async () => {
       window.addEventListener("DOMContentLoaded", async () => {
         var check = await checkAuth();
-        if (check.status) {
-          if (check?.is_signedup) {
+          if (isLoggedIn) {
             navigate("/onboarding");
           } else {
             navigate("/dashboard");
           }
-        }
       });
     })();
   }, []);

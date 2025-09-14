@@ -11,7 +11,8 @@ const AuthenticatedLayoutContent = () => {
 
   useEffect(() => {
     (async () => {
-      // var loggedin = await checkAuth();
+      var loggedin = await checkAuth();
+      console.log("trgefdw",loggedin)
       if (isLoggedIn === false) {
         console.log("login------", isLoggedIn);
         if (!isLoggedIn) {
