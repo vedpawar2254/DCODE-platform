@@ -3,7 +3,6 @@ import { axiosInstance } from "../utils/axios";
 import { toast } from "sonner";
 
 const extractErrorMessage = (error, fallback = "Something went wrong") => {
-  if (error?.response?.data?.message) return error.response.data.message;
   if (error?.response?.data?.errors) return error.response.data.errors;
   if (error?.message) return error.message;
   return fallback;
@@ -15,7 +14,7 @@ export const useAuthStore = create((set, get) => ({
   // loading states
   isCheckingAuth: null,
   isRegistering: false,
-  isLoggingIn: false,
+  // isLoggingIn: false,
   isLoggingOut: false,
   isGitHubAuth: false,
   isLoggedIn: null,
@@ -39,7 +38,7 @@ export const useAuthStore = create((set, get) => ({
           timeout: 8000, // safeguard slow network
         });
         set({ authUser: res.data, isLoggedIn: true });
-        resolve({ status: true, is_signedup: res.data.is_signedup });
+        resolve({ status: true });
       } catch (error) {
         console.error("❌ Auth check failed:", error);
         set({ authUser: null, isLoggedIn: false });
@@ -57,14 +56,13 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const res = await axiosInstance.post("/auth/register", data);
-      set({ authUser: res.data.user ?? res.data });
-
+      console.log("res----", res);
+      set({ authUser: res.data.data ?? res.data });
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
-      const msg = extractErrorMessage(error, "Registration failed");
       console.error("❌ Registration error:", error);
-      toast.error(msg);
+      toast.error(error.response?.data?.errors || "Registration failed");
       return false;
     } finally {
       set({ isRegistering: false });
@@ -83,6 +81,19 @@ export const useAuthStore = create((set, get) => ({
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
+      // console.warn("⚠️ Login failed, attempting auto-register...");
+      // if (data?.image) {
+      //   try {
+      //     const res = await axiosInstance.post("/auth/register", data);
+      //     set({ authUser: res.data.user ?? res.data });
+      //     return true;
+      //   } catch (regErr) {
+      //     console.error("❌ Auto-register after login failed:", regErr);
+      //     toast.error(extractErrorMessage(regErr, "Login failed"));
+      //     return false;
+      //   }
+      // }
+
       console.error("❌ Login error:", error);
       toast.error(extractErrorMessage(error, "Login failed"));
       return false;

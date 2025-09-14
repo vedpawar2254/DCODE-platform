@@ -103,17 +103,24 @@ export default function UsersListing() {
   // Handle filter changes
   const handleFilterChange = useCallback(
     (key, value) => {
-      setFilter(key, value);
+      bulkUpdate({
+        filters: {
+          ...filters,
+          [key]: value
+        }
+      });
     },
-    [setFilter]
+    [filters, bulkUpdate]
   );
 
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
-      setSearchQuery(localSearchQuery);
+      bulkUpdate({
+        searchQuery: localSearchQuery
+      });
     },
-    [localSearchQuery, setSearchQuery]
+    [localSearchQuery, bulkUpdate]
   );
 
   // Real-time search as user types (debounced)
@@ -142,6 +149,12 @@ export default function UsersListing() {
     },
     [sortBy, sortOrder, bulkUpdate]
   );
+
+  const handleSortOrderToggle = useCallback(() => {
+    bulkUpdate({
+      sortOrder: sortOrder === "asc" ? "desc" : "asc",
+    });
+  }, [sortOrder, bulkUpdate]);
 
   // Memoized values for performance
   const stats = useMemo(() => getUserStats(), [getUserStats]);
@@ -210,8 +223,9 @@ export default function UsersListing() {
   const sortOptions = useMemo(
     () => [
       { value: "createdAt", label: "Join Date" },
-      { value: "name", label: "Name" },
+      { value: "name", label: "Name (A-Z)" },
       { value: "location", label: "Location" },
+      { value: "github_username", label: "GitHub Username" },
     ],
     []
   );
@@ -219,7 +233,6 @@ export default function UsersListing() {
   const experienceLevelOptions = useMemo(
     () => [
       { value: "Beginner", label: "Beginner" },
-      { value: "Intermediate", label: "Intermediate" },
       { value: "Advanced", label: "Advanced" },
       { value: "Expert", label: "Expert" },
     ],
@@ -288,7 +301,7 @@ export default function UsersListing() {
                 value={localSearchQuery}
                 onChange={handleSearchInputChange}
                 placeholder="Search by name, bio, or location..."
-                className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg pl-10 pr-4 py-3 text-white placeholder-[#A1A1AA] focus:outline-none focus:border-[#C6FF3D] transition-colors"
+                className="w-full bg-[#121212] border border-[#3A3A3A] rounded-lg pl-10 pr-4 py-3 text-white placeholder-[#A1A1AA] focus:outline-none focus:border-[#C6FF3D] transition-colors"
               />
             </div>
             <button
@@ -306,7 +319,8 @@ export default function UsersListing() {
               <select
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value)}
-                className="bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
+                className="bg-[#121212] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
+                disabled={loading}
               >
                 {sortOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -314,10 +328,18 @@ export default function UsersListing() {
                   </option>
                 ))}
               </select>
+              {loading && (
+                <div className="w-4 h-4 border-2 border-[#C6FF3D] border-t-transparent rounded-full animate-spin"></div>
+              )}
             </div>
             <button
-              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-              className="flex items-center gap-1 text-[#A1A1AA] hover:text-white transition-colors"
+              onClick={handleSortOrderToggle}
+              disabled={loading}
+              className={`flex items-center gap-1 transition-colors ${
+                loading 
+                  ? 'text-[#666] cursor-not-allowed' 
+                  : 'text-[#A1A1AA] hover:text-white'
+              }`}
             >
               {sortOrder === "asc" ? (
                 <SortAsc size={16} />
@@ -335,7 +357,8 @@ export default function UsersListing() {
                 onChange={(e) =>
                   handleFilterChange("experience_level", e.target.value)
                 }
-                className="bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]"
+                disabled={loading}
+                className="bg-[#121212] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] disabled:opacity-50"
               >
                 <option value="">Any Level</option>
                 {experienceLevelOptions.map((option) => (
@@ -350,7 +373,7 @@ export default function UsersListing() {
             {/* {activeFiltersCount > 0 && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-2 bg-[#23252B] text-white px-4 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors text-sm"
+                className="flex items-center gap-2 bg-[#121212] text-white px-4 py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors text-sm"
               >
                 <X size={16} />
                 Clear All Filters

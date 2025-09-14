@@ -240,81 +240,85 @@ const SkillsSummaryCard = ({ skills }) => {
         </motion.div>
 
         {/* Language percentages */}
-        <motion.div
-          className="space-y-1 sm:space-y-2 h-fit grid grid-cols-2 gap-3 w-fit"
-          variants={fadeRightVariants}
-        >
-          <AnimatePresence>
-            {skills.map((lang, index) => (
-              <motion.div
-                key={lang.name}
-                className="flex items-center justify-between rounded-sm px-3 py-2 h-fit gap-[1rem]"
-                initial={{ opacity: 0, x: 20, scale: 0.8 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                transition={{
-                  delay: 0.6 + index * 0.1,
-                  duration: 0.6,
-                  ease: [0.6, -0.05, 0.01, 0.99],
-                }}
-              >
+        {skills.length > 0 ? (
+          <span className="text-white h-full w-full my-auto">No Data Available</span>
+        ) : (
+          <motion.div
+            className="space-y-1 sm:space-y-2 h-fit grid grid-cols-2 gap-3 w-fit"
+            variants={fadeRightVariants}
+          >
+            <AnimatePresence>
+              {skills.map((lang, index) => (
                 <motion.div
-                  className="flex items-center gap-2"
-                  // whileHover={{ x: 2 }}
+                  key={lang.name}
+                  className="flex items-center justify-between rounded-sm px-3 py-2 h-fit gap-[1rem]"
+                  initial={{ opacity: 0, x: 20, scale: 0.8 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  transition={{
+                    delay: 0.6 + index * 0.1,
+                    duration: 0.6,
+                    ease: [0.6, -0.05, 0.01, 0.99],
+                  }}
                 >
-                  <motion.img
-                    src={`https://cdn.simpleicons.org/${lang.name}`}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.style.filter = `invert(1)`;
-                      e.target.src = "/images/code-icon.png";
-                    }}
-                    className="w-6 h-6 object-contain"
-                    alt=""
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    transition={{
-                      delay: 0.8 + index * 0.1,
-                      duration: 0.6,
-                      ease: [0.6, -0.05, 0.01, 0.99],
-                    }}
-                    // whileHover={{
-                    //   scale: 1.2,
-                    //   rotate: 5,
-                    //   filter: "brightness(1.2)",
-                    // }}
-                  />
+                  <motion.div
+                    className="flex items-center gap-2"
+                    // whileHover={{ x: 2 }}
+                  >
+                    <motion.img
+                      src={`https://cdn.simpleicons.org/${lang.name}`}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.style.filter = `invert(1)`;
+                        e.target.src = "/images/code-icon.png";
+                      }}
+                      className="w-6 h-6 object-contain"
+                      alt=""
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      transition={{
+                        delay: 0.8 + index * 0.1,
+                        duration: 0.6,
+                        ease: [0.6, -0.05, 0.01, 0.99],
+                      }}
+                      // whileHover={{
+                      //   scale: 1.2,
+                      //   rotate: 5,
+                      //   filter: "brightness(1.2)",
+                      // }}
+                    />
+                    <motion.span
+                      className="text-xs sm:text-sm text-gray-300"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.9 + index * 0.1 }}
+                    >
+                      {lang.name}
+                    </motion.span>
+                  </motion.div>
+
                   <motion.span
-                    className="text-xs sm:text-sm text-gray-300"
+                    className="text-xs sm:text-sm text-gray-400 font-mono"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 + index * 0.1 }}
+                    transition={{ delay: 1 + index * 0.1 }}
                   >
-                    {lang.name}
+                    <motion.span
+                      animate={{
+                        color:
+                          animatedPercentages[lang.name] === lang.percentage
+                            ? ["#9CA3AF", "#C6FF3D", "#9CA3AF"]
+                            : "#9CA3AF",
+                      }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {animatedPercentages[lang.name] || 0}%
+                    </motion.span>
                   </motion.span>
                 </motion.div>
-
-                <motion.span
-                  className="text-xs sm:text-sm text-gray-400 font-mono"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                >
-                  <motion.span
-                    animate={{
-                      color:
-                        animatedPercentages[lang.name] === lang.percentage
-                          ? ["#9CA3AF", "#C6FF3D", "#9CA3AF"]
-                          : "#9CA3AF",
-                    }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {animatedPercentages[lang.name] || 0}%
-                  </motion.span>
-                </motion.span>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </motion.div>
     </motion.div>
   );

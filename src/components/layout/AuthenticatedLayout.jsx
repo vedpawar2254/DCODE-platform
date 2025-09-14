@@ -7,12 +7,13 @@ import { useEffect } from "react";
 
 const AuthenticatedLayoutContent = () => {
   const navigate = useNavigate();
-  const { checkAuth, isLoggedIn } = useAuthStore();
+  const { checkAuth, isLoggedIn, authUser } = useAuthStore();
 
   useEffect(() => {
     (async () => {
-      // var loggedin = await checkAuth();
-      if (isLoggedIn === false) {
+      var loggedin = await checkAuth();
+      console.log("------", loggedin);
+      if (loggedin.status === false) {
         console.log("login------", isLoggedIn);
         if (!isLoggedIn) {
           navigate("/auth");

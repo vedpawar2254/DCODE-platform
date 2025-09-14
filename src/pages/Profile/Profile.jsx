@@ -151,7 +151,7 @@ export default function Profile() {
                   .sort((a, b) => b.percentage - a.percentage)
               : [
                   {
-                    name: "No data available",
+                    name: "N/A",
                     percentage: 100,
                     color: "#6B7280",
                   },
