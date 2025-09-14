@@ -178,6 +178,7 @@ export const RightSide = () => {
             email: formData.email.trim(),
             password: formData.password,
           });
+          console.log("after register", response);
           if (response) navigate("/onboarding");
         }
       } catch (error) {
@@ -226,7 +227,7 @@ export const RightSide = () => {
         }
       } catch (error) {
         console.error("GitHub callback error:", error);
-        toast.error("Failed to authenticate with GitHub. Please try again.");
+        toast.error(error.response?.data?.errors || "Failed to authenticate with GitHub. Please try again.");
       } finally {
         setIsProcessingGitHubCallback(false);
       }

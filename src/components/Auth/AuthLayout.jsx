@@ -12,11 +12,13 @@ export const AuthLayout = () => {
     (async () => {
       window.addEventListener("DOMContentLoaded", async () => {
         var check = await checkAuth();
-          if (isLoggedIn) {
-            navigate("/onboarding");
-          } else {
-            navigate("/dashboard");
-          }
+        if (check) {
+          console.log("hiii from authlayout");
+          navigate("/onboarding");
+        } else {
+          navigate("/dashboard");
+          console.log("hiii from authlayoutrfewd");
+        }
       });
     })();
   }, []);
@@ -41,19 +43,15 @@ export const AuthLayout = () => {
         >
           <LeftSide />
         </motion.div>
-        
+
         {/* Mobile Logo - Only shown on mobile */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="lg:hidden flex justify-center pt-8 pb-4"
         >
-          <img
-            src="/images/d.png"
-            alt="DCODE Logo"
-            className="h-8"
-          />
+          <img src="/images/d.png" alt="DCODE Logo" className="h-8" />
         </motion.div>
 
         {/* Right Side - Full width on mobile, half width on desktop */}

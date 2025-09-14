@@ -3,7 +3,6 @@ import { axiosInstance } from "../utils/axios";
 import { toast } from "sonner";
 
 const extractErrorMessage = (error, fallback = "Something went wrong") => {
-  if (error?.response?.data?.message) return error.response.data.message;
   if (error?.response?.data?.errors) return error.response.data.errors;
   if (error?.message) return error.message;
   return fallback;
@@ -13,14 +12,12 @@ export const useAuthStore = create((set, get) => ({
   authUser: null,
 
   // loading states
-  loading: false,
   isCheckingAuth: null,
   isRegistering: false,
-  isLoggingIn: false,
+  // isLoggingIn: false,
   isLoggingOut: false,
   isGitHubAuth: false,
   isLoggedIn: null,
-
   checkIfLoggedIn: () => {
     return new Promise(async (resolve, reject) => {
       if (!get().isCheckingAuth) {
@@ -35,7 +32,6 @@ export const useAuthStore = create((set, get) => ({
     return new Promise(async (resolve, reject) => {
       if (get().isCheckingAuth) return; // prevent duplicate calls
       set({ isCheckingAuth: true });
-      set({ loading: true });
 
       try {
         const res = await axiosInstance.get("/auth/profile", {
@@ -49,7 +45,6 @@ export const useAuthStore = create((set, get) => ({
         resolve({ status: false });
       } finally {
         set({ isCheckingAuth: false });
-        set({ loading: false });
       }
     });
   },
@@ -61,14 +56,13 @@ export const useAuthStore = create((set, get) => ({
 
     try {
       const res = await axiosInstance.post("/auth/register", data);
-      set({ authUser: res.data.user ?? res.data });
-
+      console.log("res----", res);
+      set({ authUser: res.data.data ?? res.data });
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
-      const msg = extractErrorMessage(error, "Registration failed");
       console.error("❌ Registration error:", error);
-      toast.error(msg);
+      toast.error(error.response?.data?.errors || "Registration failed");
       return false;
     } finally {
       set({ isRegistering: false });
@@ -83,11 +77,23 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data.user });
-      console.log("------", res);
 
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
+      // console.warn("⚠️ Login failed, attempting auto-register...");
+      // if (data?.image) {
+      //   try {
+      //     const res = await axiosInstance.post("/auth/register", data);
+      //     set({ authUser: res.data.user ?? res.data });
+      //     return true;
+      //   } catch (regErr) {
+      //     console.error("❌ Auto-register after login failed:", regErr);
+      //     toast.error(extractErrorMessage(regErr, "Login failed"));
+      //     return false;
+      //   }
+      // }
+
       console.error("❌ Login error:", error);
       toast.error(extractErrorMessage(error, "Login failed"));
       return false;
@@ -119,417 +125,26 @@ export const useAuthStore = create((set, get) => ({
   githubAuth: async (code) => {
     if (get().isGitHubAuth) return;
     set({ isGitHubAuth: true });
-    set({ loading: true });
 
     try {
-      // console.log("hiii from auth store");
       // backend should handle both login & register internally
       const res = await axiosInstance.get("/auth/github");
-      // console.log("res", res.data);
-      console.log("--------------",res.data);
+      console.log("res", res.data);
       if (res?.data?.redirect) {
         window.location.href = res.data.redirect;
         console.log("reloaded");
       }
+
       set({ authUser: res.data.user ?? res.data });
-      console.log("--------------",res.data);
       if (res.data?.message) toast.success(res.data.message);
       return true;
     } catch (error) {
-      console.log("error here-----------", error);
       const msg = extractErrorMessage(error, "GitHub authentication failed");
       console.error("❌ GitHub auth error:", error);
       toast.error(msg);
       return false;
     } finally {
       set({ isGitHubAuth: false });
-      set({ loading: false });
-    }
-  },
-
-  // === PASSWORD RESET ===
-  resetPassword: async (email) => {
-    if (get().loading)
-      return { success: false, message: "Request already in progress" };
-
-    set({ loading: true });
-
-    try {
-      // Validate email on client side
-      if (!email || !email.trim()) {
-        throw new Error("Email is required");
-      }
-      const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-      if (!emailRegex.test(email.trim())) {
-        throw new Error("Please enter a valid email address");
-      }
-      // Make API call to reset password
-      const res = await axiosInstance.post("/auth/forgot-password", {
-        email: email.trim().toLowerCase(),
-      });
-      // Handle successful response
-      if (res.data.success) {
-        console.log("✅ Password reset email sent:", res.data.message);
-        return {
-          success: true,
-          message: res.data.message || "Password reset email sent successfully",
-        };
-      } else {
-        // Handle API-level errors
-        const errorMessage = res.data.message || "Failed to send reset email";
-        console.error("❌ Password reset failed:", errorMessage);
-        return {
-          success: false,
-          message: errorMessage,
-        };
-      }
-    } catch (error) {
-      console.error("❌ Password reset error:", error);
-
-      // Extract detailed error information
-      let errorMessage = "Failed to send reset email. Please try again.";
-
-      if (error.response) {
-        // Server responded with error status
-        const status = error.response.status;
-        const data = error.response.data;
-
-        switch (status) {
-          case 400:
-            errorMessage = data.errors || "Invalid email address";
-            break;
-          case 404:
-            errorMessage = "No account found with this email address";
-            break;
-          case 429:
-            errorMessage =
-              "Too many requests. Please wait a few minutes before trying again";
-            break;
-          case 500:
-            errorMessage = "Server error. Please try again later";
-            break;
-          default:
-            errorMessage =
-              data.errors ||
-              extractErrorMessage(error, "Failed to send reset email");
-        }
-      } else if (error.request) {
-        // Network error
-        errorMessage =
-          "Network error. Please check your connection and try again";
-      } else if (error.errors) {
-        // Client-side validation or other errors
-        errorMessage = error.errors;
-      }
-
-      return {
-        success: false,
-        message: errorMessage,
-      };
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  // === CONFIRM PASSWORD RESET ===
-  confirmPasswordReset: async (token, newPassword) => {
-    if (get().loading)
-      return { success: false, message: "Request already in progress" };
-
-    set({ loading: true });
-
-    try {
-      // Validate inputs on client side
-      if (!token || !token.trim()) {
-        throw new Error("Reset token is required");
-      }
-
-      if (!newPassword || !newPassword.trim()) {
-        throw new Error("New password is required");
-      }
-
-      // Basic password validation
-      if (newPassword.trim().length < 8) {
-        throw new Error("Password must be at least 8 characters long");
-      }
-
-      // Make API call to confirm password reset
-      const res = await axiosInstance.post("/auth/reset-password", {
-        token: token.trim(),
-        newPassword: newPassword.trim(),
-      });
-
-      // Handle successful response
-      if (res.data.success) {
-        console.log("✅ Password reset confirmed:", res.data.message);
-
-        // Clear any existing user session since password has changed
-        set({ authUser: null });
-
-        return {
-          success: true,
-          message: res.data.message || "Password has been successfully reset",
-        };
-      } else {
-        // Handle API-level errors
-        const errorMessage = res.data.message || "Failed to reset password";
-        console.error("❌ Password reset confirmation failed:", errorMessage);
-        return {
-          success: false,
-          message: errorMessage,
-        };
-      }
-    } catch (error) {
-      console.error("❌ Password reset confirmation error:", error);
-
-      // Extract detailed error information
-      let errorMessage = "Failed to reset password. Please try again.";
-
-      if (error.response) {
-        // Server responded with error status
-        const status = error.response.status;
-        const data = error.response.data;
-
-        switch (status) {
-          case 400:
-            errorMessage = data.message || "Invalid password or token format";
-            break;
-          case 401:
-            errorMessage =
-              "Invalid or expired reset token. Please request a new password reset";
-            break;
-          case 404:
-            errorMessage = "Reset token not found or has been used";
-            break;
-          case 410:
-            errorMessage =
-              "Reset token has expired. Please request a new password reset";
-            break;
-          case 429:
-            errorMessage =
-              "Too many password reset attempts. Please wait before trying again";
-            break;
-          case 500:
-            errorMessage = "Server error. Please try again later";
-            break;
-          default:
-            errorMessage =
-              data.message ||
-              extractErrorMessage(error, "Failed to reset password");
-        }
-      } else if (error.request) {
-        // Network error
-        errorMessage =
-          "Network error. Please check your connection and try again";
-      } else if (error.message) {
-        // Client-side validation or other errors
-        errorMessage = error.message;
-      }
-
-      return {
-        success: false,
-        message: errorMessage,
-      };
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  // === EMAIL VERIFICATION ===
-  verifyEmail: async (token) => {
-    if (get().loading)
-      return { success: false, message: "Request already in progress" };
-
-    set({ loading: true });
-
-    try {
-      // Validate token on client side
-      if (!token || !token.trim()) {
-        throw new Error("Verification token is required");
-      }
-
-      // Make API call to verify email
-      const res = await axiosInstance.post("/auth/verify-email", {
-        token: token.trim(),
-      });
-
-      // Handle successful response
-      if (res.data.success) {
-        console.log("✅ Email verified successfully:", res.data.message);
-
-        // Update user in store to reflect verification status
-        const currentUser = get().authUser;
-        if (currentUser) {
-          set({
-            authUser: {
-              ...currentUser,
-              is_verified: true,
-              email_verified_at: new Date().toISOString(),
-            },
-          });
-        }
-
-        return {
-          success: true,
-          message: res.data.message || "Email verified successfully",
-        };
-      } else {
-        // Handle API-level errors
-        const errorMessage = res.data.message || "Failed to verify email";
-        console.error("❌ Email verification failed:", errorMessage);
-        return {
-          success: false,
-          message: errorMessage,
-        };
-      }
-    } catch (error) {
-      console.error("❌ Email verification error:", error);
-
-      // Extract detailed error information
-      let errorMessage = "Failed to verify email. Please try again.";
-
-      if (error.response) {
-        // Server responded with error status
-        const status = error.response.status;
-        const data = error.response.data;
-
-        switch (status) {
-          case 400:
-            errorMessage = data.message || "Invalid verification token format";
-            break;
-          case 401:
-            errorMessage = "Invalid or expired verification token";
-            break;
-          case 404:
-            errorMessage = "Verification token not found or has been used";
-            break;
-          case 410:
-            errorMessage =
-              "Verification token has expired. Please request a new verification email";
-            break;
-          case 422:
-            errorMessage = "Email is already verified";
-            break;
-          case 429:
-            errorMessage =
-              "Too many verification attempts. Please wait before trying again";
-            break;
-          case 500:
-            errorMessage = "Server error. Please try again later";
-            break;
-          default:
-            errorMessage =
-              data.message ||
-              extractErrorMessage(error, "Failed to verify email");
-        }
-      } else if (error.request) {
-        // Network error
-        errorMessage =
-          "Network error. Please check your connection and try again";
-      } else if (error.message) {
-        // Client-side validation or other errors
-        errorMessage = error.message;
-      }
-
-      return {
-        success: false,
-        message: errorMessage,
-      };
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  // === RESEND VERIFICATION EMAIL ===
-  resendVerificationEmail: async (email) => {
-    if (get().loading)
-      return { success: false, message: "Request already in progress" };
-
-    set({ loading: true });
-
-    try {
-      // Validate email on client side
-      if (!email || !email.trim()) {
-        throw new Error("Email is required");
-      }
-
-      const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-      if (!emailRegex.test(email.trim())) {
-        throw new Error("Please enter a valid email address");
-      }
-
-      // Make API call to resend verification email
-      const res = await axiosInstance.post("/auth/resend-verification", {
-        email: email.trim().toLowerCase(),
-      });
-
-      // Handle successful response
-      if (res.data.success) {
-        console.log("✅ Verification email resent:", res.data.message);
-        return {
-          success: true,
-          message: res.data.message || "Verification email sent successfully",
-        };
-      } else {
-        // Handle API-level errors
-        const errorMessage =
-          res.data.message || "Failed to send verification email";
-        console.error("❌ Resend verification failed:", errorMessage);
-        return {
-          success: false,
-          message: errorMessage,
-        };
-      }
-    } catch (error) {
-      console.error("❌ Resend verification email error:", error);
-
-      // Extract detailed error information
-      let errorMessage = "Failed to send verification email. Please try again.";
-
-      if (error.response) {
-        // Server responded with error status
-        const status = error.response.status;
-        const data = error.response.data;
-
-        switch (status) {
-          case 400:
-            errorMessage = data.message || "Invalid email address";
-            break;
-          case 404:
-            errorMessage = "No account found with this email address";
-            break;
-          case 422:
-            errorMessage = "Email is already verified";
-            break;
-          case 429:
-            errorMessage =
-              "Too many requests. Please wait a few minutes before trying again";
-            break;
-          case 500:
-            errorMessage = "Server error. Please try again later";
-            break;
-          default:
-            errorMessage =
-              data.message ||
-              extractErrorMessage(error, "Failed to send verification email");
-        }
-      } else if (error.request) {
-        // Network error
-        errorMessage =
-          "Network error. Please check your connection and try again";
-      } else if (error.message) {
-        // Client-side validation or other errors
-        errorMessage = error.message;
-      }
-
-      return {
-        success: false,
-        message: errorMessage,
-      };
-    } finally {
-      set({ loading: false });
     }
   },
 }));
