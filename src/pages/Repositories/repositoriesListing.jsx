@@ -1,14 +1,59 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRepositoriesStore } from "../../store/useRepositoriesStore";
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Star, Users, Cpu, Github, Eye, FolderOpen,
-  LayoutGrid, List, Search, Filter, BookOpen, Calendar, Tag
+  Star,
+  Cpu,
+  LayoutGrid,
+  List,
+  Search,
+  Filter,
+  BookOpen,
+  Calendar,
+  Tag,
+  SortAsc,
+  SortDesc
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Animation Variants for a consistent look and feel
+const heroVariants = {
+  hidden: { opacity: 0, y: -50, scale: 0.9, filter: "blur(20px)" },
+  visible: {
+    opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+    transition: { duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+};
+
 const RepositoriesListing = () => {
-  // --- STATE FROM ZUSTAND STORE ---
   const {
     projects,
     pagination,
@@ -26,11 +71,12 @@ const RepositoriesListing = () => {
 
   const navigate = useNavigate();
 
+  // Local UI State
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
 
- 
+  // Initial Data Fetch
   useEffect(() => {
     fetchProjects();
   }, []); // Runs only once
@@ -48,16 +94,30 @@ const RepositoriesListing = () => {
     return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
   };
 
+  // --- DERIVED STATE & HANDLERS FOR ADVANCED SORTING ---
+  const currentSortBy = useMemo(() => (sort === 'stars' ? 'stars' : 'date'), [sort]);
+  const currentSortOrder = useMemo(() => (sort === 'oldest' ? 'asc' : 'desc'), [sort]);
 
-  const allTags = useMemo(() => {
-    const tagSet = new Set(projects.flatMap(p => p.tags || []));
-    return Array.from(tagSet).sort();
-  }, [projects]);
+  const handleSortByChange = useCallback((newSortBy) => {
+    if (newSortBy === 'stars') {
+      setSort('stars'); // 'stars' implies descending
+    } else {
+      setSort(currentSortOrder === 'asc' ? 'oldest' : 'newest');
+    }
+  }, [currentSortOrder, setSort]);
 
-  const allTechStacks = useMemo(() => {
-    const techSet = new Set(projects.flatMap(p => p.techStack || []));
-    return Array.from(techSet).sort();
-  }, [projects]);
+  const toggleSortOrder = useCallback(() => {
+    if (sort === 'newest') {
+      setSort('oldest');
+    } else if (sort === 'oldest') {
+      setSort('newest');
+    }
+  }, [sort, setSort]);
+
+
+  const allTags = useMemo(() => Array.from(new Set(projects.flatMap(p => p.tags || []))).sort(), [projects]);
+  const allTechStacks = useMemo(() => Array.from(new Set(projects.flatMap(p => p.techStack || []))).sort(), [projects]);
+  const activeFiltersCount = filters.tags.length + filters.tech.length;
 
   if (loadingList && projects.length === 0) {
     return (
@@ -67,26 +127,32 @@ const RepositoriesListing = () => {
     );
   }
 
-  const activeFiltersCount = filters.tags.length + filters.tech.length;
-
   return (
-    <div className="min-h-screen bg-[#121212] text-white">
+    <motion.div
+      className="min-h-screen bg-[#121212] text-white"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-               
+        <motion.div className="mb-6 flex items-center justify-between" variants={itemVariants}>
+          <motion.div
+              // The 'initial' and 'animate' props are now inherited from the parent motion.div
+              variants={heroVariants}
+              whileHover={{ rotateX: 2 }}
+            >
+              <h1 className="text-xl sm:text-2xl font-bold text-white">
                 Project Repositories
               </h1>
-              <p className="text-[#A1A1AA] mt-2">
+              <p className="text-[#A1A1AA] mt-2 text-sm sm:text-base">
                 Explore a <span className="text-[#BCDD19]">curated</span> collection of <span className="text-[#BCDD19]">community-driven</span> projects.
               </p>
-            </div>
-            <div className="text-[#A1A1AA] text-sm">
-                {pagination.totalProjects} project{pagination.totalProjects !== 1 ? 's' : ''} found
-            </div>
-        </div>
+          </motion.div>
+          <div className="text-[#A1A1AA] text-sm">
+              {pagination.totalProjects} project{pagination.totalProjects !== 1 ? 's' : ''} found
+          </div>
+        </motion.div>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-center mb-6 text-red-400">
@@ -95,17 +161,17 @@ const RepositoriesListing = () => {
         )}
 
         {/* Search and Filter Controls */}
-        <div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-6 mb-6">
+        <motion.div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-6 mb-6" variants={itemVariants}>
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A1A1AA]" size={20} />
-                <input
-                    type="text"
-                    value={filters.search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search by name, description, or technology..."
-                    className="w-full bg-[#121212] border border-[#3A3A3A] rounded-lg pl-12 pr-4 py-3 text-white placeholder-[#A1A1AA] focus:outline-none focus:ring-2 focus:ring-[#C6FF3D]/50 focus:border-[#C6FF3D] transition-all"
-                />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A1A1AA]" size={20} />
+              <input
+                  type="text"
+                  value={filters.search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by name, description, or technology..."
+                  className="w-full bg-[#121212] border border-[#3A3A3A] rounded-lg pl-12 pr-4 py-3 text-white placeholder-[#A1A1AA] focus:outline-none focus:ring-2 focus:ring-[#C6FF3D]/50 focus:border-[#C6FF3D] transition-all"
+              />
             </div>
             <div className="flex items-center gap-2">
               <div className="flex bg-[#121212] border border-[#3A3A3A] rounded-lg p-1">
@@ -118,14 +184,7 @@ const RepositoriesListing = () => {
               </button>
             </div>
           </div>
-          {/* <div className="flex items-center gap-2">
-            <label className="text-[#A1A1AA] text-sm">Sort by:</label>
-            <select value={sort} onChange={(e) => setSort(e.target.value)} className="bg-[#121212] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D]">
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="stars">Most Stars</option>
-            </select>
-          </div> */}
+
 
           <AnimatePresence>
             {showFilters && (
@@ -153,44 +212,56 @@ const RepositoriesListing = () => {
                 </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
         
-        {projects.length > 0 ? (
-          viewMode === 'grid' ? (
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              {projects.map((project) => (
-                <ProjectCardGrid key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                 {projects.map((project) => (
-                    <ProjectCardList key={project.id} project={project} onClick={(e) => handleRepoClick(project.id, e)} formatDate={formatDate}/>
-                ))}
-            </motion.div>
-          )
-        ) : (
-          !loadingList && <EmptyState onClear={clearFiltersAndSearch} />
+        {!loadingList && !error && (
+            projects.length > 0 ? (
+                viewMode === 'grid' ? (
+                  <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" variants={containerVariants}>
+                    {projects.map((project) => (
+                      <ProjectCardGrid key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <motion.div className="space-y-4" variants={containerVariants}>
+                      {projects.map((project) => (
+                          <ProjectCardList key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
+                      ))}
+                  </motion.div>
+                )
+            ) : (
+                <EmptyState onClear={clearFiltersAndSearch} />
+            )
         )}
 
         {pagination.totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-8">
+            <motion.div 
+              className="flex justify-center items-center gap-2 mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
                 {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
                     <button key={page} onClick={() => goToPage(page)} className={`px-4 py-2 text-sm rounded-lg transition-colors ${pagination.currentPage === page ? 'bg-[#C6FF3D] text-black font-semibold' : 'bg-[#2A2A2A] text-white hover:bg-[#3A3A3A]'}`}>
                         {page}
                     </button>
                 ))}
-            </div>
+            </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 // --- Child Components ---
 
 const ProjectCardGrid = ({ project, onClick, formatDate }) => (
-    <motion.div onClick={onClick} className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:border-[#C6FF3D]/50 group flex flex-col" layout>
+    <motion.div 
+      onClick={onClick} 
+      className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:border-[#C6FF3D]/50 group flex flex-col" 
+      variants={cardVariants}
+      layout
+    >
         <div className="flex-grow">
             <h3 className="text-white font-semibold text-lg group-hover:text-[#C6FF3D] transition-colors truncate mb-2">{project.name}</h3>
             <p className="text-[#A1A1AA] text-sm mb-4 line-clamp-2 leading-relaxed">{project.description || "No description available."}</p>
@@ -204,22 +275,23 @@ const ProjectCardGrid = ({ project, onClick, formatDate }) => (
         </div>
         <div className="pt-4 border-t border-[#23252B] mt-auto">
         {project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className=" text-[#A1A1AA] text-xs font-medium pr-2 "># {tag}</span>
-                    ))}
+            <span key={tag} className=" text-[#A1A1AA] text-xs font-medium pr-2 "># {tag}</span>
+        ))}
             <div className="flex items-center justify-between text-[#A1A1AA] text-xs mb-4 mt-4">
                 <div className="flex items-center gap-1.5" title="Stars"><Star size={14} className="text-yellow-400" /> <span>{project.stars || 0}</span></div>
                 <div className="flex items-center gap-1.5" title="Last Updated"><Calendar size={14} /> <span>{formatDate(project.updatedAt)}</span></div>
-            </div>
-            <div className="flex gap-2">
-                {/* <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-transparent border border-[#3A3A3A] text-white py-2 rounded-lg hover:bg-[#2A2A2A] transition-colors text-sm font-medium"><Github size={16} /> Code</a> */}
-                {/* {project.liveDemoUrl && (<a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#C6FF3D] to-[#b3e230] text-black font-semibold py-2 rounded-lg transition-all transform hover:scale-105 text-sm"><Eye size={16} /> Demo</a>)} */}
             </div>
         </div>
     </motion.div>
 );
 
 const ProjectCardList = ({ project, onClick, formatDate }) => (
-  <motion.div onClick={onClick} className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:bg-[#1C1C1C] group" layout>
+  <motion.div 
+    onClick={onClick} 
+    className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5 transition-all duration-300 cursor-pointer hover:bg-[#1C1C1C] group" 
+    variants={cardVariants}
+    layout
+  >
     <div className="flex flex-col md:flex-row gap-6">
       <div className="flex-1">
         <h3 className="text-white font-semibold text-lg group-hover:text-[#C6FF3D] transition-colors mb-2">{project.name}</h3>
@@ -234,28 +306,30 @@ const ProjectCardList = ({ project, onClick, formatDate }) => (
           <div className="flex items-center gap-2"><Star size={14} className="text-yellow-400" /><span>{project.stars || 0}</span></div>
           <div className="flex items-center gap-1.5"><Calendar size={14} /><span>{formatDate(project.updatedAt)}</span></div>
         </div>
-        <div className="flex gap-2">
-          {project.repositoryUrl && (<a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A]"><Github size={16} /></a>)}
-          {/* {project.liveDemoUrl && (<a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-[#C6FF3D] text-black rounded-lg hover:bg-[#B8E835]"><Eye size={16} /></a>)} */}
-        </div>
       </div>
     </div>
   </motion.div>
 );
 
-
 const EmptyState = ({ onClear }) => (
-    <div className="text-center py-16 col-span-full">
+    <motion.div 
+      className="text-center py-16 col-span-full"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <BookOpen className="mx-auto text-[#A1A1AA] mb-4" size={48} />
       <h3 className="text-white text-xl font-semibold mb-2">No projects found</h3>
       <p className="text-[#A1A1AA] mb-6">Try adjusting your search or clearing the filters.</p>
-      <button
+      <motion.button
         onClick={onClear}
-        className="bg-gradient-to-r from-[#C6FF3D] to-[#b3e230] text-black font-semibold px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-[#C6FF3D]/20 transition-all transform hover:scale-105"
+        className="bg-gradient-to-r from-[#C6FF3D] to-[#b3e230] text-black font-semibold px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-[#C6FF3D]/20 transition-all"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         Clear Filters
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
 );
 
 export default RepositoriesListing;
