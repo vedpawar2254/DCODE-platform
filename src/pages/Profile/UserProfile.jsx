@@ -222,47 +222,39 @@ export default function UserProfile() {
                 {user.name}'s <span className="text-[#C6FF3D]">Profile</span>
               </h1> */}
               <div>
-              <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <motion.h1
-                className="text-xl sm:text-2xl font-bold text-white"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-              >
-                Contributor Profile
-              </motion.h1>
-              <motion.p
-                className="text-gray-400 text-sm md:text-base"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-              >
-                Welcome back,{" "}
-                <motion.span
-                  className="text-[#C6FF3D]"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5, duration: 0.3 }}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
                 >
-                  {user.name || "User"}!
-                </motion.span>{" "}
-                Here's your{" "}
-                <motion.span
-                  className="text-[#C6FF3D]"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.3 }}
-                >
-                  Profile
-                </motion.span>{" "}
-                overview.
-              </motion.p>
-            </motion.div>
-            </div>
+                  <motion.h1
+                    className="text-xl sm:text-2xl font-bold text-white"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                  >
+                    Contributor Profile
+                  </motion.h1>
+                  <motion.p
+                    className="text-gray-400 text-sm md:text-base"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                  >
+                    Welcome to{" "}
+                    <motion.span
+                      className="text-[#C6FF3D]"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5, duration: 0.3 }}
+                    >
+                      {user.name || "User"}
+                    </motion.span>{" "}
+                    {/* Here's your{" "} */}
+                    Profile overview.
+                  </motion.p>
+                </motion.div>
+              </div>
             </div>
             {/* Social Links */}
 

@@ -78,8 +78,8 @@ const ForgotPassword = () => {
 
       // Check cooldown
       if (cooldownRemaining > 0) {
-        setErrors({ 
-          general: `Please wait ${cooldownRemaining} seconds before requesting another reset email` 
+        setErrors({
+          general: `Please wait ${cooldownRemaining} seconds before requesting another reset email`,
         });
         return;
       }
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
       try {
         // Call the reset password API
         const result = await resetPassword(email);
-        
+
         if (result.success) {
           // Start cooldown and show success state
           setCooldownRemaining(COOLDOWN_SECONDS);
@@ -96,18 +96,25 @@ const ForgotPassword = () => {
           setErrors({});
         } else {
           // Handle API errors
-          const errorMessage = result.message || "Failed to send reset email. Please try again.";
-          
+          const errorMessage =
+            result.message || "Failed to send reset email. Please try again.";
+
           // Handle specific error cases
-          if (errorMessage.toLowerCase().includes("not found") || 
-              errorMessage.toLowerCase().includes("does not exist")) {
+          if (
+            errorMessage.toLowerCase().includes("not found") ||
+            errorMessage.toLowerCase().includes("does not exist")
+          ) {
             setErrors({
-              email: "No account found with this email address. Please check your email or sign up for a new account.",
+              email:
+                "No account found with this email address. Please check your email or sign up for a new account.",
             });
-          } else if (errorMessage.toLowerCase().includes("rate limit") || 
-                     errorMessage.toLowerCase().includes("too many")) {
+          } else if (
+            errorMessage.toLowerCase().includes("rate limit") ||
+            errorMessage.toLowerCase().includes("too many")
+          ) {
             setErrors({
-              general: "Too many requests. Please wait a few minutes before trying again.",
+              general:
+                "Too many requests. Please wait a few minutes before trying again.",
             });
             setCooldownRemaining(COOLDOWN_SECONDS);
           } else {
@@ -400,9 +407,7 @@ const ForgotPassword = () => {
                   Sending Reset Email...
                 </>
               ) : cooldownRemaining > 0 ? (
-                <>
-                  Wait {cooldownRemaining}s
-                </>
+                <>Wait {cooldownRemaining}s</>
               ) : (
                 <>
                   <Send className="w-5 h-5" />
@@ -431,7 +436,7 @@ const ForgotPassword = () => {
               If you don't receive an email within a few minutes, check your
               spam folder or{" "}
               <a
-                href="mailto:support@dcodehq.com"
+                href="mailto:dcode.codes@gmail.com"
                 className="text-[#C6FF3D] hover:underline"
               >
                 contact support
