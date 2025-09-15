@@ -84,9 +84,9 @@ export default function Contact() {
                 <div className="flex flex-col sm:flex-row">
                   <Button className="w-full sm:w-auto !py-2 !px-4">
                     <a
-                      target="_blank"
+                      
                       rel="noopener noreferrer"
-                      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+                      href={"/contact"}
                     >
                       Contact us
                     </a>

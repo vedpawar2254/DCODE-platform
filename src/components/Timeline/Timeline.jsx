@@ -80,7 +80,7 @@ const DCodeTimeline = () => {
       title: "Showcase & Recognition",
       duration: "Completion ceremony",
       description:
-        "Top performers receive internship opportunities, and community recognition",
+        "Top performers receive invaluable opportunities, and community recognition",
       icon: <Trophy className="w-6 h-6" />,
       position: "right",
     },
