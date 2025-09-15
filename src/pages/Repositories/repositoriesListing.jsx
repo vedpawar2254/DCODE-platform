@@ -151,10 +151,10 @@ const RepositoriesListing = () => {
                 <button onClick={() => setViewMode("grid")} className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-[#3A3A3A] text-white' : 'text-[#A1A1AA] hover:bg-[#2A2A2A]'}`}><LayoutGrid size={20} /></button>
                 <button onClick={() => setViewMode("list")} className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-[#3A3A3A] text-white' : 'text-[#A1A1AA] hover:bg-[#2A2A2A]'}`}><List size={20} /></button>
               </div>
-              <button onClick={() => setShowFilters(!showFilters)} className="flex w-full md:w-auto items-center justify-center gap-2 bg-transparent border border-[#3A3A3A] text-white px-4 py-3 rounded-lg hover:bg-[#2A2A2A] transition-colors relative">
+              {/* <button onClick={() => setShowFilters(!showFilters)} className="flex w-full md:w-auto items-center justify-center gap-2 bg-transparent border border-[#3A3A3A] text-white px-4 py-3 rounded-lg hover:bg-[#2A2A2A] transition-colors relative">
                 <Filter size={20} /> Filters
                 {activeFiltersCount > 0 && <span className="absolute -top-2 -right-2 bg-[#C6FF3D] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">{activeFiltersCount}</span>}
-              </button>
+              </button> */}
             </div>
           </div>
 

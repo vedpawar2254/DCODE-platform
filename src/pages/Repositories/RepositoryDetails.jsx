@@ -259,7 +259,7 @@ const RepositoryDetails = () => {
             <div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-5">
               <img src={repoImage} alt={`${repository.name} preview`} className="w-full h-40 object-cover rounded-lg mb-4 bg-[#23252B]" onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_REPO_IMAGE; }} />
               <div className="space-y-4">
-                <SidebarInfoItem icon={<Users size={14} />} label="Maintainer" value={repository.assignedMentor || "Not Assigned"} />
+                <SidebarInfoItem icon={<Users size={14} />} label="Mentor" value={repository.assignedMentor || "Not Assigned"} />
                 <SidebarInfoItem icon={<FileText size={14} />} label="License" value={repository.license || "N/A"} />
                 <SidebarInfoItem icon={<Calendar size={14} />} label="Last Updated" value={formatDate(repository.updatedAt)} />
               </div>
