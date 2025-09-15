@@ -298,8 +298,7 @@ export default function CreateFork() {
     <>
       <div className="mb-[1.5rem] bg-transparent">
         <h1 className="text-4xl font-bold text-center">
-          Let's start with your first <span className="text-[#BCDD19]">PR</span>{" "}
-          on D<span className="text-[#BCDD19]">CODE</span>
+          Let's start with your first <span className="text-[#BCDD19]">PR</span>{" "} 
         </h1>
         <p className="text-lg text-[#A1A1AA] mt-2 text-center">
           Let's get you started on your contribution journey
