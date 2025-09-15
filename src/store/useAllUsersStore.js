@@ -11,19 +11,12 @@ const useAllUsersStore = create((set, get) => ({
   loading: false,
   error: null,
   
-  // Loading states for different operations
-  searchLoading: false,
-  filterLoading: false,
-  
   // Search and filters
   searchQuery: "",
   sortBy: "createdAt", // Join date
   sortOrder: "desc",
   filters: {
-    location: "",
-    college: "",
     experience_level: "",
-    hasGithub: false,
   },
   
   // Cache for performance
@@ -38,52 +31,12 @@ const useAllUsersStore = create((set, get) => ({
   searchDebounceTimer: null,
 
   // Actions
-  setUsers: (users) => set({ users }),
-  
-  setLoading: (loading) => set({ loading }),
-  
-  setSearchLoading: (searchLoading) => set({ searchLoading }),
-  
-  setFilterLoading: (filterLoading) => set({ filterLoading }),
-  
-  setError: (error) => set({ error }),
-  
-  setCurrentPage: (page) => set({ currentPage: page }),
-  
-  setSearchQuery: (query) => set({ 
-    searchQuery: query,
-    currentPage: 1 // Reset to first page on search
-  }),
-  
-  setSortBy: (sortBy) => set({ 
-    sortBy,
-    currentPage: 1 // Reset to first page on sort change
-  }),
-  
-  setSortOrder: (sortOrder) => set({ sortOrder }),
-  
-  setFilter: (key, value) => set((state) => ({
-    filters: {
-      ...state.filters,
-      [key]: value
-    },
-    currentPage: 1 // Reset to first page on filter change
-  })),
-  
-  setFilters: (filters) => set({ 
-    filters,
-    currentPage: 1 
-  }),
-  
   clearFilters: () => set({
     searchQuery: "",
     sortBy: "createdAt",
     sortOrder: "desc",
     filters: {
-      location: "",
-      college: "",
       experience_level: "",
-      hasGithub: false,
     },
     currentPage: 1,
   }),
@@ -95,10 +48,7 @@ const useAllUsersStore = create((set, get) => ({
     const urlSortOrder = searchParams.get('sortOrder') || 'desc';
     const urlPage = parseInt(searchParams.get('page')) || 1;
     const urlFilters = {
-      location: searchParams.get('location') || '',
-      college: searchParams.get('college') || '',
       experience_level: searchParams.get('experience_level') || '',
-      hasGithub: searchParams.get('hasGithub') === 'true',
     };
 
     return {
@@ -117,13 +67,10 @@ const useAllUsersStore = create((set, get) => ({
     const params = new URLSearchParams();
 
     if (state.searchQuery) params.set('search', state.searchQuery);
-    if (state.sortBy !== 'joinedAt') params.set('sortBy', state.sortBy);
+    if (state.sortBy !== 'createdAt') params.set('sortBy', state.sortBy);
     if (state.sortOrder !== 'desc') params.set('sortOrder', state.sortOrder);
     if (state.currentPage !== 1) params.set('page', state.currentPage.toString());
-    if (state.filters.location) params.set('location', state.filters.location);
-    if (state.filters.college) params.set('college', state.filters.college);
     if (state.filters.experience_level) params.set('experience_level', state.filters.experience_level);
-    if (state.filters.hasGithub) params.set('hasGithub', 'true');
 
     return params;
   },
@@ -289,15 +236,6 @@ const useAllUsersStore = create((set, get) => ({
     await state.fetchUsers();
   },
 
-  // Apply filters and fetch
-  applyFilters: async (newFilters) => {
-    set({ 
-      filters: { ...get().filters, ...newFilters },
-      currentPage: 1 
-    });
-    await get().fetchUsers();
-  },
-  
   // Bulk update multiple state values and fetch once
   bulkUpdate: async (updates) => {
     const currentState = get();
@@ -310,20 +248,6 @@ const useAllUsersStore = create((set, get) => ({
     
     set(newState);
     await currentState.fetchUsers();
-  },
-
-  // Sort users and fetch
-  sortUsers: async (sortBy, sortOrder = null) => {
-    const currentSortOrder = sortOrder || (get().sortBy === sortBy 
-      ? (get().sortOrder === 'asc' ? 'desc' : 'asc') 
-      : 'desc');
-    
-    set({ 
-      sortBy, 
-      sortOrder: currentSortOrder,
-      currentPage: 1 
-    });
-    await get().fetchUsers();
   },
 
   // Go to specific page
@@ -350,20 +274,6 @@ const useAllUsersStore = create((set, get) => ({
     }
   },
 
-  // Refresh data (bypass cache)
-  refreshUsers: async () => {
-    const state = get();
-    const cacheKey = state.getCacheKey();
-    state.cache.delete(cacheKey);
-    await state.fetchUsers();
-  },
-
-  // Clear cache
-  clearCache: () => set((state) => {
-    state.cache.clear();
-    return { cache: new Map() };
-  }),
-
   // Get user stats
   getUserStats: () => {
     const state = get();
@@ -385,10 +295,7 @@ const useAllUsersStore = create((set, get) => ({
     let count = 0;
     
     if (state.searchQuery) count++;
-    if (state.filters.location) count++;
-    if (state.filters.college) count++;
     if (state.filters.experience_level) count++;
-    if (state.filters.hasGithub) count++;
     
     return count;
   },
@@ -407,25 +314,6 @@ const useAllUsersStore = create((set, get) => ({
         : state.getActiveFiltersCount() > 0 
           ? `Filtered results (${state.getActiveFiltersCount()} filters active)`
           : "All developers",
-    };
-  },
-
-  // Export current state (for debugging)
-  exportState: () => {
-    const state = get();
-    return {
-      users: state.users,
-      totalUsers: state.totalUsers,
-      currentPage: state.currentPage,
-      totalPages: state.totalPages,
-      searchQuery: state.searchQuery,
-      sortBy: state.sortBy,
-      sortOrder: state.sortOrder,
-      filters: state.filters,
-      loading: state.loading,
-      error: state.error,
-      stats: state.getUserStats(),
-      activeFiltersCount: state.getActiveFiltersCount(),
     };
   },
 }));
