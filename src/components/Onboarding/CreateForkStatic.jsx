@@ -56,10 +56,6 @@ const steps = [
           description: "Clone your forked repository (replace <your-username>)",
         },
         {
-          command: "cd DCODE-Smaple-Repo",
-          description: "Navigate into the project directory",
-        },
-        {
           command: "# Open VS Code",
           description: "Open the project in VS Code",
         },
@@ -106,14 +102,8 @@ const steps = [
           description: "Stage the README file changes",
         },
         {
-          command:
-            "git commit -m 'chore: add <your-name> to contributors list'",
-          description:
-            "Commit with a clear, descriptive message (replace <your-name>)",
-        },
-        {
-          command: "git log --oneline",
-          description: "View your commit history",
+          command: "git commit -m 'Added my name'",
+          description: "Commit with a clear, descriptive message",
         },
       ],
     },
@@ -163,8 +153,7 @@ const steps = [
         },
         {
           command: "# 3. Write a clear title and description",
-          description:
-            "E.g., 'Added Aditya Kumar to contributors list in README'",
+          description: "E.g., 'Added Aditya to contributors list in README'",
         },
         {
           command: "# 4. Click 'Create pull request'",
