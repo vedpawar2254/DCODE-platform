@@ -226,7 +226,7 @@ export default function UsersListing() {
     () => [
       { value: "Beginner", label: "Beginner" },
       { value: "Advanced", label: "Advanced" },
-      { value: "Expert", label: "Expert" },
+      // { value: "Expert", label: "Expert" },
     ],
     []
   );
@@ -238,7 +238,6 @@ export default function UsersListing() {
       animate="visible"
       variants={containerVariants}
     >
-      {console.log("user----", users)}
       <div>
         {/* Header */}
         <motion.div className="mb-6" variants={itemVariants}>

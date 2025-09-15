@@ -295,22 +295,22 @@ export const RightSide = () => {
       }
       // });
       // };
-x    })();
+    })();
     return () => {};
   }, [window]);
 
   // === RENDER HELPERS ===
   const renderGitHubLoadingState = () => (
-    <div className="flex-1 flex items-center justify-center min-h-screen px-4 py-6">
+    <div className="flex-1 flex items-center justify-center min-h-screen px-4 sm:px-6 py-6">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-center space-y-6"
+        className="text-center space-y-4 sm:space-y-6"
       >
-        <LoadingSpinner size="w-12 h-12" className="text-[#C6FF3D] mx-auto" />
+        <LoadingSpinner size="w-10 h-10 sm:w-12 sm:h-12" className="text-[#C6FF3D] mx-auto" />
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-white">Signing you in...</h2>
-          <p className="text-gray-400">
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Signing you in...</h2>
+          <p className="text-sm sm:text-base text-gray-400 px-2">
             Please wait while we authenticate with GitHub
           </p>
         </div>
@@ -319,8 +319,8 @@ x    })();
   );
 
   const renderHeader = () => (
-    <div className="text-center space-y-6">
-      <h1 className="text-3xl font-bold text-white leading-tight">
+    <div className="text-center space-y-4 sm:space-y-6">
+      <h1 className="text-2xl sm:text-3xl lg:text-3xl font-bold text-white leading-tight px-2">
         {isLogin ? (
           <>
             Welcome Back to the{" "}
@@ -490,8 +490,8 @@ x    })();
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center min-h-screen px-4 py-6">
-      <div className="w-full max-w-md">
+    <div className="flex-1 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+      <div className="w-full max-w-sm sm:max-w-md">
         <AnimatePresence mode="wait">
           <motion.div
             key={isLogin ? "login" : "signup"}
@@ -500,7 +500,7 @@ x    })();
             animate="animate"
             exit="exit"
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="space-y-8"
+            className="space-y-6 sm:space-y-8"
           >
             {renderHeader()}
             <div className="relative">
