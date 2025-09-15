@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   FiGitPullRequest,
@@ -148,8 +148,23 @@ export default () => {
             dashboardService.getLatestPRs(8),
           ]
         );
+        // console.log(statsResponse.message?.prActivityLast7Days);
+        const prActivityLast7Days = statsResponse.message?.prActivityLast7Days
+          ? statsResponse.message.prActivityLast7Days.map((item, index) => ({
+              day: item.day,
+              prs: item.prs,
+            }))
+          : [
+              { day: "Mon", prs: 0 },
+              { day: "Tue", prs: 0 },
+              { day: "Wed", prs: 0 },
+              { day: "Thu", prs: 0 },
+              { day: "Fri", prs: 0 },
+              { day: "Sat", prs: 0 },
+              { day: "Sun", prs: 0 },
+            ];
         setDashboardData({
-          stats: statsResponse.message,
+          stats: { ...statsResponse.message, prActivityLast7Days },
           profile: profileResponse.data,
           recentPRs: prsResponse.message.recentPR,
           loading: false,
@@ -180,9 +195,22 @@ export default () => {
         dashboardService.getUserProfile(),
         dashboardService.getLatestPRs(8),
       ]);
-
+      const prActivityLast7Days = statsResponse.message?.prActivityLast7Days
+        ? statsResponse.message.prActivityLast7Days.map((item, index) => ({
+            day: item.day,
+            prs: item.prs,
+          }))
+        : [
+            { day: "Mon", prs: 0 },
+            { day: "Tue", prs: 0 },
+            { day: "Wed", prs: 0 },
+            { day: "Thu", prs: 0 },
+            { day: "Fri", prs: 0 },
+            { day: "Sat", prs: 0 },
+            { day: "Sun", prs: 0 },
+          ];
       setDashboardData({
-        stats: statsResponse.message,
+        stats: { ...statsResponse.message, prActivityLast7Days },
         profile: profileResponse.data,
         recentPRs: prsResponse.message.recentPR,
         loading: false,
@@ -198,52 +226,45 @@ export default () => {
     }
   };
 
-  // Transform API data for components
-  const transformedStats = dashboardData.stats
-    ? {
-        openPRs: dashboardData.stats.totalOpenPRs || 0,
-        mergedPRs: dashboardData.stats.totalMergedPRs || 0,
-        contributions: dashboardData.stats.totalCommits || 0,
-        repositories: dashboardData.stats.avgReposContributed || 0,
-        linesOfCode: dashboardData.stats.totalLOC || 0,
-        dailyStreak: dashboardData.profile?.streak?.current || 0,
-        longest: dashboardData.profile?.streak?.longest || 0,
-        projectCount: dashboardData.stats.projectCount || 0,
-        todayContributions:
-          dashboardData.profile?.streak?.currentStreakData
-            ?.totalContributions ||
-          dashboardData.profile?.streak?.currentStreakData?.totalCommits ||
-          0,
-        todayLinesOfCode:
-          dashboardData.profile?.streak?.currentStreakData?.totalLinesOfCode ||
-          0,
-      }
-    : {
-        openPRs: 0,
-        mergedPRs: 0,
-        contributions: 0,
-        repositories: 0,
-        linesOfCode: 0,
-        dailyStreak: 0,
-        todayContributions: 0,
-        todayLinesOfCode: 0,
-      };
+  // Transform API data for components - memoized to prevent unnecessary re-renders
+  const transformedStats = useMemo(() => {
+    return dashboardData.stats
+      ? {
+          openPRs: dashboardData.stats.totalOpenPRs || 0,
+          mergedPRs: dashboardData.stats.totalMergedPRs || 0,
+          contributions: dashboardData.stats.totalCommits || 0,
+          repositories: dashboardData.stats.avgReposContributed || 0,
+          linesOfCode: dashboardData.stats.totalLOC || 0,
+          dailyStreak: dashboardData.profile?.streak?.current || 0,
+          longest: dashboardData.profile?.streak?.longest || 0,
+          projectCount: dashboardData.stats.projectCount || 0,
+          todayContributions:
+            dashboardData.profile?.streak?.currentStreakData
+              ?.totalContributions ||
+            dashboardData.profile?.streak?.currentStreakData?.totalCommits ||
+            0,
+          todayLinesOfCode:
+            dashboardData.profile?.streak?.currentStreakData
+              ?.totalLinesOfCode || 0,
+        }
+      : {
+          openPRs: 0,
+          mergedPRs: 0,
+          contributions: 0,
+          repositories: 0,
+          linesOfCode: 0,
+          dailyStreak: 0,
+          todayContributions: 0,
+          todayLinesOfCode: 0,
+        };
+  }, [dashboardData.stats, dashboardData.profile]);
+
+  // Memoize PR activity data to prevent unnecessary re-renders
+  const memoizedPRActivityData = useMemo(() => {
+    return dashboardData.stats?.prActivityLast7Days || null;
+  }, [dashboardData.stats?.prActivityLast7Days]);
 
   // Transform PR activity data
-  const transformedActivityData = dashboardData.stats?.prActivityLast7Days
-    ? dashboardData.stats.prActivityLast7Days.map((item, index) => ({
-        day: item.day,
-        prs: item.prs,
-      }))
-    : [
-        { day: "Mon", prs: 0 },
-        { day: "Tue", prs: 0 },
-        { day: "Wed", prs: 0 },
-        { day: "Thu", prs: 0 },
-        { day: "Fri", prs: 0 },
-        { day: "Sat", prs: 0 },
-        { day: "Sun", prs: 0 },
-      ];
 
   // Transform languages data with proper colors
   const getLanguageColor = (language) => {
@@ -284,8 +305,9 @@ export default () => {
     return colorMap[language] || "#6B7280";
   };
 
-  const transformedLanguages =
-    dashboardData.stats?.languagesWithPercentage?.length > 0
+  // Memoize transformed languages to prevent unnecessary re-renders
+  const transformedLanguages = useMemo(() => {
+    return dashboardData.stats?.languagesWithPercentage?.length > 0
       ? dashboardData.stats.languagesWithPercentage
           .map((lang) => ({
             name: lang.language,
@@ -294,26 +316,30 @@ export default () => {
           }))
           .sort((a, b) => b.percentage - a.percentage)
       : [{ name: "N/A", percentage: 100, color: "#6B7280" }];
+  }, [dashboardData.stats?.languagesWithPercentage]);
 
-  // Transform recent PRs data
-  const transformedRecentPRs = dashboardData.recentPRs
-    ? dashboardData.recentPRs
-        .map((pr) => ({
-          name: pr.title,
-          status:
-            pr.state === "open" ? "open" : pr.isMerged ? "merged" : "closed",
-          date: new Date(pr.createdAt).toLocaleDateString("en-US", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }),
-          pullRequestUrl: pr.pullRequestUrl,
-        }))
-        .reverse()
-    : [{ title: "No recent PRs", status: "open", date: "N/A" }];
+  // Memoize transformed recent PRs data
+  const transformedRecentPRs = useMemo(() => {
+    return dashboardData.recentPRs
+      ? dashboardData.recentPRs
+          .map((pr) => ({
+            name: pr.title,
+            status:
+              pr.state === "open" ? "open" : pr.isMerged ? "merged" : "closed",
+            date: new Date(pr.createdAt).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }),
+            pullRequestUrl: pr.pullRequestUrl,
+          }))
+          .reverse()
+      : [{ title: "No recent PRs", status: "open", date: "N/A" }];
+  }, [dashboardData.recentPRs]);
 
-  // Generate milestones based on actual data
-  const generateMilestones = (stats) => {
+  // Memoize milestones generation to prevent unnecessary re-renders
+  const transformedMilestones = useMemo(() => {
+    const stats = dashboardData.stats;
     if (!stats) return [];
 
     return [
@@ -388,9 +414,7 @@ export default () => {
           stats.projectCount > 0 ? "Achieved" : "1 remaining to achieve",
       },
     ];
-  };
-
-  const transformedMilestones = generateMilestones(dashboardData.stats);
+  }, [dashboardData.stats]);
 
   // Show loading spinner if user is not yet available
   // if (!authUser?.data?.id) {
@@ -558,7 +582,9 @@ export default () => {
                 className="lg:col-span-2"
                 variants={scrollAnimations.fadeInRight}
               >
-                <DailyPRActivityCard activityData={transformedActivityData} />
+                {memoizedPRActivityData && (
+                  <DailyPRActivityCard activityData={memoizedPRActivityData} />
+                )}
               </motion.div>
             </motion.div>
             {/* Middle Row - Milestones and Skills */}

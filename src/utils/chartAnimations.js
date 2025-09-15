@@ -7,49 +7,49 @@
  * Standard animation configuration for Recharts components
  */
 export const chartAnimations = {
-  // Area/Line charts
+  // Area/Line charts - reduced delay for smoother experience
   area: {
-    animationBegin: 600,
-    animationDuration: 1500,
-    animationEasing: "ease-in-out",
+    animationBegin: 100,
+    animationDuration: 1200,
+    animationEasing: "ease-out",
     isAnimationActive: true,
   },
 
   // Grid animations
   grid: {
     animationBegin: 0,
-    animationDuration: 800,
+    animationDuration: 600,
   },
 
   // Axis animations
   xAxis: {
-    animationBegin: 200,
-    animationDuration: 600,
+    animationBegin: 50,
+    animationDuration: 500,
   },
 
   yAxis: {
-    animationBegin: 400,
-    animationDuration: 600,
+    animationBegin: 75,
+    animationDuration: 500,
   },
 
   // Tooltip animations
   tooltip: {
-    animationDuration: 300,
+    animationDuration: 200,
   },
 
   // Bar charts
   bar: {
-    animationBegin: 400,
-    animationDuration: 1200,
+    animationBegin: 150,
+    animationDuration: 1000,
     animationEasing: "ease-out",
     isAnimationActive: true,
   },
 
   // Pie charts
   pie: {
-    animationBegin: 500,
-    animationDuration: 1000,
-    animationEasing: "ease-in-out",
+    animationBegin: 200,
+    animationDuration: 800,
+    animationEasing: "ease-out",
     isAnimationActive: true,
   },
 };
@@ -75,23 +75,19 @@ export const chartContainerVariants = {
 };
 
 /**
- * Generate a unique key for chart re-animation
+ * Generate a stable key for chart that only changes when data structure changes significantly
  * @param {Array} data - Chart data array
  * @param {string} prefix - Optional prefix for the key
- * @returns {string} Unique key for chart re-animation
+ * @returns {string} Stable key for chart
  */
 export const generateChartKey = (data, prefix = "chart") => {
   if (!data || !Array.isArray(data)) {
     return `${prefix}-loading`;
   }
 
-  // Create a simple hash of the data for consistent keys
-  const dataHash =
-    data.length > 0
-      ? data.map((item) => Object.values(item).join("")).join("").length
-      : 0;
-
-  return `${prefix}-${data.length}-${dataHash}`;
+  // Only change key when data length changes significantly or data is completely new
+  // This prevents unnecessary re-mounting of the chart
+  return `${prefix}-${data.length}`;
 };
 
 /**
@@ -106,8 +102,7 @@ export const getChartAnimationProps = (type) => {
     ...baseProps,
     // Ensure animation is always active
     isAnimationActive: true,
-    // Add stagger for multiple elements
-    animationBegin: baseProps.animationBegin + Math.random() * 100,
+    // Remove random delay to prevent inconsistent animations
   };
 };
 
