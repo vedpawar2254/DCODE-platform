@@ -112,6 +112,8 @@ const RepositoriesListing = () => {
     }
   }, [sort, setSort]);
 
+  console.log(projects[0]?._id,"asefreasrf")
+
 
   const allTags = useMemo(() => Array.from(new Set(projects.flatMap(p => p.tags || []))).sort(), [projects]);
   const allTechStacks = useMemo(() => Array.from(new Set(projects.flatMap(p => p.techStack || []))).sort(), [projects]);
