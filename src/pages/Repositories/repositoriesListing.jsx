@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRepositoriesStore } from "../../store/useRepositoriesStore";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Star,
   Cpu,
@@ -11,6 +11,8 @@ import {
   BookOpen,
   Calendar,
   Tag,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DashboardFooter from "../../components/dashboard/DashboardFooter";
@@ -60,13 +62,11 @@ const RepositoriesListing = () => {
     projects,
     pagination,
     filters,
-    sort,
     loadingList,
     error,
     fetchProjects,
     setSearch,
     setFilter,
-    setSort,
     goToPage,
     clearFiltersAndSearch,
   } = useRepositoriesStore();
@@ -77,9 +77,20 @@ const RepositoriesListing = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
 
+  // --- NEW STATE for showing all filters ---
+  const [showAllTags, setShowAllTags] = useState(false);
+  const [showAllTech, setShowAllTech] = useState(false);
+
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  // --- NEW EFFECT to reset view when switching tabs ---
+  useEffect(() => {
+    setShowAllTags(false);
+    setShowAllTech(false);
+  }, [activeFilterType]);
+
 
   const handleRepoClick = (id, event) => {
     if (event.target.tagName === "A" || event.target.closest("a")) {
@@ -183,7 +194,7 @@ const RepositoriesListing = () => {
                   <List size={20} />
                 </button>
               </div>
-              {/* <button
+              <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="flex w-full md:w-auto items-center justify-center gap-2 bg-transparent border border-[#3A3A3A] text-white px-4 py-3 rounded-lg hover:bg-[#2A2A2A] transition-colors relative"
               >
@@ -193,17 +204,16 @@ const RepositoriesListing = () => {
                     {activeFiltersCount}
                   </span>
                 )}
-              </button> */}
+              </button>
             </div>
           </div>
 
-          {/* --- MODIFIED ANIMATION --- */}
           <AnimatePresence>
             {showFilters && (
               <motion.div
                 className="overflow-hidden mt-6 pt-6 border-t border-[#23252B]"
                 initial={{ opacity: 0, maxHeight: 0 }}
-                animate={{ opacity: 1, maxHeight: "500px" }} // Animate to a height large enough for the content
+                animate={{ opacity: 1, maxHeight: "500px" }}
                 exit={{ opacity: 0, maxHeight: 0 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               >
@@ -233,14 +243,14 @@ const RepositoriesListing = () => {
                 </div>
 
                 {activeFilterType === "category" && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 items-center">
                     <button
                       onClick={() => setFilter("tags", [])}
                       className={`px-3 py-1 text-xs rounded-full ${filters.tags.length === 0 ? "bg-[#C6FF3D] text-black" : "bg-[#2A2A2A] text-[#A1A1AA]"}`}
                     >
                       All Categories
                     </button>
-                    {allTags.map((tag) => (
+                    {(showAllTags ? allTags : allTags.slice(0, 10)).map((tag) => (
                       <button
                         key={tag}
                         onClick={() => setFilter("tags", [tag])}
@@ -249,17 +259,26 @@ const RepositoriesListing = () => {
                         {tag}
                       </button>
                     ))}
+                    {allTags.length > 10 && (
+                      <button
+                        onClick={() => setShowAllTags(!showAllTags)}
+                        className="text-xs text-[#C6FF3D] hover:underline flex items-center gap-1"
+                      >
+                        {showAllTags ? "Show Less" : "Show More"}
+                        {showAllTags ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                    )}
                   </div>
                 )}
                 {activeFilterType === "tech" && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 items-center">
                     <button
                       onClick={() => setFilter("tech", [])}
                       className={`px-3 py-1 text-xs rounded-full ${filters.tech.length === 0 ? "bg-[#C6FF3D] text-black" : "bg-[#2A2A2A] text-[#A1A1AA]"}`}
                     >
                       All Technologies
                     </button>
-                    {allTechStacks.map((tech) => (
+                    {(showAllTech ? allTechStacks : allTechStacks.slice(0, 10)).map((tech) => (
                       <button
                         key={tech}
                         onClick={() => setFilter("tech", [tech])}
@@ -268,6 +287,15 @@ const RepositoriesListing = () => {
                         {tech}
                       </button>
                     ))}
+                    {allTechStacks.length > 10 && (
+                      <button
+                        onClick={() => setShowAllTech(!showAllTech)}
+                        className="text-xs text-[#C6FF3D] hover:underline flex items-center gap-1"
+                      >
+                        {showAllTech ? "Show Less" : "Show More"}
+                        {showAllTech ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                    )}
                   </div>
                 )}
               </motion.div>
@@ -339,6 +367,8 @@ const RepositoriesListing = () => {
     </motion.div>
   );
 };
+
+// --- Child Components (No changes needed below this line) ---
 
 const ProjectCardGrid = ({ project, onClick, formatDate }) => (
   <motion.div
