@@ -2,21 +2,21 @@ import { motion } from "framer-motion";
 
 export const LeftSide = () => {
   return (
-    <div className="relative flex-1 flex flex-col items-center px-12 py-10 overflow-hidden">
+    <div className="relative flex-1 flex flex-col items-center px-6 md:px-8 lg:px-12 py-6 md:py-8 lg:py-10 overflow-hidden">
       {/* Logo */}
-      <div className="w-full flex justify-center mb-2 mt-10">
+      <div className="w-full flex justify-center mb-2 mt-4 md:mt-6 lg:mt-10">
         <img
           src="/images/d.png"
           alt="DCODE Logo"
-          className="h-8"
+          className="h-6 md:h-7 lg:h-8"
         />
       </div>
 
       {/* Center Content */}
-      <div className="flex flex-col items-center text-center max-w-md flex-grow justify-center">
+      <div className="flex flex-col items-center text-center max-w-xs md:max-w-sm lg:max-w-md flex-grow justify-center">
         {/* Illustration with floating symbols */}
         <motion.div
-          className="relative inline-block mb-8"
+          className="relative inline-block mb-6 md:mb-8"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -24,7 +24,7 @@ export const LeftSide = () => {
           <motion.img
             src="/images/Illustration.png"
             alt="Developer Illustration"
-            className="rounded-lg"
+            className="rounded-lg w-full max-w-[280px] md:max-w-[320px] lg:max-w-full"
             style={{ mixBlendMode: "lighten" }}
             // animate={{ y: [0, -5, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -34,7 +34,7 @@ export const LeftSide = () => {
           <div className="absolute inset-0 pointer-events-none select-none">
             {/* Top-left {} */}
             <motion.div
-              className="absolute top-2 left-2 text-gray-500 text-2xl"
+              className="absolute top-1 md:top-2 left-1 md:left-2 text-gray-500 text-lg md:text-xl lg:text-2xl"
               initial={{ opacity: 0, scale: 0, rotate: -180 }}
               animate={{
                 opacity: 1,
@@ -54,7 +54,7 @@ export const LeftSide = () => {
 
             {/* Top-right ; */}
             <motion.div
-              className="absolute top-2 right-2 text-gray-500 text-2xl"
+              className="absolute top-1 md:top-2 right-1 md:right-2 text-gray-500 text-lg md:text-xl lg:text-2xl"
               initial={{ opacity: 0, scale: 0, x: 50 }}
               animate={{
                 opacity: 1,
@@ -74,7 +74,7 @@ export const LeftSide = () => {
 
             {/* Bottom-left <> */}
             <motion.div
-              className="absolute bottom-2 left-2 text-gray-500 text-2xl"
+              className="absolute bottom-1 md:bottom-2 left-1 md:left-2 text-gray-500 text-lg md:text-xl lg:text-2xl"
               initial={{ opacity: 0, scale: 0, y: 50 }}
               animate={{
                 opacity: 1,
@@ -92,7 +92,7 @@ export const LeftSide = () => {
 
             {/* Bottom-center 0x3234 */}
             <motion.div
-              className="absolute bottom-10 left-1/3 -translate-x-1/2 text-gray-500 text-xl"
+              className="absolute bottom-6 md:bottom-8 lg:bottom-10 left-1/3 -translate-x-1/2 text-gray-500 text-sm md:text-base lg:text-xl"
               initial={{ opacity: 0, scale: 0, rotate: 45 }}
               animate={{
                 opacity: 1,
@@ -112,7 +112,7 @@ export const LeftSide = () => {
 
             {/* Bottom-right $ */}
             <motion.div
-              className="absolute bottom-2 right-2 text-gray-500 text-2xl"
+              className="absolute bottom-1 md:bottom-2 right-1 md:right-2 text-gray-500 text-lg md:text-xl lg:text-2xl"
               initial={{ opacity: 0, scale: 0, x: -50, rotate: 90 }}
               animate={{
                 opacity: 1,
@@ -136,7 +136,7 @@ export const LeftSide = () => {
 
         {/* Heading + text */}
         <motion.h2
-          className="text-2xl font-semibold text-white mb-4"
+          className="text-lg md:text-xl lg:text-2xl font-semibold text-white mb-3 md:mb-4"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -145,7 +145,7 @@ export const LeftSide = () => {
           <span className="text-[#BCDD19]">OPEN SOURCE</span> Developers
         </motion.h2>
         <motion.p
-          className="text-sm text-[#F5F5F5]/50"
+          className="text-xs md:text-sm text-[#F5F5F5]/50 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}

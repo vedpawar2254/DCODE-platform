@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthLayout = () => {
   return (
-    <div className="relative flex flex-row h-screen w-screen overflow-hidden">
+    <div className="relative flex flex-col lg:flex-row min-h-screen w-screen overflow-hidden">
       {/* Background Gradient Circles */}
       <img
         src="/images/Group97.png"
@@ -16,21 +16,24 @@ export const AuthLayout = () => {
       />
 
       {/* Content on top of background */}
-      <div className="relative z-10 flex flex-row w-full h-full bg-[#121212]">
+      <div className="relative z-10 flex flex-col lg:flex-row w-full min-h-screen bg-[#121212]">
+        {/* Left Side - Hidden on mobile, shown on tablet and up */}
         <motion.div
           initial={{ opacity: 0.1, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex-1 flex justify-between items-center"
+          className="hidden md:flex flex-1 justify-between items-center"
           style={{ mixBlendMode: "lighten" }}
         >
           <LeftSide />
         </motion.div>
+
+        {/* Right Side - Full width on mobile, half width on desktop */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="flex-1"
+          className="flex-1 w-full lg:w-1/2 min-h-screen lg:min-h-auto"
         >
           <RightSide />
         </motion.div>
