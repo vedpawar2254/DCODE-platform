@@ -206,41 +206,41 @@ export const RightSide = () => {
     }
   }, [isGitHubAuth, githubAuth]);
 
-  const handleGitHubCallback = useCallback(
-    async (code) => {
-      setIsProcessingGitHubCallback(true);
+  // const handleGitHubCallback = useCallback(
+  //   async (code) => {
+  //     setIsProcessingGitHubCallback(true);
 
-      try {
-        const response = await axiosInstance.get(
-          `/auth/github/callback?code=${code}`,
-          {
-            withCredentials: true,
-          }
-        );
-        console.log("GitHub callback response:--------", response);
-        const data = response?.data;
-        const user = response?.data?.data;
+  //     try {
+  //       const response = await axiosInstance.get(
+  //         `/auth/github/callback?code=${code}`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       console.log("GitHub callback response:--------", response);
+  //       const data = response?.data;
+  //       const user = response?.data?.data;
 
-        // const authCheck = await checkAuth();
-        if (isLoggedIn) {
-          const destination = user?.is_signedup ? "/onboarding" : "/dashboard";
-          navigate(destination);
-          toast.success(
-            data?.message || "Successfully authenticated with GitHub"
-          );
-        }
-      } catch (error) {
-        console.error("GitHub callback error:", error);
-        toast.error(
-          error.response?.data?.errors ||
-            "Failed to authenticate with GitHub. Please try again."
-        );
-      } finally {
-        setIsProcessingGitHubCallback(false);
-      }
-    },
-    [checkAuth, isLoggedIn]
-  );
+  //       // const authCheck = await checkAuth();
+  //       if (isLoggedIn) {
+  //         const destination = user?.is_signedup ? "/onboarding" : "/dashboard";
+  //         navigate(destination);
+  //         toast.success(
+  //           data?.message || "Successfully authenticated with GitHub"
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("GitHub callback error:", error);
+  //       toast.error(
+  //         error.response?.data?.errors ||
+  //           "Failed to authenticate with GitHub. Please try again."
+  //       );
+  //     } finally {
+  //       setIsProcessingGitHubCallback(false);
+  //     }
+  //   },
+  //   [checkAuth, isLoggedIn]
+  // );
 
   // === EFFECTS ===
   // useEffect(() => {
@@ -270,18 +270,18 @@ export const RightSide = () => {
                 withCredentials: true,
               })
               .then((d) => d?.data);
-            setTimeout(async () => {
-              var check = await checkAuth();
-              if (axres?.data?.is_signedup) {
-                if (check.status) {
-                  navigate("/onboarding");
-                }
-              } else {
-                if (check.status) {
-                  navigate("/dashboard");
-                }
+            // setTimeout(async () => {
+            var check = await checkAuth();
+            if (axres?.data?.is_signedup) {
+              if (check.status) {
+                navigate("/onboarding");
               }
-            }, 1000);
+            } else {
+              if (check.status) {
+                navigate("/dashboard");
+              }
+            }
+            // }, 1000);
           } catch (error) {
             console.error("GitHub auth error:", error);
             setIsProcessingGitHubCallback(false);
