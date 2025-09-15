@@ -20,7 +20,7 @@ const TermsOfUse = () => {
 
       <h1 className="text-3xl font-bold text-white mb-6">Terms of Use</h1>
       <p className="text-white mb-4">
-        <strong>Effective Date:</strong> August 21, 2025
+        <strong>Effective Date:</strong> Sep 15, 2025
       </p>
       <p className="text-white mb-6">
         Welcome to <strong>DCODE</strong>, a vibrant, student-led community

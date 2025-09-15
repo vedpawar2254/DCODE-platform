@@ -500,7 +500,7 @@ const About = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-white font-bold text-lg mb-1">
-              <span className="text-[#BCDD19] mr-2"></span> Career Opportunities
+              <span className="text-[#BCDD19]"></span>Career Opportunities
             </h3>
             <p className="text-gray-400 text-sm">
               Unlock internships, opportunities, and industry connections.
