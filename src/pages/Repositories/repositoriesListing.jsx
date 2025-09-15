@@ -13,14 +13,7 @@ import {
   Tag,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-import {
-  useScrollAnimation,
-  scrollAnimations,
-} from "../../hooks/useScrollAnimation";
-
-import DashboardFooter from "../../components/dashboard/DashboardFooter"
-
+import DashboardFooter from "../../components/dashboard/DashboardFooter";
 
 const heroVariants = {
   hidden: { opacity: 0, y: -50, scale: 0.9, filter: "blur(20px)" },
@@ -75,14 +68,10 @@ const RepositoriesListing = () => {
   } = useRepositoriesStore();
 
   const navigate = useNavigate();
-
   
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
-
-  const [footerRef, footerControls] = useScrollAnimation(0.1);
-
   
   useEffect(() => {
     fetchProjects();
@@ -100,30 +89,7 @@ const RepositoriesListing = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
   };
-
  
-  const currentSortBy = useMemo(() => (sort === 'stars' ? 'stars' : 'date'), [sort]);
-  const currentSortOrder = useMemo(() => (sort === 'oldest' ? 'asc' : 'desc'), [sort]);
-
-  const handleSortByChange = useCallback((newSortBy) => {
-    if (newSortBy === 'stars') {
-      setSort('stars'); // 'stars' implies descending
-    } else {
-      setSort(currentSortOrder === 'asc' ? 'oldest' : 'newest');
-    }
-  }, [currentSortOrder, setSort]);
-
-  const toggleSortOrder = useCallback(() => {
-    if (sort === 'newest') {
-      setSort('oldest');
-    } else if (sort === 'oldest') {
-      setSort('newest');
-    }
-  }, [sort, setSort]);
-
-  console.log(projects[0]?._id,"asefreasrf")
-
-
   const allTags = useMemo(() => Array.from(new Set(projects.flatMap(p => p.tags || []))).sort(), [projects]);
   const allTechStacks = useMemo(() => Array.from(new Set(projects.flatMap(p => p.techStack || []))).sort(), [projects]);
   const activeFiltersCount = filters.tags.length + filters.tech.length;
@@ -147,7 +113,6 @@ const RepositoriesListing = () => {
         
         <motion.div className="mb-6 flex items-center justify-between" variants={itemVariants}>
           <motion.div
-        
               variants={heroVariants}
               whileHover={{ rotateX: 2 }}
             >
@@ -168,7 +133,6 @@ const RepositoriesListing = () => {
             {error}
           </div>
         )}
-
        
         <motion.div className="bg-[#1A1A1A] border border-[#23252B] rounded-xl p-6 mb-6" variants={itemVariants}>
           <div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -194,10 +158,16 @@ const RepositoriesListing = () => {
             </div>
           </div>
 
-
+          {/* --- MODIFIED ANIMATION --- */}
           <AnimatePresence>
             {showFilters && (
-                <motion.div className="mt-6 pt-6 border-t border-[#23252B]" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
+                <motion.div
+                  className="overflow-hidden mt-6 pt-6 border-t border-[#23252B]"
+                  initial={{ opacity: 0, maxHeight: 0 }}
+                  animate={{ opacity: 1, maxHeight: "500px" }} // Animate to a height large enough for the content
+                  exit={{ opacity: 0, maxHeight: 0 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                >
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex bg-[#121212] border border-[#3A3A3A] rounded-lg p-1">
                             <button onClick={() => setActiveFilterType("category")} className={`px-3 py-1.5 rounded-md text-sm flex items-center gap-1.5 ${activeFilterType === 'category' ? 'bg-[#3A3A3A] text-white' : 'text-[#A1A1AA] hover:text-white'}`}><Tag size={16}/>Categories</button>
@@ -221,7 +191,6 @@ const RepositoriesListing = () => {
                 </motion.div>
             )}
           </AnimatePresence>
-          
         </motion.div>
         
         {!loadingList && !error && (
@@ -229,13 +198,13 @@ const RepositoriesListing = () => {
                 viewMode === 'grid' ? (
                   <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" variants={containerVariants}>
                     {projects.map((project) => (
-                      <ProjectCardGrid key={project?.id} project={project} onClick={(e) => handleRepoClick(project?.id, e)} formatDate={formatDate}/>
+                      <ProjectCardGrid key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
                     ))}
                   </motion.div>
                 ) : (
                   <motion.div className="space-y-4" variants={containerVariants}>
                       {projects.map((project) => (
-                          <ProjectCardList key={project?.id} project={project} onClick={(e) => handleRepoClick(project?.id, e)} formatDate={formatDate}/>
+                          <ProjectCardList key={project._id} project={project} onClick={(e) => handleRepoClick(project._id, e)} formatDate={formatDate}/>
                       ))}
                   </motion.div>
                 )
@@ -260,11 +229,9 @@ const RepositoriesListing = () => {
         )}
       </div> 
       <div className='px-8 pb-8'>
-      <DashboardFooter />
+        <DashboardFooter />
       </div>
-      
     </motion.div>
-    
   );
 };
 

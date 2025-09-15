@@ -51,6 +51,7 @@ export default function NavBar() {
     { name: "About", path: "/#About" },
     { name: "Timeline", path: "/#timeline" },
     { name: "Contact", path: "/contact" },
+    {name: "FAQs", path:"/faqs"}
   ];
 
   const handleSectionNavigation = (e, sectionId) => {
