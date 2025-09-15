@@ -270,17 +270,18 @@ export const RightSide = () => {
                 withCredentials: true,
               })
               .then((d) => d?.data);
-
-            var check = await checkAuth();
-            if (axres?.data?.is_signedup) {
-              if (check.status) {
-                navigate("/onboarding");
+            setTimeout(async () => {
+              var check = await checkAuth();
+              if (axres?.data?.is_signedup) {
+                if (check.status) {
+                  navigate("/onboarding");
+                }
+              } else {
+                if (check.status) {
+                  navigate("/dashboard");
+                }
               }
-            } else {
-              if (check.status) {
-                navigate("/dashboard");
-              }
-            }
+            }, 1000);
           } catch (error) {
             console.error("GitHub auth error:", error);
             setIsProcessingGitHubCallback(false);
