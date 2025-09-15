@@ -295,7 +295,7 @@ export const RightSide = () => {
       }
       // });
       // };
-    })();
+x    })();
     return () => {};
   }, [window]);
 

@@ -13,6 +13,7 @@ import {
   Loader2,
   Settings as SettingsIcon,
   ArrowLeft,
+  Github,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -198,6 +199,10 @@ const Settings = () => {
     };
   }, [verificationState.cooldown]);
 
+  // === HELPER FUNCTIONS ===
+  // Check if user is authenticated via GitHub only (no password functionality)
+  const isGitHubOnlyUser = authUser?.data?.is_github_login === true;
+
   // === HANDLERS ===
   const handleResendVerification = useCallback(async () => {
     if (!authUser?.data?.email || verificationState.cooldown > 0) return;
@@ -366,144 +371,190 @@ const Settings = () => {
   const renderPasswordSection = () => (
     <SettingsCard
       title="Change Password"
-      description="Update your password to keep your account secure"
+      description={isGitHubOnlyUser ? "Password management is not available for GitHub accounts" : "Update your password to keep your account secure"}
     >
-      <form onSubmit={handlePasswordChange} className="space-y-4">
-        {/* Current Password */}
-        <FormField
-          label="Current Password"
-          type={showPasswords.current ? "text" : "password"}
-          value={passwordForm.currentPassword}
-          onChange={(e) =>
-            setPasswordForm((prev) => ({
-              ...prev,
-              currentPassword: e.target.value,
-            }))
-          }
-          placeholder="Enter your current password"
-          error={passwordErrors.currentPassword}
-        >
-          <button
-            type="button"
-            onClick={() => togglePasswordVisibility("current")}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+      {isGitHubOnlyUser ? (
+        <div className="text-center space-y-4 py-8">
+          <div className="w-16 h-16 bg-gray-500/20 rounded-full flex items-center justify-center mx-auto">
+            <Github className="w-8 h-8 text-gray-500" />
+          </div>
+          <div>
+            <h4 className="text-gray-400 font-semibold mb-2">GitHub Account</h4>
+            <p className="text-gray-500 text-sm max-w-md mx-auto">
+              You're signed in with GitHub. Password management is handled through your GitHub account settings.
+            </p>
+          </div>
+          <ActionButton
+            onClick={() => window.open('https://github.com/settings/security', '_blank')}
+            variant="secondary"
+            className="mt-4"
           >
-            {showPasswords.current ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
-          </button>
-        </FormField>
-
-        {/* New Password */}
-        <FormField
-          label="New Password"
-          type={showPasswords.new ? "text" : "password"}
-          value={passwordForm.newPassword}
-          onChange={(e) =>
-            setPasswordForm((prev) => ({
-              ...prev,
-              newPassword: e.target.value,
-            }))
-          }
-          placeholder="Enter your new password"
-          error={passwordErrors.newPassword}
-        >
-          <button
-            type="button"
-            onClick={() => togglePasswordVisibility("new")}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+            <Github className="w-4 h-4" />
+            Manage on GitHub
+          </ActionButton>
+        </div>
+      ) : (
+        <form onSubmit={handlePasswordChange} className="space-y-4">
+          {/* Current Password */}
+          <FormField
+            label="Current Password"
+            type={showPasswords.current ? "text" : "password"}
+            value={passwordForm.currentPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                currentPassword: e.target.value,
+              }))
+            }
+            placeholder="Enter your current password"
+            error={passwordErrors.currentPassword}
           >
-            {showPasswords.new ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
-          </button>
-        </FormField>
+            <button
+              type="button"
+              onClick={() => togglePasswordVisibility("current")}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+            >
+              {showPasswords.current ? (
+                <EyeOff className="w-5 h-5" />
+              ) : (
+                <Eye className="w-5 h-5" />
+              )}
+            </button>
+          </FormField>
 
-        {/* Confirm Password */}
-        <FormField
-          label="Confirm New Password"
-          type={showPasswords.confirm ? "text" : "password"}
-          value={passwordForm.confirmPassword}
-          onChange={(e) =>
-            setPasswordForm((prev) => ({
-              ...prev,
-              confirmPassword: e.target.value,
-            }))
-          }
-          placeholder="Confirm your new password"
-          error={passwordErrors.confirmPassword}
-        >
-          <button
-            type="button"
-            onClick={() => togglePasswordVisibility("confirm")}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+          {/* New Password */}
+          <FormField
+            label="New Password"
+            type={showPasswords.new ? "text" : "password"}
+            value={passwordForm.newPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                newPassword: e.target.value,
+              }))
+            }
+            placeholder="Enter your new password"
+            error={passwordErrors.newPassword}
           >
-            {showPasswords.confirm ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
-          </button>
-        </FormField>
+            <button
+              type="button"
+              onClick={() => togglePasswordVisibility("new")}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+            >
+              {showPasswords.new ? (
+                <EyeOff className="w-5 h-5" />
+              ) : (
+                <Eye className="w-5 h-5" />
+              )}
+            </button>
+          </FormField>
 
-        <ActionButton type="submit" loading={loading} className="w-full">
-          <Lock className="w-4 h-4" />
-          Update Password
-        </ActionButton>
-      </form>
+          {/* Confirm Password */}
+          <FormField
+            label="Confirm New Password"
+            type={showPasswords.confirm ? "text" : "password"}
+            value={passwordForm.confirmPassword}
+            onChange={(e) =>
+              setPasswordForm((prev) => ({
+                ...prev,
+                confirmPassword: e.target.value,
+              }))
+            }
+            placeholder="Confirm your new password"
+            error={passwordErrors.confirmPassword}
+          >
+            <button
+              type="button"
+              onClick={() => togglePasswordVisibility("confirm")}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+            >
+              {showPasswords.confirm ? (
+                <EyeOff className="w-5 h-5" />
+              ) : (
+                <Eye className="w-5 h-5" />
+              )}
+            </button>
+          </FormField>
+
+          <ActionButton type="submit" loading={loading} className="w-full">
+            <Lock className="w-4 h-4" />
+            Update Password
+          </ActionButton>
+        </form>
+      )}
     </SettingsCard>
   );
 
   const renderForgotPasswordSection = () => (
     <SettingsCard
       title="Forgot Password"
-      description="If you can't remember your current password, use this option to reset it"
+      description={isGitHubOnlyUser ? "Password reset is not available for GitHub accounts" : "If you can't remember your current password, use this option to reset it"}
     >
-      {forgotPasswordState.isSubmitted ? (
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
-            <CheckCircle className="w-8 h-8 text-green-500" />
+      {isGitHubOnlyUser ? (
+        <div className="text-center space-y-4 py-8">
+          <div className="w-16 h-16 bg-gray-500/20 rounded-full flex items-center justify-center mx-auto">
+            <Github className="w-8 h-8 text-gray-500" />
           </div>
           <div>
-            <h4 className="text-white font-semibold mb-2">Reset Email Sent</h4>
-            <p className="text-gray-400 text-sm">
-              Check your email for password reset instructions.
+            <h4 className="text-gray-400 font-semibold mb-2">GitHub Account</h4>
+            <p className="text-gray-500 text-sm max-w-md mx-auto">
+              Password reset is handled through GitHub. You can reset your GitHub password or manage two-factor authentication in your GitHub settings.
             </p>
           </div>
           <ActionButton
-            onClick={() =>
-              setForgotPasswordState((prev) => ({
-                ...prev,
-                isSubmitted: false,
-              }))
-            }
+            onClick={() => window.open('https://github.com/password_reset', '_blank')}
             variant="secondary"
+            className="mt-4"
           >
-            Send Another Email
+            <Github className="w-4 h-4" />
+            Reset on GitHub
           </ActionButton>
         </div>
       ) : (
-        <form onSubmit={handleForgotPassword} className="space-y-4">
-          <FormField
-            label="Email Address"
-            type="email"
-            value={forgotPasswordEmail}
-            onChange={(e) => setForgotPasswordEmail(e.target.value)}
-            placeholder="Enter your email address"
-          />
-          <ActionButton
-            type="submit"
-            loading={forgotPasswordState.isLoading}
-            className="w-full"
-          >
-            <Send className="w-4 h-4" />
-            Send Reset Email
-          </ActionButton>
-        </form>
+        <>
+          {forgotPasswordState.isSubmitted ? (
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle className="w-8 h-8 text-green-500" />
+              </div>
+              <div>
+                <h4 className="text-white font-semibold mb-2">Reset Email Sent</h4>
+                <p className="text-gray-400 text-sm">
+                  Check your email for password reset instructions.
+                </p>
+              </div>
+              <ActionButton
+                onClick={() =>
+                  setForgotPasswordState((prev) => ({
+                    ...prev,
+                    isSubmitted: false,
+                  }))
+                }
+                variant="secondary"
+              >
+                Send Another Email
+              </ActionButton>
+            </div>
+          ) : (
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <FormField
+                label="Email Address"
+                type="email"
+                value={forgotPasswordEmail}
+                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                placeholder="Enter your email address"
+              />
+              <ActionButton
+                type="submit"
+                loading={forgotPasswordState.isLoading}
+                className="w-full"
+              >
+                <Send className="w-4 h-4" />
+                Send Reset Email
+              </ActionButton>
+            </form>
+          )}
+        </>
       )}
     </SettingsCard>
   );
