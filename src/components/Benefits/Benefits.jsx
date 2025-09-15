@@ -241,7 +241,7 @@ const Benefits = () => {
               >
                 <video
                   className="w-[calc(100%-20px)] h-[calc(100%-20px)] object-cover rounded-lg"
-                  src="/videos/dcode.mp4"
+                  src="/videos/DCODE_ROHAN_LANDSCAPE.mp4"
                   autoPlay
                   loop
                   playsInline
