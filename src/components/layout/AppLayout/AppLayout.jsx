@@ -15,7 +15,7 @@ const AppLayout = () => {
       <Benefits />
       <About />
       <Timeline />
-      <Reviews />
+      {/* <Reviews /> */}
       <Contact />
       <Outlet />
       <Footer />

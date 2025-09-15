@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import markdownToHtml from "../../utils/markdowntohtml";
 import DOMPurify from "dompurify";
 import { axiosInstance } from "../../utils/axios";
+import DashboardFooter from "../../components/dashboard/DashboardFooter"
 
 
 const DEFAULT_REPO_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231A1A1A'/%3E%3Cstop offset='100%25' stop-color='%2323252B'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23a)'/%3E%3Cpath d='M30 40 L20 50 L30 60' stroke='%23C6FF3D' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M70 40 L80 50 L70 60' stroke='%23C6FF3D' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
@@ -283,6 +284,9 @@ const RepositoryDetails = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className='px-8 pb-8'>
+      <DashboardFooter />
       </div>
     </div>
   );

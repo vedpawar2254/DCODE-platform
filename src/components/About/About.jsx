@@ -18,7 +18,7 @@ const About = () => {
     {
       initial: "A",
       name: "Aditya Kumar",
-      role: "Tech Mentor, DCODE",
+      role: "DCODE Mentor, DCODE",
       comment:
         "Your refactor reduced the codebase size by 15%. That's pro-level thinking.",
     },
@@ -27,8 +27,8 @@ const About = () => {
   const phases = [
     {
       name: "Fork",
-      merged: 12,
-      open: 4,
+      merged: 0,
+      open: 0,
       leaderboard: [
         { name: "Ved", score: 600 },
         { name: "Rohan Singh", score: 500 },
@@ -37,8 +37,8 @@ const About = () => {
     },
     {
       name: "Spec",
-      merged: 18,
-      open: 3,
+      merged: 0,
+      open: 0,
       leaderboard: [
         { name: "Ved", score: 800 },
         { name: "Rohan Singh", score: 700 },
@@ -47,8 +47,8 @@ const About = () => {
     },
     {
       name: "Merge",
-      merged: 24,
-      open: 8,
+      merged: 0,
+      open: 0,
       leaderboard: [
         { name: "Ved", score: 1270 },
         { name: "Rohan Singh", score: 1000 },
@@ -61,8 +61,8 @@ const About = () => {
   const [index, setIndex] = useState(0);
   const mergedTotal = 40;
   const openTotal = 40;
-  const mergedPercent = (activePhase.merged / mergedTotal) * 100;
-  const openPercent = (activePhase.open / openTotal) * 100;
+  const mergedPercent = 2;
+  const openPercent = 2;
   const weeks = 26;
   const days = 5;
   const levels = [1, 2, 3, 4];
@@ -445,7 +445,7 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="col-span-3 bg-[#768529]/6 px-4 py-2 rounded-lg border border-[#768529]/6">
+              {/* <div className="col-span-3 bg-[#768529]/6 px-4 py-2 rounded-lg border border-[#768529]/6">
                 <h4 className="text-white font-medium text-2xs mb-1">
                   Leaderboard
                 </h4>
@@ -468,7 +468,17 @@ const About = () => {
                     </motion.div>
                   ))}
                 </div>
+              </div> */}
+
+              <div className="col-span-3 bg-[#768529]/6 px-4 py-2 rounded-lg border border-[#768529]/6">
+                <h4 className="text-white font-medium text-2xs mb-1">
+                  Leaderboard
+                </h4>
+                <div className=" p-5 mt-1 flex-grow flex items-center justify-center">
+                  <span className="text-gray-300 font-semibold text-md tracking-wider">To Be Anounced - Stay Tuned</span>
+                </div>
               </div>
+              
             </motion.div>
           </motion.div>
         </motion.div>
@@ -516,10 +526,12 @@ const About = () => {
 
             <ul className="space-y-2 w-full text-left">
               {[
-                "Direct internship interviews",
+                // "Direct internship interviews",
+                "An expoerience like no other",
                 "1-on-1 industry mentorship",
                 "Strong letters of recommendation",
                 "Exclusive dev resources & toolkits",
+                
               ].map((item, idx) => (
                 <motion.li
                   key={idx}

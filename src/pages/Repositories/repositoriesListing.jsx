@@ -14,6 +14,13 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import {
+  useScrollAnimation,
+  scrollAnimations,
+} from "../../hooks/useScrollAnimation";
+
+import DashboardFooter from "../../components/dashboard/DashboardFooter"
+
 
 const heroVariants = {
   hidden: { opacity: 0, y: -50, scale: 0.9, filter: "blur(20px)" },
@@ -73,6 +80,8 @@ const RepositoriesListing = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilterType, setActiveFilterType] = useState("category");
+
+  const [footerRef, footerControls] = useScrollAnimation(0.1);
 
   
   useEffect(() => {
@@ -212,6 +221,7 @@ const RepositoriesListing = () => {
                 </motion.div>
             )}
           </AnimatePresence>
+          
         </motion.div>
         
         {!loadingList && !error && (
@@ -219,13 +229,13 @@ const RepositoriesListing = () => {
                 viewMode === 'grid' ? (
                   <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" variants={containerVariants}>
                     {projects.map((project) => (
-                      <ProjectCardGrid key={project?._id} project={project} onClick={(e) => handleRepoClick(project?._id, e)} formatDate={formatDate}/>
+                      <ProjectCardGrid key={project?.id} project={project} onClick={(e) => handleRepoClick(project?.id, e)} formatDate={formatDate}/>
                     ))}
                   </motion.div>
                 ) : (
                   <motion.div className="space-y-4" variants={containerVariants}>
                       {projects.map((project) => (
-                          <ProjectCardList key={project?._id} project={project} onClick={(e) => handleRepoClick(project?._id, e)} formatDate={formatDate}/>
+                          <ProjectCardList key={project?.id} project={project} onClick={(e) => handleRepoClick(project?.id, e)} formatDate={formatDate}/>
                       ))}
                   </motion.div>
                 )
@@ -248,8 +258,13 @@ const RepositoriesListing = () => {
                 ))}
             </motion.div>
         )}
+      </div> 
+      <div className='px-8 pb-8'>
+      <DashboardFooter />
       </div>
+      
     </motion.div>
+    
   );
 };
 
