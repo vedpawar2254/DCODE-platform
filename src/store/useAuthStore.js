@@ -369,4 +369,61 @@ export const useAuthStore = create((set, get) => ({
       set({ loading: false });
     }
   },
+
+  // === CHANGE PASSWORD (for authenticated users) ===
+  changePassword: async (currentPassword, newPassword) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate inputs on client side
+      if (!currentPassword || !currentPassword.trim()) {
+        const message = "Current password is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      if (!newPassword || !newPassword.trim()) {
+        const message = "New password is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      if (currentPassword.trim() === newPassword.trim()) {
+        const message = "New password must be different from current password";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      // Make API call to change password
+      const res = await axiosInstance.post("/auth/change-password", {
+        oldPassword: currentPassword.trim(),
+        newPassword: newPassword.trim(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password changed successfully:", res.data.message);
+        const message = res.data.message || "Password changed successfully";
+        toast.success(message);
+        return { success: true, message };
+      } else {
+        // Handle API-level errors
+        const message = res.data.message || "Failed to change password";
+        console.error("❌ Password change failed:", message);
+        toast.error(message);
+        return { success: false, message };
+      }
+    } catch (error) {
+      console.error("❌ Password change error:", error);
+
+      const message = extractErrorMessage(error, "Failed to change password. Please try again.");
+      toast.error(message);
+      return { success: false, message };
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));

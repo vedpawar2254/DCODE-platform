@@ -25,6 +25,7 @@ import UserProfile from "../pages/Profile/UserProfile";
 import UsersListing from "../pages/Users/UsersListing";
 
 import { ErrorPage, NotFound } from "../pages/Error";
+import Settings from "../pages/Settings/Settings";
 
 export const routes = createBrowserRouter([
   // Public routes (no sidebar)
@@ -107,10 +108,17 @@ export const routes = createBrowserRouter([
           {
             path: "profile",
             element: <Profile />,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: "/settings",
+            element: <Settings />,
+            errorElement: <ErrorPage />,
           },
           {
             path: "dashboard",
             element: <Dashboard />,
+            errorElement: <ErrorPage />,
           },
           // {
           //   path: "notifications",
@@ -119,18 +127,22 @@ export const routes = createBrowserRouter([
           {
             path: "repositories",
             element: <RepositoriesListing />,
+            errorElement: <ErrorPage />,
           },
           {
             path: "repositories/:id",
             element: <RepositoryDetails />,
+            errorElement: <ErrorPage />,
           },
           {
             path: "users",
             element: <UsersListing />,
+            errorElement: <ErrorPage />,
           },
           {
             path: "user/:username",
             element: <UserProfile />,
+            errorElement: <ErrorPage />,
           },
         ],
       },

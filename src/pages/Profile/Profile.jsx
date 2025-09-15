@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Pencil, X, Upload, Github, Twitter, Linkedin } from "lucide-react";
+import { Pencil, X, Github, Twitter, Linkedin, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ContributionHighlights from "../../components/Profile/ContributionHighlights";
 import ProfileCard from "../../components/Profile/ProfileCard";
@@ -12,10 +12,7 @@ import { axiosInstance } from "../../utils/axios";
 import { toast } from "sonner";
 import {
   AnimatedDiv,
-  AnimatedSection,
   AnimatedContainer,
-  AnimatedCard,
-  AnimatedButton,
   AnimatedText,
   AnimatedBackdrop,
   AnimatedModal,
@@ -23,14 +20,10 @@ import {
   PageTransition,
 } from "../../components/ui/AnimatedComponents";
 import {
-  fadeUpVariants,
   fadeLeftVariants,
   fadeRightVariants,
   containerVariants,
   modalVariants,
-  buttonVariants,
-  scaleVariants,
-  viewportConfig,
 } from "../../lib/animations";
 import {
   useModalAnimation,
@@ -38,10 +31,11 @@ import {
 } from "../../hooks/useAnimations";
 import {
   FloatingScrollToTop,
-  FloatingParticles,
 } from "../../components/ui/FloatingElements";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
+  const navigate = useNavigate();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editFormData, setEditFormData] = useState({
@@ -411,7 +405,6 @@ export default function Profile() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-
       {/* Floating scroll to top button */}
       <FloatingScrollToTop />
 
@@ -482,6 +475,17 @@ export default function Profile() {
               </motion.p>
             </motion.div>
 
+            <div className="flex items-center gap-3">
+              <motion.button
+              onClick={() => navigate('/settings')}
+                className="flex items-center gap-2 bg-neutral-700 text-white p-3 rounded-lg hover:bg-neutral-800 transition-colors font-medium"
+                initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              >
+                <Settings size={16} />
+              </motion.button>
+
             <motion.button
               onClick={handleEditProfile}
               className="flex items-center gap-2 bg-[#C6FF3D] text-black px-4 py-2 rounded-lg hover:bg-[#B8E835] transition-colors font-medium"
@@ -489,9 +493,11 @@ export default function Profile() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-                <Pencil size={16} />
+              <Pencil size={16} />
               Edit Profile
             </motion.button>
+            </div>
+
           </motion.div>
         </motion.div>
 
@@ -522,12 +528,12 @@ export default function Profile() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.0, duration: 0.6 }}
             >
-                <ProfileCard
-                  contributions={ProfileStats?.stats?.totalCommits}
-                  linesOfCode={ProfileStats?.stats?.totalLOC}
-                  user={user}
-                />
-            </motion.div> 
+              <ProfileCard
+                contributions={ProfileStats?.stats?.totalCommits}
+                linesOfCode={ProfileStats?.stats?.totalLOC}
+                user={user}
+              />
+            </motion.div>
           </motion.div>
 
           {/* Right Column */}
@@ -543,14 +549,14 @@ export default function Profile() {
               {ProfileStats?.stats && (
                 <motion.div
                   key="contribution-highlights"
-                  initial={{ opacity: 0,}}
-                  animate={{ opacity: 1, }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ delay: 1.1, duration: 0.6 }}
                 >
-                    <ContributionHighlights
-                      highlights={ProfileStats.stats}
-                      topProjects={ProfileStats.topProjects}
-                    />
+                  <ContributionHighlights
+                    highlights={ProfileStats.stats}
+                    topProjects={ProfileStats.topProjects}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -560,7 +566,7 @@ export default function Profile() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.6 }}
             >
-                <AchievementsRecognition badges={badges} />
+              <AchievementsRecognition badges={badges} />
             </motion.div>
 
             <AnimatePresence mode="wait">
@@ -571,9 +577,9 @@ export default function Profile() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ delay: 1.3, duration: 0.6 }}
                 >
-                    <SkillsSummaryCard
-                      skills={ProfileStats?.stats?.languagesWithPercentage}
-                    />
+                  <SkillsSummaryCard
+                    skills={ProfileStats?.stats?.languagesWithPercentage}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
