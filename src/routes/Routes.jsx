@@ -24,6 +24,8 @@ import ConnectGithub from "../components/Onboarding/ConnectGithub";
 import UserProfile from "../pages/Profile/UserProfile";
 import UsersListing from "../pages/Users/UsersListing";
 
+import FaqPage from "../pages/Faqs/FaqsPage"
+
 import { ErrorPage, NotFound } from "../pages/Error";
 import Settings from "../pages/Settings/Settings";
 
@@ -68,6 +70,11 @@ export const routes = createBrowserRouter([
     path: "/privacy",
     element: <PrivacyPolicy />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/faqs",
+    element: <FaqPage/>,
+    errorElement:<ErrorPage/>
   },
   // Error pages
   {
