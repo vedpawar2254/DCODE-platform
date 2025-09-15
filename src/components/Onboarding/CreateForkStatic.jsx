@@ -19,20 +19,21 @@ const steps = [
       subtitle: "Create your personal copy on GitHub",
       commands: [
         {
-          command: "# 1. Go to the repository on GitHub",
-          description: "Navigate to the project's GitHub page",
+          command:
+            "# 1. Open the repo: https://github.com/devclub-nstru/DCODE-Smaple-Repo",
+          description: "Go to the GitHub repository",
         },
         {
           command: "# 2. Click the 'Fork' button (top-right)",
-          description: "This creates a copy under your account",
+          description: "This creates a copy under your GitHub account",
         },
         {
           command: "# 3. Choose your account as destination",
-          description: "Select where to create the fork",
+          description: "Select your GitHub account",
         },
         {
           command: "# 4. Wait for GitHub to create the fork",
-          description: "GitHub will redirect you to your fork",
+          description: "GitHub will redirect you to your forked repo",
         },
       ],
     },
@@ -42,7 +43,7 @@ const steps = [
     title: "Clone your",
     highlight: "fork",
     blurb: "Bring your fork down to your machine.",
-    body: "Cloning downloads your forked repository to your local computer so you can make changes. Use git to clone your fork and set up the connection to the original repository for future updates.",
+    body: "Cloning downloads your forked repository to your local computer so you can make changes. Use git to clone your fork and move into the directory.",
     icon: "📥",
     color: "#BCDD19",
     snippet: {
@@ -51,93 +52,49 @@ const steps = [
       commands: [
         {
           command:
-            "git clone https://github.com/<your-username>/<repository-name>.git",
-          description: "Clone your forked repository",
+            "git clone https://github.com/<your-username>/DCODE-Smaple-Repo.git",
+          description: "Clone your forked repository (replace <your-username>)",
         },
         {
-          command: "cd <repository-name>",
+          command: "cd DCODE-Smaple-Repo",
           description: "Navigate into the project directory",
         },
         {
-          command:
-            "git remote add upstream https://github.com/<original-owner>/<repository-name>.git",
-          description: "Add the original repository as upstream remote",
-        },
-        {
-          command: "git remote -v",
-          description: "Verify your remote repositories are set up correctly",
+          command: "# Open VS Code",
+          description: "Open the project in VS Code",
         },
       ],
     },
   },
   {
     id: 3,
-    title: "Create a",
-    highlight: "branch",
-    blurb: "Keep your changes isolated and easy to review.",
-    body: "Creating a new branch keeps your changes separate from the main code. This makes it easier to manage multiple contributions and allows maintainers to review your changes without conflicts.",
-    icon: "🌿",
+    title: "Make your",
+    highlight: "changes",
+    blurb: "Add your name to the README file.",
+    body: "Now, edit the README file in VS Code and add your name under the contributors section. This is the task for contributing to this repository.",
+    icon: "✏️",
     color: "#BCDD19",
     snippet: {
-      label: "Create Branch",
-      subtitle: "Create a new branch for your feature or bug fix",
+      label: "Update README",
+      subtitle: "Add your name to the README file",
       commands: [
         {
-          command: "git checkout -b feature/<descriptive-name>",
-          description: "Create and switch to a new feature branch",
+          command: "# In VS Code, open README.md",
+          description: "Use the Explorer panel to open README.md",
         },
         {
-          command: "# Example: git checkout -b fix/button-alignment",
-          description: "Use descriptive names for your branches",
-        },
-        {
-          command: "git status",
-          description: "Confirm you're on the new branch",
-        },
-        {
-          command: "# Now make your changes to the code",
-          description: "Edit files using your preferred code editor",
+          command: "# Add your name under the contributors section",
+          description: "Save the file after editing",
         },
       ],
     },
   },
   {
     id: 4,
-    title: "Make your",
-    highlight: "changes",
-    blurb: "Implement your feature or fix the issue.",
-    body: "Now comes the actual coding! Make your changes carefully, following the project's coding standards and guidelines. Test your changes thoroughly to ensure they work as expected and don't break existing functionality.",
-    icon: "✏️",
-    color: "#BCDD19",
-    snippet: {
-      label: "Making Changes",
-      subtitle: "Best practices for implementing your contribution",
-      commands: [
-        {
-          command: "# 1. Read the CONTRIBUTING.md file",
-          description: "Understand the project's contribution guidelines",
-        },
-        {
-          command: "# 2. Install dependencies",
-          description: "Run npm install, pip install, etc.",
-        },
-        {
-          command: "# 3. Make your changes",
-          description: "Edit the necessary files",
-        },
-        {
-          command: "# 4. Test your changes locally",
-          description: "Run tests and verify functionality",
-        },
-      ],
-    },
-  },
-  {
-    id: 5,
     title: "Commit your",
     highlight: "changes",
     blurb: "Save your work with a clear message.",
-    body: "Commits create snapshots of your changes. Write clear, descriptive commit messages that explain what you changed and why. Follow conventional commit format if the project uses it.",
+    body: "Commits create snapshots of your changes. Write a clear, descriptive commit message explaining what you did.",
     icon: "💾",
     color: "#BCDD19",
     snippet: {
@@ -145,16 +102,14 @@ const steps = [
       subtitle: "Save your work with descriptive commit messages",
       commands: [
         {
-          command: "git add .",
-          description: "Stage all your changes",
+          command: "git add README.md",
+          description: "Stage the README file changes",
         },
         {
-          command: "git commit -m 'feat: add user authentication feature'",
-          description: "Commit with a clear, descriptive message",
-        },
-        {
-          command: "# Alternative: git add <specific-files>",
-          description: "Stage only specific files if preferred",
+          command:
+            "git commit -m 'chore: add <your-name> to contributors list'",
+          description:
+            "Commit with a clear, descriptive message (replace <your-name>)",
         },
         {
           command: "git log --oneline",
@@ -164,28 +119,20 @@ const steps = [
     },
   },
   {
-    id: 6,
+    id: 5,
     title: "Push to",
     highlight: "GitHub",
     blurb: "Upload your changes to your fork.",
-    body: "Pushing uploads your local commits to your GitHub fork. This makes your changes visible on GitHub and prepares them for creating a pull request to the original repository.",
-    icon: "�",
+    body: "Pushing uploads your local commits to your GitHub fork. This makes your changes visible on GitHub.",
+    icon: "🚀",
     color: "#BCDD19",
     snippet: {
       label: "Push Changes",
       subtitle: "Upload your commits to your GitHub fork",
       commands: [
         {
-          command: "git push origin <your-branch-name>",
-          description: "Push your branch to your GitHub fork",
-        },
-        {
-          command: "# Example: git push origin feature/user-auth",
-          description: "Push your specific feature branch",
-        },
-        {
-          command: "# For first push: git push -u origin <branch-name>",
-          description: "Set upstream tracking for future pushes",
+          command: "git push origin main",
+          description: "Push your commit to your fork’s main branch",
         },
         {
           command: "git status",
@@ -195,12 +142,12 @@ const steps = [
     },
   },
   {
-    id: 7,
+    id: 6,
     title: "Create a",
     highlight: "Pull Request",
     blurb: "Propose your changes to the original project.",
-    body: "A Pull Request (PR) is how you propose your changes to be merged into the original project. Write a clear description of what you changed, why you changed it, and any relevant information for reviewers.",
-    icon: "�",
+    body: "A Pull Request (PR) is how you propose your changes to be merged into the original project. Write a clear description of what you changed and why.",
+    icon: "🔀",
     color: "#BCDD19",
     snippet: {
       label: "Create Pull Request",
@@ -208,7 +155,7 @@ const steps = [
       commands: [
         {
           command: "# 1. Go to your fork on GitHub",
-          description: "Navigate to your repository on GitHub",
+          description: "Navigate to your forked repository",
         },
         {
           command: "# 2. Click 'Compare & pull request'",
@@ -216,7 +163,8 @@ const steps = [
         },
         {
           command: "# 3. Write a clear title and description",
-          description: "Explain what your changes do and why",
+          description:
+            "E.g., 'Added Aditya Kumar to contributors list in README'",
         },
         {
           command: "# 4. Click 'Create pull request'",
@@ -298,7 +246,8 @@ export default function CreateFork() {
     <>
       <div className="mb-[1.5rem] bg-transparent">
         <h1 className="text-4xl font-bold text-center">
-          Let's start with your first <span className="text-[#BCDD19]">PR</span>{" "} 
+          Let's start with your first{" "}
+          <span className="text-[#BCDD19]">PR</span>{" "}
         </h1>
         <p className="text-lg text-[#A1A1AA] mt-2 text-center">
           Let's get you started on your contribution journey
