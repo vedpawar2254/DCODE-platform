@@ -183,7 +183,7 @@ const RepositoriesListing = () => {
                   <List size={20} />
                 </button>
               </div>
-              <button
+              {/* <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="flex w-full md:w-auto items-center justify-center gap-2 bg-transparent border border-[#3A3A3A] text-white px-4 py-3 rounded-lg hover:bg-[#2A2A2A] transition-colors relative"
               >
@@ -193,7 +193,7 @@ const RepositoriesListing = () => {
                     {activeFiltersCount}
                   </span>
                 )}
-              </button>
+              </button> */}
             </div>
           </div>
 

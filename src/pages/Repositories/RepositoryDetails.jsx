@@ -354,7 +354,7 @@ const RepositoryDetails = () => {
               <div className="space-y-4">
                 <SidebarInfoItem
                   icon={<Users size={14} />}
-                  label="Maintainer"
+                  label="Mentor"
                   value={repository.assignedMentor || "Not Assigned"}
                 />
                 <SidebarInfoItem
