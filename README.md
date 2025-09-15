@@ -11,8 +11,6 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-
-
 # DCODE Platform
 
 A modern, collaborative platform for student developers to connect, learn, and build open-source projects together. Powered by React, Vite, Zustand, and Framer Motion for a fast, immersive experience.
@@ -20,7 +18,9 @@ A modern, collaborative platform for student developers to connect, learn, and b
 ---
 
 ## 🚀 Overview
+
 DCODE Platform is designed to accelerate your growth as a developer by providing:
+
 - A vibrant community of student innovators
 - Hands-on project management tools
 - Rich analytics and dashboards
@@ -30,6 +30,7 @@ DCODE Platform is designed to accelerate your growth as a developer by providing
 ---
 
 ## ✨ Features
+
 - **Authentication & Onboarding**: Secure login, onboarding flow, and profile management
 - **User Directory**: Discover and connect with other developers
 - **Dashboard**: Track your progress, streaks, milestones, and PR activity
@@ -42,6 +43,7 @@ DCODE Platform is designed to accelerate your growth as a developer by providing
 ---
 
 ## 🛠️ Tech Stack
+
 - **Frontend**: React, Vite
 - **State Management**: Zustand
 - **Animations**: Framer Motion
@@ -53,6 +55,7 @@ DCODE Platform is designed to accelerate your growth as a developer by providing
 ---
 
 ## 📁 Folder Structure
+
 ```
 public/           # Static assets (images, fonts, videos)
 src/
@@ -71,6 +74,7 @@ src/
 ---
 
 ## ⚡ Getting Started
+
 1. **Clone the repo:**
    ```bash
    git clone https://github.com/DCODE-HQ/DCODE-platform.git
@@ -90,6 +94,7 @@ src/
 ---
 
 ## 🖥️ Usage
+
 - **Sign up or log in** to access the dashboard and community features
 - **Edit your profile** to add portfolio links and achievements
 - **Browse users** and connect with other developers
@@ -99,7 +104,9 @@ src/
 ---
 
 ## 🤝 Contributing
+
 We welcome contributions! To get started:
+
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/your-feature`)
 3. Make your changes
@@ -109,12 +116,14 @@ We welcome contributions! To get started:
 ---
 
 ## 📄 License
+
 This project is licensed under the MIT License.
 
 ---
 
 ## 📬 Contact
-- **Team DCODE**: [contact@dcodehq.com](mailto:contact@dcodehq.com)
+
+- **Team DCODE**: [dcode.codes@gmail.com](mailto:dcode.codes@gmail.com)
 - [GitHub Issues](https://github.com/DCODE-HQ/DCODE-platform/issues)
 
 ---

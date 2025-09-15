@@ -346,7 +346,7 @@ export default () => {
       {
         icon: <FiGitMerge className="w-5 h-5 text-[#BCDD19]" />,
         title: "30 PRs Merged",
-        progress: `${stats.totalMergedPRs} / 30`,
+        progress: `${Math.min(stats.totalMergedPRs, 30)} / 30`,
         percentage: Math.min((stats.totalMergedPRs / 30) * 100, 100),
         status: `${Math.min((stats.totalMergedPRs / 30) * 100, 100).toFixed(2)}%`,
         color: "[#BCDD19]",
@@ -358,7 +358,7 @@ export default () => {
       {
         icon: <FiCode className="w-5 h-5 text-orange-400" />,
         title: "5,000 Lines of Code",
-        progress: `${stats.totalLOC.toLocaleString()} / 5,000`,
+        progress: `${Math.min(stats.totalLOC, 5000).toLocaleString()} / 5,000`,
         percentage: Math.min((stats.totalLOC / 5000) * 100, 100),
         status: `${Math.min((stats.totalLOC / 5000) * 100, 100).toFixed(2)}%`,
         color: "orange-400",
@@ -370,7 +370,7 @@ export default () => {
       {
         icon: <FiFolder className="w-5 h-5 text-blue-400" />,
         title: "30 Unique Repositories",
-        progress: `${stats.projectCount} / 30`,
+        progress: `${Math.min(stats.projectCount, 30)} / 30`,
         percentage: Math.min((stats.projectCount / 30) * 100, 100),
         status: `${Math.min((stats.projectCount / 30) * 100, 100).toFixed(2)}%`,
         color: "blue-400",
@@ -382,7 +382,7 @@ export default () => {
       {
         icon: <FiTarget className="w-5 h-5 text-purple-400" />,
         title: "50 Open PRs",
-        progress: `${stats.totalOpenPRs} / 50`,
+        progress: `${Math.min(stats.totalOpenPRs, 50)} / 50`,
         percentage: Math.min((stats.totalOpenPRs / 50) * 100, 100),
         status: `${Math.min((stats.totalOpenPRs / 50) * 100, 100).toFixed(2)}%`,
         color: "purple-400",
@@ -394,7 +394,7 @@ export default () => {
       {
         icon: <FiCalendar className="w-5 h-5 text-teal-400" />,
         title: "100 Total Commits",
-        progress: `${stats.totalCommits} / 100`,
+        progress: `${Math.min(stats.totalCommits, 100)} / 100`,
         percentage: Math.min((stats.totalCommits / 100) * 100, 100),
         status: `${Math.min((stats.totalCommits / 100) * 100, 100).toFixed(2)}%`,
         color: "teal-400",
@@ -406,7 +406,7 @@ export default () => {
       {
         icon: <FiAward className="w-5 h-5 text-[#BCDD19]" />,
         title: "First Project",
-        progress: `${stats.projectCount} / 1`,
+        progress: `${Math.min(stats.projectCount, 1)} / 1`,
         percentage: stats.projectCount > 0 ? 100 : 0,
         status: `${stats.projectCount > 0 ? 100 : 0}%`,
         color: "[#BCDD19]",

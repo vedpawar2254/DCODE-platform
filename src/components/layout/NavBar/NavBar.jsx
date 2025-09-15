@@ -84,14 +84,15 @@ export default function NavBar() {
           ))}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: isCheckingAuth ? 0 : 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Button variant="outline">
               <a
-                href={isLoggedIn ? `/dashboard` : `/auth`}
+                href={isCheckingAuth ? '#' : (isLoggedIn ? `/dashboard` : `/auth`)}
+                onClick={isCheckingAuth ? (e) => e.preventDefault() : undefined}
               >
-                {isLoggedIn ? "Dashboard" : "Login"}
+                {isCheckingAuth ? "Loading..." : (isLoggedIn ? "Dashboard" : "Login")}
               </a>
             </Button>
           </motion.div>
@@ -123,10 +124,11 @@ export default function NavBar() {
             <div className="pt-2">
               <Button variant="outline" className={"w-full"}>
               <a
-                href={isLoggedIn ? `/dashboard` : `/auth`}
-                className="px-[0.5rem] py-[3rem]"
+                href={isCheckingAuth ? '#' : (isLoggedIn ? `/dashboard` : `/auth`)}
+                onClick={isCheckingAuth ? (e) => e.preventDefault() : undefined}
+                className={`px-[0.5rem] py-[3rem] ${isCheckingAuth ? "cursor-not-allowed opacity-70" : ""}`}
               >
-                {isLoggedIn ? "Dashboard" : "Login"}
+                {isCheckingAuth ? "Loading..." : (isLoggedIn ? "Dashboard" : "Login")}
               </a>
             </Button>
             </div>
