@@ -29,16 +29,10 @@ export default function UsersListing() {
     totalPages,
     loading,
     error,
-    searchLoading,
-    filterLoading,
     searchQuery,
     sortBy,
     sortOrder,
     filters,
-    setSearchQuery,
-    setSortBy,
-    setSortOrder,
-    setFilter,
     clearFilters,
     fetchUsers,
     goToPage,
@@ -56,7 +50,7 @@ export default function UsersListing() {
 
   // Local UI state
   const [localSearchQuery, setLocalSearchQuery] = useState("");
-  const [headerRef, headerControls] = useScrollAnimation(0.1);
+  const [headerRef, headerControls] = useScrollAnimation(0.8);
 
   // Sync localSearchQuery with store searchQuery
   useEffect(() => {
@@ -106,8 +100,8 @@ export default function UsersListing() {
       bulkUpdate({
         filters: {
           ...filters,
-          [key]: value
-        }
+          [key]: value,
+        },
       });
     },
     [filters, bulkUpdate]
@@ -117,7 +111,7 @@ export default function UsersListing() {
     (e) => {
       e.preventDefault();
       bulkUpdate({
-        searchQuery: localSearchQuery
+        searchQuery: localSearchQuery,
       });
     },
     [localSearchQuery, bulkUpdate]
@@ -224,8 +218,6 @@ export default function UsersListing() {
     () => [
       { value: "createdAt", label: "Join Date" },
       { value: "name", label: "Name (A-Z)" },
-      { value: "location", label: "Location" },
-      { value: "github_username", label: "GitHub Username" },
     ],
     []
   );
@@ -246,8 +238,9 @@ export default function UsersListing() {
       animate="visible"
       variants={containerVariants}
     >
-      {/* Header */}
+      {console.log("user----", users)}
       <div>
+        {/* Header */}
         <motion.div className="mb-6" variants={itemVariants}>
           <div className="flex items-center justify-between">
             <motion.div
@@ -336,9 +329,9 @@ export default function UsersListing() {
               onClick={handleSortOrderToggle}
               disabled={loading}
               className={`flex items-center gap-1 transition-colors ${
-                loading 
-                  ? 'text-[#666] cursor-not-allowed' 
-                  : 'text-[#A1A1AA] hover:text-white'
+                loading
+                  ? "text-[#666] cursor-not-allowed"
+                  : "text-[#A1A1AA] hover:text-white"
               }`}
             >
               {sortOrder === "asc" ? (
@@ -479,22 +472,43 @@ export default function UsersListing() {
                   {/* Pagination */}
                   {totalPages > 1 && (
                     <motion.div
-                      className="flex items-center justify-center gap-2"
+                      className="flex items-center justify-center gap-4 mt-8 mb-4"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.5 }}
                     >
+                      {/* Previous Button */}
                       <motion.button
                         onClick={() => prevPage()}
-                        disabled={!stats.hasPrevPage}
-                        className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        whileHover={stats.hasPrevPage ? { scale: 1.05 } : {}}
-                        whileTap={stats.hasPrevPage ? { scale: 0.95 } : {}}
+                        disabled={currentPage <= 1}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                          currentPage > 1
+                            ? "bg-[#23252B] text-white hover:bg-[#2A2A2A] hover:shadow-lg"
+                            : "bg-[#1A1A1A] text-[#666] cursor-not-allowed"
+                        }`}
+                        whileHover={
+                          currentPage > 1 ? { scale: 1.05, x: -2 } : {}
+                        }
+                        whileTap={currentPage > 1 ? { scale: 0.95 } : {}}
                       >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
                         Previous
                       </motion.button>
 
-                      <div className="flex items-center gap-1">
+                      {/* Page Numbers */}
+                      <div className="flex items-center gap-2 px-4">
                         {Array.from(
                           { length: Math.min(totalPages, 5) },
                           (_, i) => {
@@ -506,9 +520,9 @@ export default function UsersListing() {
                               <motion.button
                                 key={pageNum}
                                 onClick={() => goToPage(pageNum)}
-                                className={`px-3 py-2 rounded-lg transition-colors ${
+                                className={`min-w-[40px] h-10 rounded-lg font-medium transition-all duration-200 ${
                                   currentPage === pageNum
-                                    ? "bg-[#C6FF3D] text-black"
+                                    ? "bg-[#C6FF3D] text-black shadow-lg"
                                     : "bg-[#23252B] text-white hover:bg-[#2A2A2A]"
                                 }`}
                                 whileHover={{ scale: 1.1 }}
@@ -519,16 +533,53 @@ export default function UsersListing() {
                             );
                           }
                         )}
+
+                        {/* Show ellipsis and last page if needed */}
+                        {totalPages > 5 && currentPage < totalPages - 2 && (
+                          <>
+                            <span className="text-[#666] px-2">...</span>
+                            <motion.button
+                              onClick={() => goToPage(totalPages)}
+                              className="min-w-[40px] h-10 rounded-lg font-medium bg-[#23252B] text-white hover:bg-[#2A2A2A] transition-all duration-200"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.9 }}
+                            >
+                              {totalPages}
+                            </motion.button>
+                          </>
+                        )}
                       </div>
 
+                      {/* Next Button */}
                       <motion.button
                         onClick={() => nextPage()}
-                        disabled={!stats.hasNextPage}
-                        className="px-4 py-2 bg-[#23252B] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        whileHover={stats.hasNextPage ? { scale: 1.05 } : {}}
-                        whileTap={stats.hasNextPage ? { scale: 0.95 } : {}}
+                        disabled={currentPage >= totalPages}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                          currentPage < totalPages
+                            ? "bg-[#23252B] text-white hover:bg-[#2A2A2A] hover:shadow-lg"
+                            : "bg-[#1A1A1A] text-[#666] cursor-not-allowed"
+                        }`}
+                        whileHover={
+                          currentPage < totalPages ? { scale: 1.05, x: 2 } : {}
+                        }
+                        whileTap={
+                          currentPage < totalPages ? { scale: 0.95 } : {}
+                        }
                       >
                         Next
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
                       </motion.button>
                     </motion.div>
                   )}
@@ -573,17 +624,13 @@ const UserCard = ({ user, onClick }) => {
             className="w-14 h-14 rounded-full object-cover border-2 border-[#2A2A2A] transition-colors"
           />
           {user.github_username && (
-            <motion.div
-              className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1"
-            >
+            <motion.div className="absolute -bottom-1 -right-1 bg-[#C6FF3D] rounded-full p-1">
               <Github className="text-black" size={12} />
             </motion.div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <motion.h3
-            className="text-white font-semibold text-lg truncate transition-colors"
-          >
+          <motion.h3 className="text-white font-semibold text-lg truncate transition-colors">
             {user.name}
           </motion.h3>
           <p className="text-[#A1A1AA] text-sm truncate">
@@ -602,18 +649,14 @@ const UserCard = ({ user, onClick }) => {
       {/* Key Info - Simplified layout */}
       <div className="space-y-2 mb-4">
         {user.location && (
-          <motion.div
-            className="flex items-center gap-2 text-[#A1A1AA] text-sm"
-          >
+          <motion.div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
             <MapPin size={14} className="flex-shrink-0" />
             <span className="truncate">{user.location}</span>
           </motion.div>
         )}
 
         {user.collegeInfo?.name && (
-          <motion.div
-            className="flex items-center gap-2 text-[#A1A1AA] text-sm"
-          >
+          <motion.div className="flex items-center gap-2 text-[#A1A1AA] text-sm">
             <GraduationCap size={14} className="flex-shrink-0" />
             <span className="truncate">
               {user.collegeInfo.name}
@@ -630,9 +673,7 @@ const UserCard = ({ user, onClick }) => {
           <Calendar size={12} />
           <span>Joined {joinedDate}</span>
         </div>
-        <motion.div
-          className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-        >
+        <motion.div className="text-[#C6FF3D] text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
           View Profile →
         </motion.div>
       </div>
