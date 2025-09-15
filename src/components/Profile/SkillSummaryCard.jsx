@@ -12,6 +12,7 @@ import {
   fadeLeftVariants,
   fadeRightVariants,
 } from "../../lib/animations";
+import { s } from "framer-motion/client";
 
 const RadarChart = ({ data }) => {
   const centerX = 100;
@@ -240,7 +241,8 @@ const SkillsSummaryCard = ({ skills }) => {
         </motion.div>
 
         {/* Language percentages */}
-        {skills.length > 0 ? (
+        {console.log(skills)}
+        {skills[0].name == "N/A" ? (
           <span className="text-white h-full w-full my-auto">No Data Available</span>
         ) : (
           <motion.div

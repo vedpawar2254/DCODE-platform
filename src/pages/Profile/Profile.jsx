@@ -592,7 +592,7 @@ export default function Profile() {
         {shouldRenderModal && (
           <AnimatedBackdrop onClick={handleCloseModal}>
             <AnimatedModal
-              className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-[#1A1A1A] border border-[#23252B] rounded-lg p-6 w-full max-w-6xl max-h-[85vh] overflow-y-auto"
               variant={modalVariants}
             >
               {/* Modal Header */}
@@ -624,7 +624,7 @@ export default function Profile() {
                 variant={containerVariants}
               >
                 <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                  className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                   variants={containerVariants}
                 >
                   {/* Basic Information */}
@@ -911,30 +911,41 @@ export default function Profile() {
                       />
                     </motion.div>
                   </AnimatedDiv>
-                </motion.div>
 
-                {/* Bio Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  <label className="block text-[#A1A1AA] text-sm mb-2">
-                    Bio
-                  </label>
-                  <motion.textarea
-                    value={editFormData.bio}
-                    onChange={handleInputChange("bio")}
-                    rows="4"
-                    className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors resize-none"
-                    placeholder="Write a short bio about yourself..."
-                    whileFocus={{ scale: 1.01 }}
-                  />
+                  {/* Bio Section - Third Column */}
+                  <AnimatedDiv className="space-y-4" variant={fadeRightVariants}>
+                    <motion.h4
+                      className="text-white font-medium text-lg border-b border-[#23252B] pb-2"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      About
+                    </motion.h4>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <label className="block text-[#A1A1AA] text-sm mb-2">
+                        Bio
+                      </label>
+                      <motion.textarea
+                        value={editFormData.bio}
+                        onChange={handleInputChange("bio")}
+                        rows="8"
+                        className="w-full bg-[#23252B] border border-[#3A3A3A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#C6FF3D] transition-colors resize-none"
+                        placeholder="Write a short bio about yourself..."
+                        whileFocus={{ scale: 1.01 }}
+                      />
+                    </motion.div>
+                  </AnimatedDiv>
                 </motion.div>
 
                 {/* Action Buttons */}
                 <motion.div
-                  className="flex gap-4 pt-4"
+                  className="flex gap-4 pt-6 border-t border-[#23252B]"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
