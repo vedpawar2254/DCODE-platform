@@ -6,7 +6,6 @@ import {
   Send,
   CheckCircle,
   AlertCircle,
-  Eye,
   Loader2,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
@@ -20,26 +19,13 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitAttempts, setSubmitAttempts] = useState(0);
-  const [lastSubmitTime, setLastSubmitTime] = useState(null);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
 
   // UI state
   const [focusedField, setFocusedField] = useState(null);
-  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
-  // Rate limiting - prevent spam requests
+  // Rate limiting - basic client-side cooldown
   const COOLDOWN_SECONDS = 60; // 1 minute cooldown between requests
-  const MAX_ATTEMPTS_PER_HOUR = 5;
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (cooldownRemaining > 0) {
-        setCooldownRemaining(0);
-      }
-    };
-  }, [cooldownRemaining]);
 
   // Cooldown timer effect
   useEffect(() => {
@@ -60,92 +46,20 @@ const ForgotPassword = () => {
     };
   }, [cooldownRemaining]);
 
-  // Email validation with comprehensive rules
+  // Simple email validation
   const validateEmail = useCallback((email) => {
-    const errors = {};
-
-    if (!email) {
-      errors.email = "Email address is required";
-      return errors;
+    if (!email || !email.trim()) {
+      return "Email address is required";
     }
 
-    if (email.length > 254) {
-      errors.email = "Email address is too long";
-      return errors;
+    // Basic email regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return "Please enter a valid email address";
     }
 
-    // RFC 5322 compliant email regex (simplified but robust)
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-
-    if (!emailRegex.test(email)) {
-      errors.email = "Please enter a valid email address";
-      return errors;
-    }
-
-    // Additional business logic validation
-    const domain = email.split("@")[1];
-    if (domain) {
-      // Check for common typos in popular domains
-      const commonTypos = {
-        "gmail.co": "gmail.com",
-        "gmail.cm": "gmail.com",
-        "gmial.com": "gmail.com",
-        "yahoo.co": "yahoo.com",
-        "outlok.com": "outlook.com",
-        "hotmial.com": "hotmail.com",
-      };
-
-      if (commonTypos[domain]) {
-        errors.email = `Did you mean ${email.replace(domain, commonTypos[domain])}?`;
-        return errors;
-      }
-
-      // Block obviously fake domains
-      const suspiciousDomains = [
-        "example.com",
-        "test.com",
-        "fake.com",
-        "invalid.com",
-      ];
-      if (suspiciousDomains.includes(domain.toLowerCase())) {
-        errors.email = "Please enter a valid email address";
-        return errors;
-      }
-    }
-
-    return errors;
+    return null;
   }, []);
-
-  // Rate limiting check
-  const checkRateLimit = useCallback(() => {
-    const now = Date.now();
-    const oneHourAgo = now - 60 * 60 * 1000;
-
-    // Check if we're still in cooldown
-    if (lastSubmitTime && now - lastSubmitTime < COOLDOWN_SECONDS * 1000) {
-      const remaining = Math.ceil(
-        (COOLDOWN_SECONDS * 1000 - (now - lastSubmitTime)) / 1000
-      );
-      setCooldownRemaining(remaining);
-      return {
-        allowed: false,
-        reason: `Please wait ${remaining} seconds before requesting another reset email`,
-      };
-    }
-
-    // Check hourly attempts (in real app, this would be server-side)
-    const attempts = submitAttempts;
-    if (attempts >= MAX_ATTEMPTS_PER_HOUR) {
-      return {
-        allowed: false,
-        reason:
-          "Too many reset attempts. Please try again later or contact support.",
-      };
-    }
-
-    return { allowed: true };
-  }, [lastSubmitTime, submitAttempts]);
 
   // Form submission handler
   const handleSubmit = useCallback(
@@ -156,57 +70,44 @@ const ForgotPassword = () => {
       setErrors({});
 
       // Validate email
-      const emailErrors = validateEmail(email);
-      if (Object.keys(emailErrors).length > 0) {
-        setErrors(emailErrors);
+      const emailError = validateEmail(email);
+      if (emailError) {
+        setErrors({ email: emailError });
         return;
       }
 
-      // Check rate limiting
-      const rateLimitCheck = checkRateLimit();
-      if (!rateLimitCheck.allowed) {
-        setErrors({ general: rateLimitCheck.reason });
+      // Check cooldown
+      if (cooldownRemaining > 0) {
+        setErrors({ 
+          general: `Please wait ${cooldownRemaining} seconds before requesting another reset email` 
+        });
         return;
       }
 
       try {
         // Call the reset password API
         const result = await resetPassword(email);
-        console.log("-----", result);
+        
         if (result.success) {
-          // Update rate limiting state
-          setLastSubmitTime(Date.now());
-          setSubmitAttempts((prev) => prev + 1);
+          // Start cooldown and show success state
           setCooldownRemaining(COOLDOWN_SECONDS);
-
-          // Show success state
           setIsSubmitted(true);
-          setShowSuccessAnimation(true);
-
-          // Clear form
           setEmail("");
           setErrors({});
         } else {
           // Handle API errors
-          const errorMessage =
-            result.message || "Failed to send reset email. Please try again.";
-
+          const errorMessage = result.message || "Failed to send reset email. Please try again.";
+          
           // Handle specific error cases
-          if (
-            errorMessage.toLowerCase().includes("not found") ||
-            errorMessage.toLowerCase().includes("does not exist")
-          ) {
+          if (errorMessage.toLowerCase().includes("not found") || 
+              errorMessage.toLowerCase().includes("does not exist")) {
             setErrors({
-              email:
-                "No account found with this email address. Please check your email or sign up for a new account.",
+              email: "No account found with this email address. Please check your email or sign up for a new account.",
             });
-          } else if (
-            errorMessage.toLowerCase().includes("rate limit") ||
-            errorMessage.toLowerCase().includes("too many")
-          ) {
+          } else if (errorMessage.toLowerCase().includes("rate limit") || 
+                     errorMessage.toLowerCase().includes("too many")) {
             setErrors({
-              general:
-                "Too many requests. Please wait a few minutes before trying again.",
+              general: "Too many requests. Please wait a few minutes before trying again.",
             });
             setCooldownRemaining(COOLDOWN_SECONDS);
           } else {
@@ -215,32 +116,12 @@ const ForgotPassword = () => {
         }
       } catch (error) {
         console.error("Password reset error:", error);
-
-        // Handle network and unexpected errors
-        if (error.code === "NETWORK_ERROR" || !navigator.onLine) {
-          setErrors({
-            general:
-              "Network error. Please check your internet connection and try again.",
-          });
-        } else if (error.response?.status === 429) {
-          setErrors({
-            general:
-              "Too many requests. Please wait a few minutes before trying again.",
-          });
-          setCooldownRemaining(COOLDOWN_SECONDS);
-        } else if (error.response?.status >= 500) {
-          setErrors({
-            general:
-              "Server error. Please try again later or contact support if the problem persists.",
-          });
-        } else {
-          setErrors({
-            general: "Something went wrong. Please try again later.",
-          });
-        }
+        setErrors({
+          general: "Something went wrong. Please try again later.",
+        });
       }
     },
-    [email, validateEmail, checkRateLimit, resetPassword]
+    [email, validateEmail, cooldownRemaining, resetPassword]
   );
 
   // Animation variants
@@ -280,7 +161,7 @@ const ForgotPassword = () => {
   };
 
   // Render success state
-  if (isSubmitted && showSuccessAnimation) {
+  if (isSubmitted) {
     return (
       <motion.div
         className="min-h-screen bg-[#121212] flex items-center justify-center p-4"
@@ -353,10 +234,7 @@ const ForgotPassword = () => {
 
               {cooldownRemaining === 0 && (
                 <button
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setShowSuccessAnimation(false);
-                  }}
+                  onClick={() => setIsSubmitted(false)}
                   className="w-full bg-transparent border border-[#3A3A3A] text-white py-3 px-6 rounded-lg hover:border-[#C6FF3D] transition-colors"
                 >
                   Send Another Email
@@ -523,7 +401,6 @@ const ForgotPassword = () => {
                 </>
               ) : cooldownRemaining > 0 ? (
                 <>
-                  <Eye className="w-5 h-5" />
                   Wait {cooldownRemaining}s
                 </>
               ) : (

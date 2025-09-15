@@ -14,10 +14,11 @@ export const useAuthStore = create((set, get) => ({
   // loading states
   isCheckingAuth: null,
   isRegistering: false,
-  // isLoggingIn: false,
+  isLoggingIn: false,
   isLoggingOut: false,
   isGitHubAuth: false,
   isLoggedIn: null,
+  loading: false,
   checkIfLoggedIn: () => {
     return new Promise(async (resolve, reject) => {
       if (!get().isCheckingAuth) {
@@ -145,6 +146,284 @@ export const useAuthStore = create((set, get) => ({
       return false;
     } finally {
       set({ isGitHubAuth: false });
+    }
+  },
+
+  // === EMAIL VERIFICATION ===
+  verifyEmail: async (token) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate token on client side
+      if (!token || !token.trim()) {
+        throw new Error("Verification token is required");
+      }
+
+      // Make API call to verify email
+      const res = await axiosInstance.post("/auth/verify-email", {
+        token: token.trim(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Email verified successfully:", res.data.message);
+
+        // Update user in store to reflect verification status
+        // const currentUser = get().authUser;
+        // if (currentUser) {
+        //   set({
+        //     authUser: {
+        //       ...currentUser,
+        //       is_verified: true,
+        //       email_verified_at: new Date().toISOString(),
+        //     },
+        //   });
+        // }
+        toast.success(res.data.message || "Email verified successfully");
+        return {
+          success: true,
+          message: res.data.message || "Email verified successfully",
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage = res.data.message || "Failed to verify email";
+        console.error("❌ Email verification failed:", errorMessage);
+        toast.error(errorMessage);
+        return {
+          success: false,
+        };
+      }
+    } catch (error) {
+      console.error("❌ Email verification error:", error);
+      toast.error(extractErrorMessage(error, "Email verification failed"));
+      return {
+        success: false,
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === RESEND VERIFICATION EMAIL ===
+  resendVerificationEmail: async (email) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate email on client side
+      if (!email || !email.trim()) {
+        throw new Error("Email is required");
+      }
+
+      const emailRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      if (!emailRegex.test(email.trim())) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Make API call to resend verification email
+      const res = await axiosInstance.post("/auth/resend-verification", {
+        email: email.trim().toLowerCase(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Verification email resent:", res.data.message);
+        return {
+          success: true,
+          message: res.data.message || "Verification email sent successfully",
+        };
+      } else {
+        // Handle API-level errors
+        const errorMessage =
+          res.data.message || "Failed to send verification email";
+        console.error("❌ Resend verification failed:", errorMessage);
+        return {
+          success: false,
+          message: errorMessage,
+        };
+      }
+    } catch (error) {
+      console.error("❌ Resend verification email error:", error);
+
+      // Extract detailed error information
+      toast.error(extractErrorMessage(error, "Failed to resend email"));
+
+      return {
+        success: false,
+      };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === PASSWORD RESET ===
+  resetPassword: async (email) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate email on client side
+      if (!email || !email.trim()) {
+        const message = "Email is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      const emailRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      if (!emailRegex.test(email.trim())) {
+        const message = "Please enter a valid email address";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      // Make API call to reset password
+      const res = await axiosInstance.post("/auth/forgot-password", {
+        email: email.trim().toLowerCase(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password reset email sent:", res.data.message);
+        const message = res.data.message || "Password reset email sent successfully";
+        toast.success(message);
+        return { success: true, message };
+      } else {
+        // Handle API-level errors
+        const message = res.data.message || "Failed to send reset email";
+        console.error("❌ Password reset failed:", message);
+        toast.error(message);
+        return { success: false, message };
+      }
+    } catch (error) {
+      console.error("❌ Password reset error:", error);
+
+      // Extract detailed error information
+      const message = extractErrorMessage(error, "Failed to send reset email. Please try again.");
+      toast.error(message);
+
+      return { success: false, message };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === CONFIRM PASSWORD RESET ===
+  confirmPasswordReset: async (token, newPassword) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate inputs on client side
+      if (!token || !token.trim()) {
+        const message = "Reset token is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      if (!newPassword || !newPassword.trim()) {
+        const message = "New password is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      // Make API call to confirm password reset
+      const res = await axiosInstance.post("/auth/reset-password", {
+        token: token.trim(),
+        password: newPassword.trim(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password reset confirmed:", res.data.message);
+
+        // Clear any existing user session since password has changed
+        set({ authUser: null });
+        const message = res.data.message || "Password has been reset successfully";
+        toast.success(message);
+        return { success: true, message };
+      } else {
+        // Handle API-level errors
+        const message = res.data.message || "Failed to reset password";
+        console.error("❌ Password reset confirmation failed:", message);
+        toast.error(message);
+        return { success: false, message };
+      }
+    } catch (error) {
+      console.error("❌ Password reset confirmation error:", error);
+
+      const message = extractErrorMessage(error, "Failed to reset password. Please try again.");
+      toast.error(message);
+      return { success: false, message };
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // === CHANGE PASSWORD (for authenticated users) ===
+  changePassword: async (currentPassword, newPassword) => {
+    if (get().loading)
+      return { success: false, message: "Request already in progress" };
+
+    set({ loading: true });
+
+    try {
+      // Validate inputs on client side
+      if (!currentPassword || !currentPassword.trim()) {
+        const message = "Current password is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      if (!newPassword || !newPassword.trim()) {
+        const message = "New password is required";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      if (currentPassword.trim() === newPassword.trim()) {
+        const message = "New password must be different from current password";
+        toast.error(message);
+        return { success: false, message };
+      }
+
+      // Make API call to change password
+      const res = await axiosInstance.post("/auth/change-password", {
+        oldPassword: currentPassword.trim(),
+        newPassword: newPassword.trim(),
+      });
+
+      // Handle successful response
+      if (res.data.success) {
+        console.log("✅ Password changed successfully:", res.data.message);
+        const message = res.data.message || "Password changed successfully";
+        toast.success(message);
+        return { success: true, message };
+      } else {
+        // Handle API-level errors
+        const message = res.data.message || "Failed to change password";
+        console.error("❌ Password change failed:", message);
+        toast.error(message);
+        return { success: false, message };
+      }
+    } catch (error) {
+      console.error("❌ Password change error:", error);
+
+      const message = extractErrorMessage(error, "Failed to change password. Please try again.");
+      toast.error(message);
+      return { success: false, message };
+    } finally {
+      set({ loading: false });
     }
   },
 }));

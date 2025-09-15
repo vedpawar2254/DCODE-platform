@@ -231,7 +231,7 @@ const ContactFormPanel = () => {
 
   return (
     <motion.div 
-      className="text-white flex flex-col justify-center h-full w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[calc(100vh-80px)] lg:max-h-[calc(100vh-80px)] relative"
+      className="text-white flex flex-col justify-center min-h-full w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[calc(100vh-80px)] lg:max-h-[calc(100vh-80px)] relative"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
