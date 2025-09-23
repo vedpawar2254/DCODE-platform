@@ -25,6 +25,7 @@ import UserProfile from "../pages/Profile/UserProfile";
 import UsersListing from "../pages/Users/UsersListing";
 
 import FaqPage from "../pages/Faqs/FaqsPage"
+import RedirectComponent from "../components/RedirectComponent";
 
 import { ErrorPage, NotFound } from "../pages/Error";
 import Settings from "../pages/Settings/Settings";
@@ -33,6 +34,11 @@ export const routes = createBrowserRouter([
   // Public routes (no sidebar)
   {
     path: "/",
+    element: <RedirectComponent />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/home",
     element: <Home />,
     errorElement: <ErrorPage />,
   },
