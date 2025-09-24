@@ -27,8 +27,8 @@ const Sidebar = () => {
     {
       icon: <House size={20} />,
       label: "Home",
-      path: "/",
-      isActive: location.pathname === "/",
+      path: "/home",
+      isActive: location.pathname === "/home",
     },
     {
       icon: <FiBarChart2 size={20} />,
