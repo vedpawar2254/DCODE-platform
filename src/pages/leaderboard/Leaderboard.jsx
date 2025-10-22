@@ -30,7 +30,7 @@ import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 // Removed LoadMoreSpinner
 
 export default function Leaderboard() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   // Zustand store - Added goToPage
   const {
